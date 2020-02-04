@@ -5,17 +5,23 @@ const Heading = props => <h2>{props.text}</h2>;
 
 const Button = props => <button onClick={props.onClick}>{props.text}</button>;
 
+const Anecdote = props => {
+  return (
+    <>
+      {props.anecdote}
+      <br />
+      has {props.votes} vote(s)
+    </>
+  );
+};
+
 const MostVoted = props => {
   return (
     <>
       <Heading text="Anecdote with Most Votes" />
       {!props.hasVotes && <>No anecdotes have been voted on yet.</>}
       {props.hasVotes && (
-        <>
-          {props.anecdote}
-          <br />
-          has {props.votes} vote(s)
-        </>
+        <Anecdote anecdote={props.anecdote} votes={props.votes} />
       )}
     </>
   );
@@ -77,9 +83,7 @@ const App = props => {
   return (
     <div>
       <Heading text="Anecdote of the Day" />
-      {props.anecdotes[selected]}
-      <br />
-      has {votes[selected]} vote(s)
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
       <br />
       <Button onClick={() => handleButtonClick("vote")} text="vote" />
       <Button onClick={() => handleButtonClick("next")} text="next anecdote" />
