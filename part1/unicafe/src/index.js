@@ -5,11 +5,14 @@ const Heading = props => <h1>{props.text}</h1>;
 
 const Button = props => <button onClick={props.onClick}>{props.text}</button>;
 
-const Statistic = props => (
-  <p>
-    {props.name}: {props.value}
-  </p>
-);
+const Statistic = props => {
+  return (
+    <tr>
+      <td>{props.name}</td>
+      <td>{props.value}</td>
+    </tr>
+  );
+};
 
 const Statistics = props => {
   if (!props.hasFeedback) {
@@ -19,12 +22,24 @@ const Statistics = props => {
   return (
     <div>
       <Heading text="Statistics" />
-      <Statistic name="good" value={props.good} />
-      <Statistic name="neutral" value={props.neutral} />
-      <Statistic name="bad" value={props.bad} />
-      <Statistic name="total" value={props.total} />
-      <Statistic name="averageScore" value={props.averageScore} />
-      <Statistic name="percentPositive" value={props.percentPositive + "%"} />
+      <table>
+        <tbody>
+          <Statistic name="good" value={props.good} />
+
+          <Statistic name="neutral" value={props.neutral} />
+
+          <Statistic name="bad" value={props.bad} />
+
+          <Statistic name="total" value={props.total} />
+
+          <Statistic name="averageScore" value={props.averageScore} />
+
+          <Statistic
+            name="percentPositive"
+            value={props.percentPositive + "%"}
+          />
+        </tbody>
+      </table>
     </div>
   );
 };
