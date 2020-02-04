@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Part 0 Excercises
+# Full Stack Open 2019 - Exercise Solutions
 
 ## Part 0 - [Fundamentals of Web Apps](https://fullstackopen.com/en/part0)
 
