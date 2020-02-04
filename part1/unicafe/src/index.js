@@ -18,6 +18,9 @@ const Statistics = props => {
       <p>
         {props.feedback[2].name} - {props.feedback[2].count}
       </p>
+      <p>total - {props.total}</p>
+      <p>average - {props.averageScore}</p>
+      <p>positive - {props.percentPositive}%</p>
     </div>
   );
 };
@@ -33,6 +36,39 @@ const App = () => {
     { name: "neutral", count: neutral },
     { name: "bad", count: bad }
   ];
+
+  const total = good + neutral + bad;
+
+  const getPercent = (x, totalAmount) => {
+    let result = (x / totalAmount) * 100;
+
+    if (Number.isNaN(result)) return 0;
+
+    return Math.round(result * 1000) / 1000;
+  };
+
+  const percentPositive = getPercent(good, total);
+
+  const getWeightedAvg = (weightsArr, total) => {
+    const weights = weightsArr.reduce((acc, item) => {
+      return acc + item.number * item.weight;
+    }, 0);
+
+    let result = weights / total;
+
+    if (Number.isNaN(result)) return 0;
+
+    return Math.round(result * 1000) / 1000;
+  };
+
+  const averageScore = getWeightedAvg(
+    [
+      { number: good, weight: 1 },
+      { number: neutral, weight: 0 },
+      { number: bad, weight: -1 }
+    ],
+    total
+  );
 
   const handleFeedbackButtonClick = type => {
     switch (type) {
@@ -53,7 +89,12 @@ const App = () => {
       <Button onClick={handleFeedbackButtonClick("good")} text="good" />
       <Button onClick={handleFeedbackButtonClick("neutral")} text="neutral" />
       <Button onClick={handleFeedbackButtonClick("bad")} text="bad" />
-      <Statistics feedback={feedback} />
+      <Statistics
+        feedback={feedback}
+        total={total}
+        averageScore={averageScore}
+        percentPositive={percentPositive}
+      />
     </div>
   );
 };
