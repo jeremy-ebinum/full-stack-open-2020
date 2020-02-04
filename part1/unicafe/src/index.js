@@ -5,6 +5,12 @@ const Heading = props => <h1>{props.text}</h1>;
 
 const Button = props => <button onClick={props.onClick}>{props.text}</button>;
 
+const Statistic = props => (
+  <p>
+    {props.name}: {props.value}
+  </p>
+);
+
 const Statistics = props => {
   if (!props.hasFeedback) {
     return <p>No feedback has been given</p>;
@@ -13,18 +19,12 @@ const Statistics = props => {
   return (
     <div>
       <Heading text="Statistics" />
-      <p>
-        {props.feedback[0].name} - {props.feedback[0].count}
-      </p>
-      <p>
-        {props.feedback[1].name} - {props.feedback[1].count}
-      </p>
-      <p>
-        {props.feedback[2].name} - {props.feedback[2].count}
-      </p>
-      <p>total - {props.total}</p>
-      <p>average - {props.averageScore}</p>
-      <p>positive - {props.percentPositive}%</p>
+      <Statistic name="good" value={props.good} />
+      <Statistic name="neutral" value={props.neutral} />
+      <Statistic name="bad" value={props.bad} />
+      <Statistic name="total" value={props.total} />
+      <Statistic name="averageScore" value={props.averageScore} />
+      <Statistic name="percentPositive" value={props.percentPositive + "%"} />
     </div>
   );
 };
@@ -35,12 +35,6 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
   const [hasFeedback, setHasFeedback] = useState(false);
-
-  const feedback = [
-    { name: "good", count: good },
-    { name: "neutral", count: neutral },
-    { name: "bad", count: bad }
-  ];
 
   const total = good + neutral + bad;
 
@@ -93,19 +87,23 @@ const App = () => {
     }
   };
 
+  const statisticsProps = {
+    hasFeedback: hasFeedback,
+    good: good,
+    neutral: neutral,
+    bad: bad,
+    total: total,
+    averageScore: averageScore,
+    percentPositive: percentPositive
+  };
+
   return (
     <div>
       <Heading text="Give Feedback" />
       <Button onClick={() => handleButtonClick("good")} text="good" />
       <Button onClick={() => handleButtonClick("neutral")} text="neutral" />
       <Button onClick={() => handleButtonClick("bad")} text="bad" />
-      <Statistics
-        hasFeedback={hasFeedback}
-        total={total}
-        feedback={feedback}
-        averageScore={averageScore}
-        percentPositive={percentPositive}
-      />
+      <Statistics {...statisticsProps} />
     </div>
   );
 };
