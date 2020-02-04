@@ -5,6 +5,7 @@ const Button = props => <button onClick={props.onClick}>{props.text}</button>;
 
 const App = props => {
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0));
 
   const getRandomIdx = length => {
     return Math.floor(Math.random() * length);
@@ -20,10 +21,19 @@ const App = props => {
     setSelected(randomAnecdoteIdx);
   };
 
+  const incrementVote = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
+
   const handleButtonClick = type => {
     switch (type) {
       case "next":
         setNewRandomAnecdote();
+        break;
+      case "vote":
+        incrementVote();
         break;
       default:
         break;
@@ -34,6 +44,9 @@ const App = props => {
     <div>
       {props.anecdotes[selected]}
       <br />
+      has {votes[selected]} vote(s)
+      <br />
+      <Button onClick={() => handleButtonClick("vote")} text="vote" />
       <Button onClick={() => handleButtonClick("next")} text="next anecdote" />
     </div>
   );
