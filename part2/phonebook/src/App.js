@@ -12,6 +12,9 @@ const Person = props => {
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
+  const names = persons.map(person => {
+    return person.name.toLocaleLowerCase();
+  });
 
   const personsList = persons.map(person => {
     return <Person key={person.name} name={person.name} />;
@@ -24,11 +27,22 @@ const App = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const person = {
-      name: newName
-    };
+    if (names.includes(newName.toLocaleLowerCase())) {
+      alert(`${newName} is already added to the phonebook.`);
+    } else {
+      const replacer = (match, p1, p2) => {
+        return p1.toUpperCase() + p2.toLocaleLowerCase();
+      };
 
-    setPersons([...persons].concat(person));
+      const titleCasedName = newName.replace(/\b([a-zA-Z])(\w+)/g, replacer);
+
+      const person = {
+        name: titleCasedName
+      };
+
+      setPersons([...persons].concat(person));
+    }
+
     setNewName("");
   };
 
