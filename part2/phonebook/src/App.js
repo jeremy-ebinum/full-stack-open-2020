@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-
-const Person = props => {
-  return (
-    <>
-      {props.name} {props.number}
-      <br />
-    </>
-  );
-};
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const initialPersons = [
   { name: "Arto Hellas", number: "040-123456" },
@@ -28,12 +22,6 @@ const App = () => {
 
   const filteredPersons = persons.filter(person => {
     return person.name.toLocaleLowerCase().includes(nameFilter.toLowerCase());
-  });
-
-  const personsList = filteredPersons.map(person => {
-    return (
-      <Person key={person.name} name={person.name} number={person.number} />
-    );
   });
 
   const handleChange = (event, type) => {
@@ -84,33 +72,25 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      Filter by Name:{" "}
-      <input
-        onChange={event => handleChange(event, "nameFilter")}
+
+      <Filter
+        handleFilterChange={event => handleChange(event, "nameFilter")}
         value={nameFilter}
       />
-      <form onSubmit={event => handleSubmit(event)}>
-        <h2>Add a new</h2>
-        <div>
-          Name:{" "}
-          <input
-            onChange={event => handleChange(event, "name")}
-            value={newName}
-          />
-        </div>
-        <div>
-          Number:{" "}
-          <input
-            onChange={event => handleChange(event, "number")}
-            value={newNumber}
-          />
-        </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {personsList}
+
+      <h3>Add a New:</h3>
+
+      <PersonForm
+        nameValue={newName}
+        numberValue={newNumber}
+        handleSubmit={event => handleSubmit(event)}
+        handleNameChange={event => handleChange(event, "name")}
+        handleNumberChange={event => handleChange(event, "number")}
+      />
+
+      <h3>Numbers</h3>
+
+      <Persons persons={filteredPersons} />
     </div>
   );
 };
