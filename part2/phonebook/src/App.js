@@ -20,12 +20,17 @@ const App = () => {
   const [persons, setPersons] = useState(initialPersons);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
 
-  const names = persons.map(person => {
+  const lowerCasedNames = persons.map(person => {
     return person.name.toLocaleLowerCase();
   });
 
-  const personsList = persons.map(person => {
+  const filteredPersons = persons.filter(person => {
+    return person.name.toLocaleLowerCase().includes(nameFilter.toLowerCase());
+  });
+
+  const personsList = filteredPersons.map(person => {
     return (
       <Person key={person.name} name={person.name} number={person.number} />
     );
@@ -33,6 +38,9 @@ const App = () => {
 
   const handleChange = (event, type) => {
     switch (type) {
+      case "nameFilter":
+        setNameFilter(event.target.value);
+        break;
       case "name":
         setNewName(event.target.value);
         break;
@@ -62,7 +70,7 @@ const App = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (names.includes(newName.toLocaleLowerCase())) {
+    if (lowerCasedNames.includes(newName.toLocaleLowerCase())) {
       alert(`${newName} is already added to the phonebook.`);
     } else {
       const person = createNewPerson();
@@ -76,7 +84,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      Filter by Name:{" "}
+      <input
+        onChange={event => handleChange(event, "nameFilter")}
+        value={nameFilter}
+      />
       <form onSubmit={event => handleSubmit(event)}>
+        <h2>Add a new</h2>
         <div>
           Name:{" "}
           <input
