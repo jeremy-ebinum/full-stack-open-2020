@@ -45,14 +45,14 @@ const App = () => {
     return person;
   };
 
-  const confirmAndUpdatePerson = () => {
+  const attemptPersonUpdate = () => {
     const person = persons.find(p => p.name === newName);
-    const wantsToUpdate = window.confirm(
+    const willUpdate = window.confirm(
       `${person.name} is alrady added to the phonebook, ` +
         "replace the old number with a new one?"
     );
 
-    if (wantsToUpdate) {
+    if (willUpdate) {
       const updatedPerson = { ...person, number: newNumber };
       const id = person.id;
       return personsService
@@ -63,7 +63,7 @@ const App = () => {
         })
         .catch(error => {
           console.error(error);
-          alert(`The person ${person.name} does not exist on the server`);
+          alert(`There has been a problem updating ${person.name}`);
           setPersons(persons.filter(p => p.id !== id));
         });
     } else {
@@ -77,7 +77,7 @@ const App = () => {
     const nameExists = persons.some(p => p.name === newName);
 
     if (nameExists) {
-      confirmAndUpdatePerson().then(wasUpdated => {
+      attemptPersonUpdate().then(wasUpdated => {
         if (wasUpdated) console.log("Person Updated Successfully");
         else console.log("User Opted Not To Update Person");
       });
@@ -114,8 +114,8 @@ const App = () => {
         const id = parseInt(event.target.dataset.id);
         if (Number.isNaN(id) || !id) break;
         const person = persons.find(p => p.id === id);
-        const wantsToDelete = window.confirm(`Delete ${person.name}?`);
-        if (wantsToDelete) removePersonWithId(id);
+        const willDelete = window.confirm(`Delete ${person.name}?`);
+        if (willDelete) removePersonWithId(id);
         break;
       default:
         break;
