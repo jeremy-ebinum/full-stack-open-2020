@@ -1,13 +1,22 @@
 import React from "react";
 import Country from "./Country";
 
-const Countries = ({ countries }) => {
+const Countries = ({ countries, handleClick }) => {
   const tooManyCountries = countries.length > 10;
   const multipleCountries = countries.length > 1 && countries.length <= 10;
   const singleCountry = countries.length === 1;
 
+  console.log(countries);
+
   const countriesList = countries.map(country => {
-    return <div key={country.alpha3Code}>{country.name}</div>;
+    return (
+      <div key={country.alpha3Code}>
+        {country.name}{" "}
+        <button onClick={handleClick} id={country.name}>
+          Show
+        </button>
+      </div>
+    );
   });
 
   return (

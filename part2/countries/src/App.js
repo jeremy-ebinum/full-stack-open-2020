@@ -37,15 +37,22 @@ function App() {
     else setHasFilter(true);
   };
 
+  const handleClick = event => {
+    setCountryFilter(event.target.id);
+  };
+
   return (
     <div>
       <h1>Data For Countries</h1>
-      <Filter onChange={e => handleChange(e)} value={countryFilter} />
+      <Filter onChange={event => handleChange(event)} value={countryFilter} />
       {hasFilter && hasExactMatch && (
         <Countries countries={exactFilteredCountries} />
       )}
       {hasFilter && !hasExactMatch && (
-        <Countries countries={filteredCountries} />
+        <Countries
+          countries={filteredCountries}
+          handleClick={event => handleClick(event)}
+        />
       )}
     </div>
   );
