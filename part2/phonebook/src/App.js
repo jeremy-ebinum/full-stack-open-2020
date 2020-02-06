@@ -16,9 +16,9 @@ const App = () => {
     });
   }, []);
 
-  const lowerCasedNames = persons.map(person => {
-    return person.name.toLocaleLowerCase();
-  });
+  // const lowerCasedNames = persons.map(person => {
+  //   return person.name.toLocaleLowerCase();
+  // });
 
   const filteredPersons = persons.filter(person => {
     return person.name.toLocaleLowerCase().includes(nameFilter.toLowerCase());
@@ -55,19 +55,55 @@ const App = () => {
     return person;
   };
 
+  const confirmAndUpdatePerson = () => {
+    const person = persons.find(
+      p => p.name.toLowerCase() === newName.toLowerCase()
+    );
+    const wantsToUpdate = window.confirm(
+      `${person.name} is alrady added to the phonebook, ` +
+        "replace the old number with a new one?"
+    );
+
+    if (wantsToUpdate) {
+      const updatedPerson = { ...person, number: newNumber };
+      const id = person.id;
+      return personsService
+        .update(id, updatedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(p => (p.id !== id ? p : returnedPerson)));
+          return true;
+        })
+        .catch(error => {
+          console.error(error);
+          alert(`The person ${person.name} does not exist on the server`);
+          setPersons(persons.filter(p => p.id !== id));
+        });
+    } else {
+      return Promise.resolve(false);
+    }
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (lowerCasedNames.includes(newName.toLocaleLowerCase())) {
-      alert(`${newName} is already added to the phonebook.`);
+    const nameExists = persons.some(
+      p => p.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (nameExists) {
+      confirmAndUpdatePerson().then(wasUpdated => {
+        if (wasUpdated) console.log("Person Updated Successfully");
+        else console.log("User Opted Not To Update Person");
+      });
     } else {
       const person = createNewPerson();
       personsService.create(person).then(returnedPerson => {
         setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
       });
     }
+
+    setNewName("");
+    setNewNumber("");
   };
 
   const removePersonWithId = id => {
