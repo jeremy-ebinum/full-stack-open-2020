@@ -6,8 +6,6 @@ const Countries = ({ countries, handleClick }) => {
   const multipleCountries = countries.length > 1 && countries.length <= 10;
   const singleCountry = countries.length === 1;
 
-  console.log(countries);
-
   const countriesList = countries.map(country => {
     return (
       <div key={country.alpha3Code}>

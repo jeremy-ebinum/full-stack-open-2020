@@ -13,6 +13,7 @@ function App() {
       setCountries(response.data);
     });
   };
+
   useEffect(fetchCountries, []);
 
   const filteredCountries = countries.filter(country => {
