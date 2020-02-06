@@ -6,7 +6,7 @@ const Weather = ({ query }) => {
   const [condition, setCondition] = useState({});
   const [hasCondition, setHasCondition] = useState(false);
 
-  const key = process.env.REACT_APP_OPENWEATHERMAP_KEY;
+  const key = process.env.REACT_APP_OPENWEATHERMAP_KEY || null;
 
   const params = {
     q: query,
@@ -14,6 +14,8 @@ const Weather = ({ query }) => {
   };
 
   const updateCondition = () => {
+    if (!key) return;
+
     let source = axios.CancelToken.source();
 
     axios
