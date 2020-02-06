@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personsService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,13 +10,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
 
-  const fetchPersons = () => {
-    axios.get("http://localhost:3001/persons").then(response => {
-      setPersons(response.data);
+  useEffect(() => {
+    personsService.getAll().then(initialPersons => {
+      setPersons(initialPersons);
     });
-  };
-
-  useEffect(fetchPersons, []);
+  }, []);
 
   const lowerCasedNames = persons.map(person => {
     return person.name.toLocaleLowerCase();
@@ -64,8 +62,8 @@ const App = () => {
       alert(`${newName} is already added to the phonebook.`);
     } else {
       const person = createNewPerson();
-      axios.post("http://localhost:3001/persons", person).then(response => {
-        setPersons(persons.concat(response.data));
+      personsService.create(person).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
       });
