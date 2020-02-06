@@ -16,12 +16,8 @@ const App = () => {
     });
   }, []);
 
-  // const lowerCasedNames = persons.map(person => {
-  //   return person.name.toLocaleLowerCase();
-  // });
-
   const filteredPersons = persons.filter(person => {
-    return person.name.toLocaleLowerCase().includes(nameFilter.toLowerCase());
+    return person.name.includes(nameFilter);
   });
 
   const handleChange = (event, type) => {
@@ -41,14 +37,8 @@ const App = () => {
   };
 
   const createNewPerson = () => {
-    const replacer = (match, p1, p2) => {
-      return p1.toUpperCase() + p2.toLocaleLowerCase();
-    };
-
-    const titleCasedName = newName.replace(/\b([a-zA-Z])(\w+)/g, replacer);
-
     const person = {
-      name: titleCasedName,
+      name: newName,
       number: newNumber
     };
 
@@ -56,9 +46,7 @@ const App = () => {
   };
 
   const confirmAndUpdatePerson = () => {
-    const person = persons.find(
-      p => p.name.toLowerCase() === newName.toLowerCase()
-    );
+    const person = persons.find(p => p.name === newName);
     const wantsToUpdate = window.confirm(
       `${person.name} is alrady added to the phonebook, ` +
         "replace the old number with a new one?"
@@ -86,9 +74,7 @@ const App = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const nameExists = persons.some(
-      p => p.name.toLowerCase() === newName.toLowerCase()
-    );
+    const nameExists = persons.some(p => p.name === newName);
 
     if (nameExists) {
       confirmAndUpdatePerson().then(wasUpdated => {
