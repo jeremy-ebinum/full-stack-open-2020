@@ -27,6 +27,7 @@ const WeatherInfo = ({ condition }) => {
         </span>
         <div>
           <img
+            alt={"Weather icon"}
             src={`http://openweathermap.org/img/wn/${condition.weather[0].icon}@2x.png`}
           ></img>
         </div>

@@ -48,7 +48,7 @@ const Country = ({ country }) => {
       </div>
 
       <div>
-        <img width={"200px"} src={country.flag}></img>
+        <img alt={"Country Flag"} width={"200px"} src={country.flag}></img>
       </div>
 
       <Weather query={country.capital + "," + country.alpha2Code} />
