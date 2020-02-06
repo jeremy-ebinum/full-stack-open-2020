@@ -7,7 +7,7 @@ const Country = ({ country }) => {
   });
 
   const timezonesList = country.timezones.map((tz, idx) => {
-    return <span key={idx}>{tz} </span>;
+    return <span key={idx}>{tz} | </span>;
   });
 
   return (

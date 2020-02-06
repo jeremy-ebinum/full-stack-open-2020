@@ -35,7 +35,7 @@ const WeatherInfo = ({ condition }) => {
       <div>
         <span>
           <strong>Temperature: </strong>
-          {condition.main.temp - 273.15}&#8451;
+          {Math.round(condition.main.temp - 273.15)}&#8451;
         </span>
       </div>
       <div>
