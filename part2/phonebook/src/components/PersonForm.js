@@ -6,7 +6,7 @@ const PersonForm = props => {
       <form className="c-person-form" onSubmit={props.handleSubmit}>
         <h3 className="c-person-form__heading">Add a New Contact</h3>
         <div className={"c-form-row"}>
-          <label for="name" className="c-form-row__label">
+          <label htmlFor="name" className="c-form-row__label">
             Name:
           </label>
           <input
@@ -17,7 +17,7 @@ const PersonForm = props => {
           />
         </div>
         <div className="c-form-row">
-          <label for="number" className="c-form-row__label">
+          <label htmlFor="number" className="c-form-row__label">
             Number:
           </label>
           <input
