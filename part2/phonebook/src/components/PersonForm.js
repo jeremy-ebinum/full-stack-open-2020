@@ -3,20 +3,31 @@ import React from "react";
 const PersonForm = props => {
   return (
     <div>
-      <form onSubmit={props.handleSubmit}>
-        <div>
-          Name:{" "}
-          <input onChange={props.handleNameChange} value={props.nameValue} />
-        </div>
-        <div>
-          Number:{" "}
+      <form className="c-person-form" onSubmit={props.handleSubmit}>
+        <div className={"c-form-row"}>
+          <label for="name" className="c-form-row__label">
+            Name:
+          </label>
           <input
+            id="name"
+            className="c-form-row__input"
+            onChange={props.handleNameChange}
+            value={props.nameValue}
+          />
+        </div>
+        <div className="c-form-row">
+          <label for="number" className="c-form-row__label">
+            Number:
+          </label>
+          <input
+            id="number"
+            className="c-form-row__input"
             onChange={props.handleNumberChange}
             value={props.numberValue}
           />
         </div>
-        <div>
-          <button type="submit">Add</button>
+        <div className="c-person-form__submit">
+          <button className="c-btn" type="submit">Add</button>
         </div>
       </form>
     </div>

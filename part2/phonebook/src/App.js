@@ -123,7 +123,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="o-wrapper">
       <h2>Phonebook</h2>
 
       <Filter

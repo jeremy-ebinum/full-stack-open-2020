@@ -2,12 +2,24 @@ import React from "react";
 
 const Person = props => {
   return (
-    <div>
-      <strong>Name:</strong> {props.name} <strong>Number:</strong>{" "}
-      {props.number}{" "}
-      <button data-id={props.id} onClick={props.handleClick}>
-        Delete
-      </button>
+    <div className="c-person">
+      <span className="c-person__detail">
+        <span className="u-bold">{props.name}:</span>
+      </span>
+      <span className="c-person__detail">
+        <span className="u-italic">{props.number}, </span>
+      </span>
+      <div className="c-person__delete">
+        <div className="c-person__delete-btn">
+          <button
+            className="c-btn c-btn--danger"
+            data-id={props.id}
+            onClick={props.handleClick}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
