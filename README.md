@@ -15,3 +15,10 @@ This repository contains excercise solutions to the 2019 edition of the Full Sta
 - Exercises 1.6 - 1.11: unicafe
 - Exercises 1.12 - 1.14: anecdotes
 - [View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part1)
+
+## Part 2 - [Communicating with server](https://fullstackopen.com/en/part2)
+
+- Exercises 2.1 - 2.5: course-content
+- Exercises 2.12 - 2.14: countries
+- Exercises 2.6 - 2.10, 2.11, 2.15 - 1.20: phonebook
+- [View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part2)
