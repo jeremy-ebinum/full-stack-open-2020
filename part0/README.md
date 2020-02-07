@@ -2,6 +2,8 @@
 
 ## Part 0 - [Fundamentals of Web Apps](https://fullstackopen.com/en/part0)
 
+## [Exercise Descriptions](https://fullstackopen.com/en/part0/fundamentals_of_web_apps#exercises)
+
 ### 0.4: new note:
 
 ![new_note](./0.4_new_note.png)
