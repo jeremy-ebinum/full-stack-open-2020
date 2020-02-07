@@ -19,7 +19,7 @@ const App = () => {
   }, []);
 
   const filteredPersons = persons.filter(person => {
-    return person.name.includes(nameFilter);
+    return person.name.toLowerCase().includes(nameFilter.toLowerCase());
   });
 
   const handleChange = (event, type) => {
