@@ -37,7 +37,12 @@ const Persons = ({ persons, handleClick }) => {
     );
   });
 
-  return <div>{personsList}</div>;
+  return (
+    <div className="c-persons">
+      <h3 className="c-persons__heading">Contact List</h3>
+      {personsList}
+    </div>
+  );
 };
 
 export default Persons;

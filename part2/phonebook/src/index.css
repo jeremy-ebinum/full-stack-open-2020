@@ -3,15 +3,16 @@
 :root {
   --max-page-w: 1600px;
   --content-w: 300px;
-  --wrapper-bg-color-1: hsl(266, 72%, 11%);
-  --wrapper-bg-color-2: hsl(266, 72%, 21%);
+  --default-bg-color: #000;
+  --default-text-color: var(--light-color);
+  --wrapper-bg-color-1: hsla(0, 0%, 10%, 10%);
+  --wrapper-bg-color-2: hsla(0, 8%, 3%, 95%);
   --person-bg-color: hsla(36, 71%, 11%, 30%);
   --primary-color: hsl(146, 72%, 21%);
   --primary-color-accent: hsl(146, 72%, 11%);
   --danger-color: hsl(326, 72%, 21%);
   --danger-color-accent: hsl(326, 72%, 11%);
   --light-color: ghostwhite;
-  --default-text-color: var(--light-color);
   --form-submit-btn-w: 75px;
   --form-submit-btn-h: 30px;
   --person-btn-w: 60px;
@@ -35,17 +36,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--default-bg-color);
   color: var(--default-text-color);
   font-size: 16px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-decoration: underline;
 }
 
 code {
@@ -74,7 +67,6 @@ code {
     var(--wrapper-bg-color-2),
     var(--wrapper-bg-color-2)
   );
-  margin-top: 1rem;
   width: var(--content-w);
 }
 
@@ -123,7 +115,7 @@ code {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 1rem 0 0.75rem 0;
+  margin-bottom: 0.75rem;
 }
 
 .c-form-row__label {
@@ -141,13 +133,35 @@ code {
 }
 
 .c-person-form {
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+}
+
+.c-person-form__heading {
+  margin-bottom: 0.5rem;
 }
 
 .c-person-form__submit {
   font-size: 1rem;
   width: var(--form-submit-btn-w);
   height: var(--form-submit-btn-h);
+}
+
+.c-filter {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+
+.c-filter__heading {
+  margin-bottom: 0.5rem;
+}
+
+.c-persons {
+  margin: 1rem 0;
+}
+
+.c-persons__heading {
+  margin: 0;
 }
 
 .c-person {
@@ -218,20 +232,48 @@ code {
     width: 500px;
   }
 
+  .c-person-form {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .c-person-form__heading {
+    margin-left: 145px;
+  }
   .c-person-form__submit {
     font-size: 1rem;
     margin-left: 145px;
   }
 
-  .c-person {
-    justify-content: space-between;
-    padding: 0.75rem;
+  .c-filter {
+    margin-left: 145px;
+    width: 350px;
+    align-items: flex-start;
+  }
+
+  .c-persons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin-left: 145px;
     width: 500px;
   }
 
+  .c-person {
+    justify-content: space-between;
+    padding: 0;
+    width: 100%;
+  }
+
   .c-person__detail {
     font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .c-person__delete {
+    padding: 0 0.75rem;
   }
 
   .c-person__delete {

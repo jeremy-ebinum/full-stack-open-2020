@@ -126,13 +126,6 @@ const App = () => {
     <div className="o-wrapper">
       <h2>Phonebook</h2>
 
-      <Filter
-        handleFilterChange={event => handleChange(event, "nameFilter")}
-        value={nameFilter}
-      />
-
-      <h3>Add a New:</h3>
-
       <PersonForm
         nameValue={newName}
         numberValue={newNumber}
@@ -141,7 +134,10 @@ const App = () => {
         handleNumberChange={event => handleChange(event, "number")}
       />
 
-      <h3>Numbers</h3>
+      <Filter
+        handleFilterChange={event => handleChange(event, "nameFilter")}
+        value={nameFilter}
+      />
 
       <Persons
         persons={filteredPersons}

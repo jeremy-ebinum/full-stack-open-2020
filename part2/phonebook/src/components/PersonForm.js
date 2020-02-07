@@ -4,6 +4,7 @@ const PersonForm = props => {
   return (
     <div>
       <form className="c-person-form" onSubmit={props.handleSubmit}>
+        <h3 className="c-person-form__heading">Add a New Contact</h3>
         <div className={"c-form-row"}>
           <label for="name" className="c-form-row__label">
             Name:
@@ -27,7 +28,9 @@ const PersonForm = props => {
           />
         </div>
         <div className="c-person-form__submit">
-          <button className="c-btn" type="submit">Add</button>
+          <button className="c-btn" type="submit">
+            Add
+          </button>
         </div>
       </form>
     </div>
