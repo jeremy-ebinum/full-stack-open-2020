@@ -162,7 +162,7 @@ code {
   border-radius: 3px;
   padding: 0.25rem;
   font-size: 1rem;
-  width: 95%;
+  width: 90%;
 }
 
 .c-person-form {
@@ -226,7 +226,17 @@ code {
 
 @media (min-width: 360px) {
   :root {
-    --content-w: 350px;
+    --content-w: 340px;
+  }
+}
+
+@media (min-width: 480px) {
+  :root {
+    --content-w: 460px;
+  }
+
+  .c-form-row__input {
+    width: 80%;
   }
 }
 
@@ -269,7 +279,7 @@ code {
   }
 
   .c-form-row__input {
-    width: 500px;
+    width: 400px;
   }
 
   .c-person-form {
@@ -302,21 +312,17 @@ code {
   }
 
   .c-person {
-    justify-content: space-between;
-    padding: 0;
+    padding: 0.5rem;
     width: 100%;
   }
 
   .c-person__detail {
     font-size: 1rem;
-    padding: 0.75rem;
   }
 
   .c-person__delete {
+    margin-left: auto;
     padding: 0 0.75rem;
-  }
-
-  .c-person__delete {
     width: auto;
   }
 }
