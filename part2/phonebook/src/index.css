@@ -8,10 +8,12 @@
   --wrapper-bg-color-1: hsla(0, 0%, 10%, 10%);
   --wrapper-bg-color-2: hsla(0, 8%, 3%, 95%);
   --person-bg-color: hsla(36, 71%, 11%, 30%);
-  --primary-color: hsl(146, 72%, 21%);
+  --primary-color: #0f5c30;
   --primary-color-accent: hsl(146, 72%, 11%);
   --danger-color: hsl(326, 72%, 21%);
   --danger-color-accent: hsl(326, 72%, 11%);
+  --success-color: var(--primary-color);
+  --info-color: hsl(175, 72%, 21%);
   --light-color: ghostwhite;
   --form-submit-btn-w: 75px;
   --form-submit-btn-h: 30px;
@@ -109,6 +111,37 @@ code {
 
 .c-btn.c-btn--danger:hover {
   background: var(--danger-color-accent);
+}
+
+/* Alert Components will be created dynamically with JavaScript */
+.c-alert {
+  /* width: var(--calculator-w); */
+  background: var(--default-bg-color);
+  color: var(--default-txt-color);
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-align: center;
+  padding: 0.3rem;
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+.c-alert.c-alert--error {
+  background-color: var(--danger-color);
+  color: var(--light-color);
+}
+
+.c-alert.c-alert--success {
+  background-color: var(--success-color);
+  color: var(--light-color);
+}
+
+.c-alert.c-alert--info {
+  background-color: var(--info-color);
+  color: var(--light-color);
+}
+
+.c-alert.c-alert--is-hidden {
+  display: none;
 }
 
 .c-form-row {
@@ -215,6 +248,13 @@ code {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
+  }
+
+  .c-alert {
+    margin-left: 145px;
+    width: 500px;
+    font-size: 1.1rem;
+    padding: 0.35rem;
   }
 
   .c-form-row {

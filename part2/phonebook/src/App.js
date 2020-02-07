@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Alert from "./components/Alert";
 import personsService from "./services/persons";
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     personsService.getAll().then(initialPersons => {
@@ -36,6 +38,11 @@ const App = () => {
     }
   };
 
+  const resetPersonForm = () => {
+    setNewName("");
+    setNewNumber("");
+  };
+
   const createNewPerson = () => {
     const person = {
       name: newName,
@@ -59,11 +66,19 @@ const App = () => {
         .update(id, updatedPerson)
         .then(returnedPerson => {
           setPersons(persons.map(p => (p.id !== id ? p : returnedPerson)));
+          queueAlert(
+            `update-${returnedPerson.id}`,
+            `info`,
+            `${returnedPerson.name}'s number updated to ${returnedPerson.number}`
+          );
           return true;
         })
         .catch(error => {
-          console.error(error);
-          alert(`There has been a problem updating ${person.name}`);
+          queueAlert(
+            `error-up-${person.id}`,
+            "error",
+            `Contact "${person.name}" has already been removed from server`
+          );
           setPersons(persons.filter(p => p.id !== id));
         });
     } else {
@@ -80,16 +95,20 @@ const App = () => {
       attemptPersonUpdate().then(wasUpdated => {
         if (wasUpdated) console.log("Person Updated Successfully");
         else console.log("User Opted Not To Update Person");
+        resetPersonForm();
       });
     } else {
       const person = createNewPerson();
       personsService.create(person).then(returnedPerson => {
         setPersons(persons.concat(returnedPerson));
+        queueAlert(
+          `add-${returnedPerson.id}`,
+          "success",
+          `Added "${returnedPerson.name}"`
+        );
+        resetPersonForm();
       });
     }
-
-    setNewName("");
-    setNewNumber("");
   };
 
   const removePersonWithId = id => {
@@ -115,16 +134,49 @@ const App = () => {
         if (Number.isNaN(id) || !id) break;
         const person = persons.find(p => p.id === id);
         const willDelete = window.confirm(`Delete ${person.name}?`);
-        if (willDelete) removePersonWithId(id);
+        if (willDelete) {
+          removePersonWithId(id);
+          queueAlert(
+            `del-${person.id}`,
+            "info",
+            `Removed "${person.name}" from contact list`
+          );
+        }
         break;
       default:
         break;
     }
   };
 
+  const queueAlert = (id, type, message) => {
+    const timeoutFunc = id =>
+      setAlerts(alerts => alerts.filter(a => a.id !== id));
+    const alertProps = {
+      timeoutFunc: timeoutFunc,
+      id: id,
+      type: type,
+      message: message
+    };
+    setAlerts([...alerts, alertProps]);
+  };
+
+  const alertList = alerts.map(alert => {
+    return (
+      <Alert
+        timeoutFunc={alert.timeoutFunc}
+        key={alert.id}
+        id={alert.id}
+        type={alert.type}
+        message={alert.message}
+      ></Alert>
+    );
+  });
+
   return (
     <div className="o-wrapper">
       <h2>Phonebook</h2>
+
+      {alertList}
 
       <PersonForm
         nameValue={newName}
