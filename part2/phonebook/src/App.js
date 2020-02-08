@@ -55,6 +55,7 @@ const App = () => {
     return person;
   };
 
+  // Attempt to create a new person and return true or false depending on user
   const attemptPersonUpdate = () => {
     const person = persons.find(p => p.name === newName);
     const willUpdate = window.confirm(
@@ -89,6 +90,7 @@ const App = () => {
     }
   };
 
+  // handle errors associated with adding a new person
   const handleCreateErrors = error => {
     const statusCode = error.response.status;
     const errorMessage = error.response.data.message;
@@ -105,6 +107,7 @@ const App = () => {
     }
   };
 
+  // handle submit events (PersonForm component)
   const handleSubmit = event => {
     event.preventDefault();
 
@@ -113,7 +116,7 @@ const App = () => {
     if (nameExists) {
       attemptPersonUpdate().then(wasUpdated => {
         if (wasUpdated) console.log("Person Updated Successfully");
-        else console.log("User Opted Not To Update Person");
+        else if (!wasUpdated) console.log("User Opted Not To Update Person");
         resetPersonForm();
       });
     } else {
@@ -135,6 +138,7 @@ const App = () => {
     }
   };
 
+  // Attempt to remove a person with specified id, include basic error logging
   const removePersonWithId = id => {
     let deleted = true;
 
@@ -151,6 +155,7 @@ const App = () => {
       });
   };
 
+  // Handle click events based on component concern type
   const handleClick = (event, type) => {
     switch (type) {
       case "deletePerson":
@@ -172,6 +177,7 @@ const App = () => {
     }
   };
 
+  // queue alert helper, timeoutFunc removes the alert with given id
   const queueAlert = (id, type, message) => {
     const timeoutFunc = id =>
       setAlerts(alerts => alerts.filter(a => a.id !== id));
@@ -184,6 +190,7 @@ const App = () => {
     setAlerts([...alerts, alertProps]);
   };
 
+  // display all queued alerts
   const alertList = alerts.map(alert => {
     return (
       <Alert

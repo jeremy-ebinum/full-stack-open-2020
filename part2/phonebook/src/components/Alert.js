@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 
+//  run the timeoutFunc after a given period with useEffect hook
 const Alert = ({ timeoutFunc, id, type, message }) => {
   const alertTypes = {
     error: "c-alert--error",
