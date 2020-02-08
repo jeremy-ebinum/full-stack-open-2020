@@ -4,6 +4,9 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Alert from "./components/Alert";
 import personsService from "./services/persons";
+import uniqueRandom from "unique-random";
+
+const random = uniqueRandom(1, 10000);
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -67,7 +70,7 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(p => (p.id !== id ? p : returnedPerson)));
           queueAlert(
-            `update-${returnedPerson.id}`,
+            `info-up-${random()}`,
             `info`,
             `${returnedPerson.name}'s number updated to ${returnedPerson.number}`
           );
@@ -75,7 +78,7 @@ const App = () => {
         })
         .catch(error => {
           queueAlert(
-            `error-up-${person.id}`,
+            `error-up-${random()}`,
             "error",
             `Contact "${person.name}" has already been removed from server`
           );
@@ -83,6 +86,22 @@ const App = () => {
         });
     } else {
       return Promise.resolve(false);
+    }
+  };
+
+  const handleCreateErrors = error => {
+    const statusCode = error.response.status;
+    const errorMessage = error.response.data.message;
+
+    switch (statusCode) {
+      case 400:
+        queueAlert(`err-cr-${random()}`, "error", errorMessage);
+        break;
+      case 422:
+        queueAlert(`err-cr-${random()}`, "error", errorMessage);
+        break;
+      default:
+        throw error;
     }
   };
 
@@ -99,15 +118,20 @@ const App = () => {
       });
     } else {
       const person = createNewPerson();
-      personsService.create(person).then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson));
-        queueAlert(
-          `add-${returnedPerson.id}`,
-          "success",
-          `Added "${returnedPerson.name}"`
-        );
-        resetPersonForm();
-      });
+      personsService
+        .create(person)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+          queueAlert(
+            `success-add-${random()}`,
+            "success",
+            `Added "${returnedPerson.name}"`
+          );
+        })
+        .catch(error => {
+          handleCreateErrors(error);
+        })
+        .finally(() => resetPersonForm());
     }
   };
 
@@ -137,7 +161,7 @@ const App = () => {
         if (willDelete) {
           removePersonWithId(id);
           queueAlert(
-            `del-${person.id}`,
+            `info-del-${random()}`,
             "info",
             `Removed "${person.name}" from contact list`
           );
