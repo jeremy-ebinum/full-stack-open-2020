@@ -159,7 +159,7 @@ const App = () => {
   const handleClick = (event, type) => {
     switch (type) {
       case "deletePerson":
-        const id = parseInt(event.target.dataset.id);
+        const id = event.target.dataset.id;
         if (Number.isNaN(id) || !id) break;
         const person = persons.find(p => p.id === id);
         const willDelete = window.confirm(`Delete ${person.name}?`);
