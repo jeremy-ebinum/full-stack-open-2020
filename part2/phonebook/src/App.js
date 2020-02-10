@@ -70,19 +70,21 @@ const App = () => {
         .update(id, updatedPerson)
         .then(returnedPerson => {
           setPersons(persons.map(p => (p.id !== id ? p : returnedPerson)));
-          queueAlert(
-            `info-up-${random()}`,
-            `info`,
-            `${returnedPerson.name}'s number updated to ${returnedPerson.number}`
-          );
+          queueAlert([
+            {
+              type: `info`,
+              message: `${returnedPerson.name}'s number updated to ${returnedPerson.number}`
+            }
+          ]);
           return true;
         })
         .catch(error => {
-          queueAlert(
-            `error-up-${random()}`,
-            "error",
-            `Contact "${person.name}" has already been removed from server`
-          );
+          queueAlert([
+            {
+              type: `error`,
+              message: `Contact "${person.name}" has already been removed from server`
+            }
+          ]);
           setPersons(persons.filter(p => p.id !== id));
         });
     } else {
@@ -92,18 +94,20 @@ const App = () => {
 
   // handle errors associated with adding a new person
   const handleCreateErrors = error => {
-    const statusCode = error.response.status;
-    const errorMessage = error.response.data.message;
+    // const statusCode = error.response.status;
+    const errorMessages = error.response.data.messages;
 
-    switch (statusCode) {
-      case 400:
-        queueAlert(`err-cr-${random()}`, "error", errorMessage);
-        break;
-      case 422:
-        queueAlert(`err-cr-${random()}`, "error", errorMessage);
-        break;
-      default:
-        throw error;
+    if (errorMessages.length > 0) {
+      const alerts = errorMessages.map(m => {
+        return {
+          type: "error",
+          message: m
+        };
+      });
+
+      queueAlert(alerts);
+    } else {
+      throw error;
     }
   };
 
@@ -125,11 +129,12 @@ const App = () => {
         .create(person)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
-          queueAlert(
-            `success-add-${random()}`,
-            "success",
-            `Added "${returnedPerson.name}"`
-          );
+          queueAlert([
+            {
+              type: `success`,
+              message: `Added "${returnedPerson.name}"`
+            }
+          ]);
         })
         .catch(error => {
           handleCreateErrors(error);
@@ -165,11 +170,12 @@ const App = () => {
         const willDelete = window.confirm(`Delete ${person.name}?`);
         if (willDelete) {
           removePersonWithId(id);
-          queueAlert(
-            `info-del-${random()}`,
-            "info",
-            `Removed "${person.name}" from contact list`
-          );
+          queueAlert([
+            {
+              type: `info`,
+              message: `Removed "${person.name}" from contact list`
+            }
+          ]);
         }
         break;
       default:
@@ -177,17 +183,22 @@ const App = () => {
     }
   };
 
-  // queue alert helper, timeoutFunc removes the alert with given id
-  const queueAlert = (id, type, message) => {
+  /**
+   * Map an array of alerts to a format usable by Alert Component
+   *
+   * @param {Object[]} newAlerts - An array of alerts to be transformed
+   * @param {string} newAlerts[].type - "info" or "error" or "success"
+   * @param {string} newAlerts[].message - The alert message
+   */
+  const queueAlert = newAlerts => {
     const timeoutFunc = id =>
       setAlerts(alerts => alerts.filter(a => a.id !== id));
-    const alertProps = {
-      timeoutFunc: timeoutFunc,
-      id: id,
-      type: type,
-      message: message
-    };
-    setAlerts([...alerts, alertProps]);
+
+    const alertsWithTimeout = newAlerts.map(a => {
+      return { ...a, id: `${a.type}-${random()}`, timeoutFunc: timeoutFunc };
+    });
+
+    setAlerts([...alerts, ...alertsWithTimeout]);
   };
 
   // display all queued alerts
