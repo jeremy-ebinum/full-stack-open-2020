@@ -22,3 +22,10 @@ This repository contains excercise solutions to the 2019 edition of the Full Sta
 - Exercises 2.12 - 2.14: countries
 - Exercises 2.6 - 2.10, 2.11, 2.15 - 1.20: phonebook
 - [View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part2)
+
+## Part 3 - [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
+
+Part 3 serves as a backend written in express and node for Part 2's React UI\
+Code from [Part 2](<(https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part2)>) has been updated to work with the backend during the course of the exercises in Part 3\
+Exercises for Part 3 can be found in a separate repository\
+[Go to Part 3 Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019-part3)
