@@ -73,24 +73,29 @@ test("dummy returns one", () => {
   expect(result).toBe(1);
 });
 
-describe("total likes", () => {
-  test("of empty list is zero", () => {
+describe("totalLikes(Array.<Blog>)", () => {
+  test("of empty list returns zero", () => {
     expect(listHelper.totalLikes([])).toBe(0);
   });
 
-  test("of list with single blog is that of the blog", () => {
+  test("of list with single Blog returns number of likes of that Blog", () => {
     const result = listHelper.totalLikes(listWithOneBlog);
     expect(result).toBe(5);
   });
 
-  test("of list with multple blogs is sum of each blog's likes", () => {
+  test("of list with multple Blogs returns the sum of each Blog's likes", () => {
     const result = listHelper.totalLikes(listWithMultipleBlogs);
     expect(result).toBe(36);
   });
 });
 
-describe("favorite blog", () => {
-  test("of non-empty blog list is blog with highest number of likes", () => {
+describe("favoriteBlog(Array.<Blog>)", () => {
+  test("of empty list returns null", () => {
+    const result = listHelper.favoriteBlog([]);
+    expect(result).toEqual(null);
+  });
+
+  test("of non-empty list returns Blog with highest number of likes", () => {
     const result = listHelper.favoriteBlog(listWithMultipleBlogs);
     const expected = {
       title: "Canonical string reduction",
@@ -100,40 +105,33 @@ describe("favorite blog", () => {
     expect(result).toEqual(expected);
   });
 
-  test("of non-empty blog list has only like, author & likes own props", () => {
+  test("of non-empty list returns Blog with own title, author & likes properties", () => {
     const result = listHelper.favoriteBlog(listWithMultipleBlogs);
-    expect(Object.keys(result)).toHaveLength(3);
     expect(result).toHaveProperty("title");
     expect(result).toHaveProperty("author");
     expect(result).toHaveProperty("likes");
   });
-
-  test("of empty blog list is null", () => {
-    const result = listHelper.favoriteBlog([]);
-    expect(result).toEqual(null);
-  });
 });
 
-describe("most blogs", () => {
-  test("of non-empty list returns most occuring author as prop", () => {
+describe("mostBlogs(Array.<Blog>)", () => {
+  test("of empty list returns null", () => {
+    const result = listHelper.mostBlogs([]);
+    expect(result).toBe(null);
+  });
+
+  test("of non-empty list returns object with most occuring author as a property", () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs);
     expect(result.author).toBe("Robert C. Martin");
   });
 
-  test("of non-empty list has only author & blogs own props", () => {
+  test("of non-empty list returns object with own author & blogs properties", () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs);
-    expect(Object.keys(result)).toHaveLength(2);
     expect(result).toHaveProperty("author");
     expect(result).toHaveProperty("blogs");
   });
 
-  test("of non-empty list has number type blogs prop", () => {
+  test("of non-empty list returns object with 'number' typeof blogs property", () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs);
     expect(typeof result.blogs).toBe("number");
-  });
-
-  test("of empty list is null", () => {
-    const result = listHelper.mostBlogs([]);
-    expect(result).toBe(null);
   });
 });
