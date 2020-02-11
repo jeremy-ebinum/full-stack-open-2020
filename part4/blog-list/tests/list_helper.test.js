@@ -88,3 +88,28 @@ describe("total likes", () => {
     expect(result).toBe(36);
   });
 });
+
+describe("favorite blog", () => {
+  test("of non-empty blog list is blog with highest number of likes", () => {
+    const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+    const expected = {
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12
+    };
+    expect(result).toEqual(expected);
+  });
+
+  test("of non-empty blog list has only like, author & likes own props", () => {
+    const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+    expect(Object.keys(result)).toHaveLength(3);
+    expect(result).toHaveProperty("title");
+    expect(result).toHaveProperty("author");
+    expect(result).toHaveProperty("likes");
+  });
+
+  test("of empty blog list is null", () => {
+    const result = listHelper.favoriteBlog([]);
+    expect(result).toEqual(null);
+  });
+});
