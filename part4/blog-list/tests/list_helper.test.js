@@ -95,21 +95,28 @@ describe("favoriteBlog(Array.<Blog>)", () => {
     expect(result).toEqual(null);
   });
 
-  test("of non-empty list returns Blog with highest number of likes", () => {
-    const result = listHelper.favoriteBlog(listWithMultipleBlogs);
-    const expected = {
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
-      likes: 12
-    };
-    expect(result).toEqual(expected);
-  });
-
-  test("of non-empty list returns Blog with own title, author & likes properties", () => {
+  test("of non-empty list returns object {title, author, likes}", () => {
     const result = listHelper.favoriteBlog(listWithMultipleBlogs);
     expect(result).toHaveProperty("title");
     expect(result).toHaveProperty("author");
     expect(result).toHaveProperty("likes");
+  });
+
+  describe("AND...", () => {
+    test(".title is the title of the most liked blog", () => {
+      const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+      expect(result.title).toBe("Canonical string reduction");
+    });
+
+    test(".author is the author of the most liked blog", () => {
+      const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+      expect(result.author).toBe("Edsger W. Dijkstra");
+    });
+
+    test(".likes is the number of likes of the most liked blog", () => {
+      const result = listHelper.favoriteBlog(listWithMultipleBlogs);
+      expect(result.likes).toBe(12);
+    });
   });
 });
 
@@ -119,20 +126,22 @@ describe("mostBlogs(Array.<Blog>)", () => {
     expect(result).toBe(null);
   });
 
-  test("of non-empty list returns object with most occuring author as a property", () => {
-    const result = listHelper.mostBlogs(listWithMultipleBlogs);
-    expect(result.author).toBe("Robert C. Martin");
-  });
-
-  test("of non-empty list returns object with own author & blogs properties", () => {
+  test("of non-empty list returns object {author, blogs}", () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs);
     expect(result).toHaveProperty("author");
     expect(result).toHaveProperty("blogs");
   });
 
-  test("of non-empty list returns object with 'number' typeof blogs property", () => {
-    const result = listHelper.mostBlogs(listWithMultipleBlogs);
-    expect(typeof result.blogs).toBe("number");
+  describe("AND...", () => {
+    test(".author is the author with the most blogs", () => {
+      const result = listHelper.mostBlogs(listWithMultipleBlogs);
+      expect(result.author).toBe("Robert C. Martin");
+    });
+
+    test(".blogs is the number of blogs by the author", () => {
+      const result = listHelper.mostBlogs(listWithMultipleBlogs);
+      expect(result.blogs).toBe(3);
+    });
   });
 });
 
@@ -142,19 +151,21 @@ describe("mostLikes(Array.<Blog>)", () => {
     expect(result).toBe(null);
   });
 
-  test("of non-empty list returns object with most liked author as a property", () => {
-    const result = listHelper.mostLikes(listWithMultipleBlogs);
-    expect(result.author).toBe("Edsger W. Dijkstra");
-  });
-
-  test("of non-empty list returns object with own author & likes properties", () => {
+  test("of non-empty list returns object {author, likes}", () => {
     const result = listHelper.mostLikes(listWithMultipleBlogs);
     expect(result).toHaveProperty("author");
     expect(result).toHaveProperty("likes");
   });
 
-  test("of non-empty list returns object with 'number' typeof likes property", () => {
-    const result = listHelper.mostLikes(listWithMultipleBlogs);
-    expect(typeof result.likes).toBe("number");
+  describe("AND...", () => {
+    test(".author is the author with the most likes", () => {
+      const result = listHelper.mostLikes(listWithMultipleBlogs);
+      expect(result.author).toBe("Edsger W. Dijkstra");
+    });
+
+    test(".likes is the total likes of the author's blogs", () => {
+      const result = listHelper.mostLikes(listWithMultipleBlogs);
+      expect(result.likes).toBe(17);
+    });
   });
 });
