@@ -135,3 +135,26 @@ describe("mostBlogs(Array.<Blog>)", () => {
     expect(typeof result.blogs).toBe("number");
   });
 });
+
+describe("mostLikes(Array.<Blog>)", () => {
+  test("of empty list returns null", () => {
+    const result = listHelper.mostLikes([]);
+    expect(result).toBe(null);
+  });
+
+  test("of non-empty list returns object with most liked author as a property", () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs);
+    expect(result.author).toBe("Edsger W. Dijkstra");
+  });
+
+  test("of non-empty list returns object with own author & likes properties", () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs);
+    expect(result).toHaveProperty("author");
+    expect(result).toHaveProperty("likes");
+  });
+
+  test("of non-empty list returns object with 'number' typeof likes property", () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs);
+    expect(typeof result.likes).toBe("number");
+  });
+});

@@ -42,9 +42,30 @@ const mostBlogs = blogs => {
   return authorWithMostBlogs;
 };
 
+const mostLikes = blogs => {
+  if (blogs.length === 0) return null;
+
+  const reducer = (acc, blog) => {
+    return !acc[blog.author]
+      ? { ...acc, [blog.author]: blog.likes }
+      : { ...acc, [blog.author]: acc[blog.author] + blog.likes };
+  };
+
+  const likesTally = _.reduce(blogs, reducer, {});
+
+  const authorWithMostLikes = _.chain(likesTally)
+    .toPairs()
+    .maxBy(_.last)
+    .keyBy(value => (typeof value === "number" ? "likes" : "author"))
+    .value();
+
+  return authorWithMostLikes;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
