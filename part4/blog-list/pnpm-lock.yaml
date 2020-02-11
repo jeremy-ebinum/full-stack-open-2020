@@ -2,6 +2,7 @@ dependencies:
   body-parser: 1.19.0
   cors: 2.8.5
   express: 4.17.1
+  lodash: 4.17.15
   mongoose: 5.8.11_mongoose@5.8.11
   morgan: 1.9.1
 devDependencies:
@@ -3194,7 +3195,6 @@ packages:
     resolution:
       integrity: sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
   /lodash/4.17.15:
-    dev: true
     resolution:
       integrity: sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
   /lolex/5.1.2:
@@ -5319,6 +5319,7 @@ specifiers:
   eslint-plugin-prettier: ^3.1.2
   express: ^4.17.1
   jest: ^25.1.0
+  lodash: ^4.17.15
   mongoose: ^5.8.11
   morgan: ^1.9.1
   nodemon: ^2.0.2

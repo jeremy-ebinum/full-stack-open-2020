@@ -113,3 +113,27 @@ describe("favorite blog", () => {
     expect(result).toEqual(null);
   });
 });
+
+describe("most blogs", () => {
+  test("of non-empty list returns most occuring author as prop", () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs);
+    expect(result.author).toBe("Robert C. Martin");
+  });
+
+  test("of non-empty list has only author & blogs own props", () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs);
+    expect(Object.keys(result)).toHaveLength(2);
+    expect(result).toHaveProperty("author");
+    expect(result).toHaveProperty("blogs");
+  });
+
+  test("of non-empty list has number type blogs prop", () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs);
+    expect(typeof result.blogs).toBe("number");
+  });
+
+  test("of empty list is null", () => {
+    const result = listHelper.mostBlogs([]);
+    expect(result).toBe(null);
+  });
+});
