@@ -19,4 +19,6 @@ app.use(middleware.morganLogger);
 
 app.use("/api/blogs", blogsRouter);
 
+app.use(middleware.errorHandler);
+
 module.exports = app;
