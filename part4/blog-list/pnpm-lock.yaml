@@ -3,6 +3,7 @@ dependencies:
   cors: 2.8.5
   express: 4.17.1
   mongoose: 5.8.11_mongoose@5.8.11
+  morgan: 1.9.1
 devDependencies:
   dotenv: 8.2.0
   eslint: 6.8.0
@@ -153,6 +154,14 @@ packages:
     dev: true
     resolution:
       integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+  /basic-auth/2.0.1:
+    dependencies:
+      safe-buffer: 5.1.2
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
   /binary-extensions/2.0.0:
     dev: true
     engines:
@@ -1444,6 +1453,18 @@ packages:
       mongoose: '*'
     resolution:
       integrity: sha512-Yz0leNEJsAtNtMTxTDEadacLWt58gaVeBVL3c1Z3vaBoc159aJqlf+T8jaL9mAdBxKndF5YWhh6Q719xac7cjA==
+  /morgan/1.9.1:
+    dependencies:
+      basic-auth: 2.0.1
+      debug: 2.6.9
+      depd: 1.1.2
+      on-finished: 2.3.0
+      on-headers: 1.0.2
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-HQStPIV4y3afTiCYVxirakhlCfGkI161c76kKFca7Fk1JusM//Qeo1ej2XaMniiNeaZklMVrh3vTtIzpzwbpmA==
   /mpath/0.6.0:
     dev: false
     engines:
@@ -1596,6 +1617,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IPEzZIGwg811M3mSoWlxqi2QaUc=
+  /on-headers/1.0.2:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -2433,5 +2460,6 @@ specifiers:
   eslint-plugin-prettier: ^3.1.2
   express: ^4.17.1
   mongoose: ^5.8.11
+  morgan: ^1.9.1
   nodemon: ^2.0.2
   prettier: ^1.19.1

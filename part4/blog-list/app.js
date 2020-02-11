@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const config = require("./utils/config");
+const middleware = require("./utils/middleware");
 const blogsRouter = require("./controllers/blogs");
 
 const app = express();
@@ -14,6 +15,7 @@ mongoose.connect(config.MONGODB_URI, {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(middleware.morganLogger);
 
 app.use("/api/blogs", blogsRouter);
 
