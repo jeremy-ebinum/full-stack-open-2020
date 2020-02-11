@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 app.use(middleware.morganLogger);
 
 app.use("/api/blogs", blogsRouter);
+app.use(middleware.unknownRouteHandler);
 
 app.use(middleware.errorHandler);
 

@@ -11,6 +11,11 @@ const morganLogger = morgan(
   ":method :url :status :res[content-length] - :response-time ms :data"
 );
 
+const unknownRouteHandler = req => {
+  const messages = [`There is no resource at ${req.url}`];
+  throw new ErrorHelper(404, "Not Found", messages);
+};
+
 const errorHandler = (err, req, res, next) => {
   if (!err) next();
 
@@ -23,5 +28,6 @@ const errorHandler = (err, req, res, next) => {
 
 module.exports = {
   morganLogger,
+  unknownRouteHandler,
   errorHandler
 };
