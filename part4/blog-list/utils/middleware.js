@@ -1,5 +1,5 @@
 const morgan = require("morgan");
-const { ErrorHelper, handleError } = require("../helpers/error");
+const { ErrorHelper, handleError } = require("./error_helper");
 
 morgan.token("data", req => {
   const { body } = req;
