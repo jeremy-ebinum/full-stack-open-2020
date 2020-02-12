@@ -7,9 +7,15 @@ morgan.token("data", req => {
   return JSON.stringify(body);
 });
 
-const morganLogger = morgan(
-  ":method :url :status :res[content-length] - :response-time ms :data"
-);
+const morganLogger = () => {
+  if (process.env.NODE_ENV === "test") {
+    return (req, res, next) => next();
+  }
+
+  return morgan(
+    ":method :url :status :res[content-length] - :response-time ms :data"
+  );
+};
 
 const unknownRouteHandler = req => {
   const messages = [`There is no resource at ${req.url}`];
