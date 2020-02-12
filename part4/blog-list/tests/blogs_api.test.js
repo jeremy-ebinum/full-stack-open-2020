@@ -35,6 +35,24 @@ describe("On GET /api/blogs", () => {
   });
 });
 
+describe("On POST /api/blogs", () => {
+  test("a valid blog can be added to db", async () => {
+    const newBlog = new Blog(helper.validBlog);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1);
+
+    const titles = blogsAtEnd.map(blog => blog.title);
+    expect(titles).toContain(helper.validBlog.title);
+  });
+});
+
 afterAll(async () => {
   await mockDb.closeDatabase();
   await new Promise(resolve => setTimeout(() => resolve(), 0)); // avoid jest open handle error

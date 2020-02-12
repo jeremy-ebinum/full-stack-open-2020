@@ -42,6 +42,14 @@ const initialBlogs = [
   }
 ];
 
+const validBlog = {
+  title: "A Beginner's JavaScript Study Plan",
+  author: "Sara Harrison",
+  url:
+    "https://www.freecodecamp.org/news/a-beginners-javascript-study-plan-27f1d698ea5e/",
+  likes: 0
+};
+
 const getBlogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map(blog => blog.toJSON());
@@ -62,6 +70,7 @@ const getNonExistingId = async () => {
 
 module.exports = {
   initialBlogs,
+  validBlog,
   getBlogsInDb,
   getNonExistingId
 };
