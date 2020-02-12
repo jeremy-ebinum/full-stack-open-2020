@@ -50,6 +50,13 @@ const validBlog = {
   likes: 0
 };
 
+const blogWithMissingLikes = {
+  title: "17 Obscure Horror Games We Recommend",
+  author: "Ryan Stanford",
+  url:
+    "https://www.relyonhorror.com/articles/17-obscure-horror-games-we-recommend/"
+};
+
 const getBlogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map(blog => blog.toJSON());
@@ -72,5 +79,6 @@ module.exports = {
   initialBlogs,
   validBlog,
   getBlogsInDb,
-  getNonExistingId
+  getNonExistingId,
+  blogWithMissingLikes
 };

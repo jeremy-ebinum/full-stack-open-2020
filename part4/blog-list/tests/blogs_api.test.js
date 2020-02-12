@@ -51,6 +51,18 @@ describe("On POST /api/blogs", () => {
     const titles = blogsAtEnd.map(blog => blog.title);
     expect(titles).toContain(helper.validBlog.title);
   });
+
+  test("likes default to 0 if missing from request body", async () => {
+    const newBlog = new Blog(helper.blogWithMissingLikes);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        expect(res.body.likes).toBe(0);
+      });
+  });
 });
 
 afterAll(async () => {
