@@ -22,10 +22,24 @@ const unknownRouteHandler = req => {
   throw new ErrorHelper(404, "Not Found", messages);
 };
 
+const handleExpressValidationErrors = (err, res) => {
+  const messages = Object.keys(err.errors).map(e => {
+    const error = err.errors[e];
+
+    return error.kind === "required"
+      ? `${error.path.toUpperCase()} is missing`
+      : "ValidationError";
+  });
+
+  handleError(new ErrorHelper(400, "Bad Request", messages), res);
+};
+
 const errorHandler = (err, req, res, next) => {
   if (!err) next();
 
-  if (err instanceof ErrorHelper) {
+  if (err.name === "ValidationError") {
+    handleExpressValidationErrors(err, res);
+  } else if (err instanceof ErrorHelper) {
     handleError(err, res);
   } else {
     next(err);

@@ -63,6 +63,30 @@ describe("On POST /api/blogs", () => {
         expect(res.body.likes).toBe(0);
       });
   });
+
+  test("response status is 400 if no title in request body", async () => {
+    const newBlog = new Blog(helper.blogWithMissingTitle);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        expect(res.status).toBe(400);
+      });
+  });
+
+  test("response status is 400 if no url in request body", async () => {
+    const newBlog = new Blog(helper.blogWithMissingUrl);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        expect(res.status).toBe(400);
+      });
+  });
 });
 
 afterAll(async () => {

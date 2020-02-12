@@ -57,6 +57,18 @@ const blogWithMissingLikes = {
     "https://www.relyonhorror.com/articles/17-obscure-horror-games-we-recommend/"
 };
 
+const blogWithMissingTitle = {
+  author: "Robert C. Martin",
+  url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+  likes: 0
+};
+
+const blogWithMissingUrl = {
+  title: "Type wars",
+  author: "Robert C. Martin",
+  likes: 0
+};
+
 const getBlogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map(blog => blog.toJSON());
@@ -78,6 +90,8 @@ const getNonExistingId = async () => {
 module.exports = {
   initialBlogs,
   validBlog,
+  blogWithMissingTitle,
+  blogWithMissingUrl,
   getBlogsInDb,
   getNonExistingId,
   blogWithMissingLikes
