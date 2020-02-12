@@ -19,13 +19,19 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe("On GET /api/blogs...", () => {
+describe("On GET /api/blogs", () => {
   test("response content-type is application/json", async () => {
     await api.get("/api/blogs").expect("Content-Type", /application\/json/);
   });
+
   test("response has the correct amount of blogs", async () => {
     const response = await api.get("/api/blogs");
     expect(response.body.length).toBe(helper.initialBlogs.length);
+  });
+
+  test("the returned blogs have id property", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body[0].id).toBeDefined();
   });
 });
 
