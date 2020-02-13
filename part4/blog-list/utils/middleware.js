@@ -34,16 +34,26 @@ const handleExpressCastErrors = (err, res) => {
   }
 };
 
-const handleExpressValidationErrors = (err, res) => {
+const handleValidationErrors = (err, res) => {
+  let isBadRequest = true;
   const messages = Object.keys(err.errors).map(e => {
     const error = err.errors[e];
 
-    return error.kind === "required"
-      ? `${error.path.toUpperCase()} is missing`
-      : "ValidationError";
+    if (error.kind === "required") {
+      return `${error.path.toUpperCase()} is missing`;
+    }
+    if (error.kind === "unique") {
+      isBadRequest = false;
+      return `${error.path.toUpperCase()} must be unique`;
+    }
+    return `Error validation ${error.path.toUpperCase()}`;
   });
 
-  handleError(new ErrorHelper(400, "Bad Request", messages), res);
+  if (isBadRequest) {
+    handleError(new ErrorHelper(400, "Bad Request", messages), res);
+  } else {
+    handleError(new ErrorHelper(422, "Validation Error", messages), res);
+  }
 };
 
 const errorHandler = (err, req, res, next) => {
@@ -53,12 +63,13 @@ const errorHandler = (err, req, res, next) => {
     return handleExpressCastErrors(err, res);
   }
   if (err.name === "ValidationError") {
-    return handleExpressValidationErrors(err, res);
+    return handleValidationErrors(err, res);
   }
   if (err instanceof ErrorHelper) {
     return handleError(err, res);
   }
-  logger.error("IN errorHandler:\n", err);
+
+  logger.error("IN errorHandler middleware\n", err.message);
   return next(err);
 };
 

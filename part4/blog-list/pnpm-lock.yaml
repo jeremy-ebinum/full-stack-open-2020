@@ -6,6 +6,7 @@ dependencies:
   express: 4.17.1
   lodash: 4.17.15
   mongoose: 5.8.11_mongoose@5.8.11
+  mongoose-unique-validator: 2.0.3_mongoose@5.8.11
   morgan: 1.9.1
 devDependencies:
   cross-env: 7.0.0
@@ -3578,6 +3579,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-cvbTwETRfsFh4nHsL1eGWapU1XFi5Ot9E85sWAwia7Y7EgB7vfqcZhTKZ+l7hCGxSPoushMv5GKhT5PdLv03WA==
+  /lodash.foreach/4.5.0:
+    dev: false
+    resolution:
+      integrity: sha1-Gmo16s5AEoDH8G3d7DUWWrJ+PlM=
+  /lodash.get/4.4.2:
+    dev: false
+    resolution:
+      integrity: sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
   /lodash.sortby/4.7.0:
     dev: true
     resolution:
@@ -3846,6 +3855,16 @@ packages:
       mongoose: '*'
     resolution:
       integrity: sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
+  /mongoose-unique-validator/2.0.3_mongoose@5.8.11:
+    dependencies:
+      lodash.foreach: 4.5.0
+      lodash.get: 4.4.2
+      mongoose: 5.8.11_mongoose@5.8.11
+    dev: false
+    peerDependencies:
+      mongoose: ^5.2.1
+    resolution:
+      integrity: sha512-3/8pmvAC1acBZS6eWKAWQUiZBlARE1wyWtjga4iQ2wDJeOfRlIKmAvTNHSZXKaAf7RCRUd7wh7as6yWAOrjpQg==
   /mongoose/5.8.11_mongoose@5.8.11:
     dependencies:
       bson: 1.1.3
@@ -6054,6 +6073,7 @@ specifiers:
   lodash: ^4.17.15
   mongodb-memory-server-global: ^6.2.4
   mongoose: ^5.8.11
+  mongoose-unique-validator: ^2.0.3
   morgan: ^1.9.1
   nodemon: ^2.0.2
   prettier: ^1.19.1

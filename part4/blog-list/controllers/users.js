@@ -1,6 +1,27 @@
 const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
+const { ErrorHelper } = require("../utils/error_helper");
 const User = require("../models/user");
+
+const validateRequestBody = body => {
+  if (!body.username || !body.password) {
+    throw new ErrorHelper(400, "Bad Request", [
+      "USERNAME and/or PASSWORD missing"
+    ]);
+  }
+
+  if (body.username.length < 3) {
+    throw new ErrorHelper(422, "Validation Error", [
+      "USERNAME must be at least (3) characters long"
+    ]);
+  }
+
+  if (body.password.length < 3) {
+    throw new ErrorHelper(422, "Validation Error", [
+      "PASSWORD must be at least (3) characters long"
+    ]);
+  }
+};
 
 usersRouter.get("/", async (req, res, next) => {
   try {
@@ -14,6 +35,8 @@ usersRouter.get("/", async (req, res, next) => {
 usersRouter.post("/", async (req, res, next) => {
   try {
     const { body } = req;
+    validateRequestBody(body);
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 

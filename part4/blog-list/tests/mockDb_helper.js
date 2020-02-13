@@ -14,6 +14,9 @@ module.exports.connect = async () => {
     useUnifiedTopology: true
   };
 
+  mongoose.set("useCreateIndex", true);
+  mongoose.set("useFindAndModify", false);
+
   await mongoose.connect(uri, mongooseOpts);
 };
 

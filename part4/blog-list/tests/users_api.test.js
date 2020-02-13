@@ -35,6 +35,71 @@ describe("Fetching existing users collection: GET /api/users", () => {
 });
 
 describe("Sending a user: POST /api/users", () => {
+  test("fails with statuscode 400 if the user is invalid", async () => {
+    await api
+      .post("/api/users")
+      .send({ name: "name", password: "password" })
+      .set("Content-Type", "application/json")
+      .expect(400);
+
+    await api
+      .post("/api/users")
+      .send({ name: "name", username: "username" })
+      .set("Content-Type", "application/json")
+      .expect(400);
+  });
+
+  describe("fails with statuscode 422 and error hints if...", () => {
+    test("username is not unique", async () => {
+      const existingUsername = helper.initialUsers[0].username;
+
+      const response = await api
+        .post("/api/users")
+        .set("Content-Type", "application/json")
+        .send({ username: existingUsername, name: "Name", password: "passw" })
+        .expect(422);
+
+      const isUniqueError = /unique/.test(response.body.error.message);
+      expect(isUniqueError).toBe(true);
+      expect(response.body.error.message.toLowerCase()).toContain("username");
+
+      const usersAtEnd = await helper.getUsersInDb();
+      expect(usersAtEnd.length).toBe(helper.initialUsers.length);
+    });
+
+    test("username is less than 3 chars", async () => {
+      const response = await api
+        .post("/api/users")
+        .set("Content-Type", "application/json")
+        .send({ username: "UM", name: "Uchiha", password: "password" })
+        .expect(422);
+
+      const minLengthRegex = /at least \(\d+\)/;
+      const isMinLengthError = minLengthRegex.test(response.body.error.message);
+      expect(isMinLengthError).toBe(true);
+      expect(response.body.error.message.toLowerCase()).toContain("username");
+
+      const usersAtEnd = await helper.getUsersInDb();
+      expect(usersAtEnd.length).toBe(helper.initialUsers.length);
+    });
+
+    test("password is less than 3 chars", async () => {
+      const response = await api
+        .post("/api/users")
+        .set("Content-Type", "application/json")
+        .send({ username: "madara", name: "Madara", password: "pw" })
+        .expect(422);
+
+      const minLengthRegex = /at least \(\d+\)/;
+      const isMinLengthError = minLengthRegex.test(response.body.error.message);
+      expect(isMinLengthError).toBe(true);
+      expect(response.body.error.message.toLowerCase()).toContain("password");
+
+      const usersAtEnd = await helper.getUsersInDb();
+      expect(usersAtEnd.length).toBe(helper.initialUsers.length);
+    });
+  });
+
   test("saves the user to db if valid", async () => {
     const userToSave = {
       username: "admin",

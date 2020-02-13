@@ -27,6 +27,9 @@ module.exports.connect = async () => {
     return Promise.resolve("");
   }
 
+  mongoose.set("useCreateIndex", true);
+  mongoose.set("useFindAndModify", false);
+
   return mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
