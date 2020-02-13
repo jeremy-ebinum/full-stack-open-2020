@@ -4,14 +4,17 @@ class ErrorHelper extends Error {
     this.statusCode = statusCode;
     this.kind = kind;
     this.messages = messages;
+    this.message = this.messages.join("\n");
   }
 }
 const handleError = (err, res) => {
-  const { statusCode, kind, messages } = err;
+  const { statusCode, kind, message, messages } = err;
+
   res.status(statusCode).json({
     status: "error",
     statusCode,
     kind,
+    message,
     messages
   });
 };
