@@ -67,8 +67,7 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .expect(400)
-      .expect("Content-Type", /application\/json/);
+      .expect(400);
 
     newBlog = new Blog(helper.blogWithMissingUrl);
 
@@ -76,8 +75,7 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .expect(400)
-      .expect("Content-Type", /application\/json/);
+      .expect(400);
   });
 
   test("saves the blog to db if valid", async () => {
