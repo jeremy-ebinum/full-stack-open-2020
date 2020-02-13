@@ -19,24 +19,46 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe("On GET /api/blogs", () => {
-  test("response content-type is application/json", async () => {
+describe("Fetching existing blogs collection: GET /api/blogs", () => {
+  test("returns blogs as json", async () => {
     await api.get("/api/blogs").expect("Content-Type", /application\/json/);
   });
 
-  test("response has the correct amount of blogs", async () => {
+  test("returns all blogs on server", async () => {
     const response = await api.get("/api/blogs");
     expect(response.body.length).toBe(helper.initialBlogs.length);
   });
 
-  test("the returned blogs have id property", async () => {
+  test("returns blogs that each have an 'id' prop", async () => {
     const response = await api.get("/api/blogs");
     expect(response.body[0].id).toBeDefined();
   });
 });
 
-describe("On POST /api/blogs", () => {
-  test("a valid blog can be added to db", async () => {
+describe("Sending a blog: POST /api/blogs", () => {
+  test("fails with statuscode 400 if the blog is invalid", async () => {
+    let newBlog = new Blog(helper.blogWithMissingTitle);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        expect(res.status).toBe(400);
+      });
+
+    newBlog = new Blog(helper.blogWithMissingUrl);
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        expect(res.status).toBe(400);
+      });
+  });
+
+  test("saves the blog to db if valid", async () => {
     const newBlog = new Blog(helper.validBlog);
 
     await api
@@ -52,7 +74,7 @@ describe("On POST /api/blogs", () => {
     expect(titles).toContain(helper.validBlog.title);
   });
 
-  test("likes default to 0 if missing from request body", async () => {
+  test("sets the blog's 'likes' to 0 if missing", async () => {
     const newBlog = new Blog(helper.blogWithMissingLikes);
 
     await api
@@ -61,30 +83,6 @@ describe("On POST /api/blogs", () => {
       .set("Content-Type", "application/json")
       .then(res => {
         expect(res.body.likes).toBe(0);
-      });
-  });
-
-  test("response status is 400 if no title in request body", async () => {
-    const newBlog = new Blog(helper.blogWithMissingTitle);
-
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .set("Content-Type", "application/json")
-      .then(res => {
-        expect(res.status).toBe(400);
-      });
-  });
-
-  test("response status is 400 if no url in request body", async () => {
-    const newBlog = new Blog(helper.blogWithMissingUrl);
-
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .set("Content-Type", "application/json")
-      .then(res => {
-        expect(res.status).toBe(400);
       });
   });
 });
