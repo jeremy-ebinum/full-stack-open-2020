@@ -16,7 +16,6 @@ module.exports = {
   plugins: ["prettier"],
   rules: {
     "prettier/prettier": "error",
-    indent: ["error", 2],
     quotes: ["error", "double"],
     semi: ["error", "always"],
     eqeqeq: "error",

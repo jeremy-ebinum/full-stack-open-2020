@@ -1,3 +1,4 @@
+const logger = require("../utils/logger");
 const Blog = require("../models/blog");
 
 const initialBlogs = [
@@ -74,17 +75,25 @@ const getBlogsInDb = async () => {
   return blogs.map(blog => blog.toJSON());
 };
 
-const getNonExistingId = async () => {
+const getDeletedValidId = async () => {
   const blog = new Blog({
-    title: "dummy blog",
-    author: "",
-    url: "",
+    title: "None Existence",
+    author: "John Doe",
+    url: "http://dummyurl.com",
     likes: 0
   });
-  await blog.save();
-  await blog.remove();
 
-  return blog._id.toString();
+  let id;
+
+  try {
+    await blog.save();
+    await blog.remove();
+    id = blog._id.toString();
+  } catch (e) {
+    logger.error("IN getNoneExistingvalidId:\n", e);
+  }
+
+  return id;
 };
 
 module.exports = {
@@ -93,6 +102,6 @@ module.exports = {
   blogWithMissingTitle,
   blogWithMissingUrl,
   getBlogsInDb,
-  getNonExistingId,
+  getDeletedValidId,
   blogWithMissingLikes
 };

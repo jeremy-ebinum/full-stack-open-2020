@@ -1,4 +1,5 @@
 const morgan = require("morgan");
+const logger = require("./logger");
 const { ErrorHelper, handleError } = require("./error_helper");
 
 morgan.token("data", req => {
@@ -22,6 +23,17 @@ const unknownRouteHandler = req => {
   throw new ErrorHelper(404, "Not Found", messages);
 };
 
+const handleExpressCastErrors = (err, res) => {
+  switch (err.kind) {
+    case "ObjectId":
+      handleError(new ErrorHelper(400, "CastError", ["Malformatted Id"]), res);
+      break;
+
+    default:
+      break;
+  }
+};
+
 const handleExpressValidationErrors = (err, res) => {
   const messages = Object.keys(err.errors).map(e => {
     const error = err.errors[e];
@@ -37,13 +49,17 @@ const handleExpressValidationErrors = (err, res) => {
 const errorHandler = (err, req, res, next) => {
   if (!err) next();
 
-  if (err.name === "ValidationError") {
-    handleExpressValidationErrors(err, res);
-  } else if (err instanceof ErrorHelper) {
-    handleError(err, res);
-  } else {
-    next(err);
+  if (err.name === "CastError") {
+    return handleExpressCastErrors(err, res);
   }
+  if (err.name === "ValidationError") {
+    return handleExpressValidationErrors(err, res);
+  }
+  if (err instanceof ErrorHelper) {
+    return handleError(err, res);
+  }
+  logger.error("IN errorHandler:\n", err);
+  return next(err);
 };
 
 module.exports = {

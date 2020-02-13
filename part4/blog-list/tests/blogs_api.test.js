@@ -35,6 +35,34 @@ describe("Fetching existing blogs collection: GET /api/blogs", () => {
   });
 });
 
+describe("Fetching specific blog member: GET /api/blogs/id", () => {
+  test("fails with statuscode 400 if the id is invalid", async () => {
+    const invalidId = "spamandeggsandspam";
+    await api.get(`/api/blogs/${invalidId}`).expect(400);
+
+    // expect(response.status).toBe(400);
+  });
+
+  test("fails with statuscode 404 if the blog doesn't exist", async () => {
+    const deletedValidId = await helper.getDeletedValidId();
+    const response = await api.get(`/api/blogs/${deletedValidId}`);
+
+    expect(response.status).toBe(404);
+  });
+
+  test("succeeds if the member with that id exists", async () => {
+    const blogsInDb = await helper.getBlogsInDb();
+    const blogToView = blogsInDb[0];
+
+    const response = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    expect(response.body).toEqual(blogToView);
+  });
+});
+
 describe("Sending a blog: POST /api/blogs", () => {
   test("fails with statuscode 400 if the blog is invalid", async () => {
     let newBlog = new Blog(helper.blogWithMissingTitle);
