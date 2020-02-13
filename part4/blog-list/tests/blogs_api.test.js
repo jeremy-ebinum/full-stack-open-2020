@@ -107,6 +107,29 @@ describe("Sending a blog: POST /api/blogs", () => {
   });
 });
 
+describe("Deleting specific blog member: DELETE /api/blogs/id", () => {
+  test("fails with statuscode 400 if the id is invalid", async () => {
+    const invalidId = "spamandeggsandspam";
+    await api.delete(`/api/blogs/${invalidId}`).expect(400);
+  });
+
+  test("receives statuscode 404 if the blog doesn't exist", async () => {
+    const deletedValidId = await helper.getDeletedValidId();
+    await api.delete(`/api/blogs/${deletedValidId}`).expect(404);
+  });
+
+  test("deletes the blog member with that id if valid", async () => {
+    const blogsatStart = await helper.getBlogsInDb();
+    const blogToDelete = blogsatStart[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    const titles = blogsAtEnd.map(blog => blog.title);
+    expect(titles).not.toContain(blogToDelete.title);
+  });
+});
+
 afterAll(async () => {
   await mockDb.closeDatabase();
   await new Promise(resolve => setTimeout(() => resolve(), 0)); // avoid jest open handle error
