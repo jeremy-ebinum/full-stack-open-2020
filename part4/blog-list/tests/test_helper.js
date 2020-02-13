@@ -1,4 +1,6 @@
+const bcrypt = require("bcrypt");
 const logger = require("../utils/logger");
+const User = require("../models/user");
 const Blog = require("../models/blog");
 
 const initialBlogs = [
@@ -70,6 +72,11 @@ const blogWithMissingUrl = {
   likes: 0
 };
 
+const getUsersInDb = async () => {
+  const users = await User.find({});
+  return users.map(u => u.toJSON());
+};
+
 const getBlogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map(blog => blog.toJSON());
@@ -96,6 +103,39 @@ const getDeletedValidId = async () => {
   return id;
 };
 
+let initialUsers = [
+  {
+    username: "username",
+    name: "Username",
+    password: "password"
+  },
+  {
+    username: "username2",
+    name: "Username2",
+    password: "password2"
+  },
+  {
+    username: "username3",
+    name: "Username3",
+    password: "password3"
+  }
+];
+
+const hashPasswordMixin = users => {
+  const saltRounds = 1;
+  const usersWithHashedPasswords = users.map(user => {
+    const passwordHash = bcrypt.hashSync(user.password, saltRounds);
+    user.passwordHash = passwordHash;
+    delete user.password;
+
+    return user;
+  });
+
+  return usersWithHashedPasswords;
+};
+
+initialUsers = hashPasswordMixin(initialUsers);
+
 module.exports = {
   initialBlogs,
   validBlog,
@@ -103,5 +143,7 @@ module.exports = {
   blogWithMissingUrl,
   getBlogsInDb,
   getDeletedValidId,
-  blogWithMissingLikes
+  blogWithMissingLikes,
+  getUsersInDb,
+  initialUsers
 };
