@@ -59,7 +59,7 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
   });
 });
 
-describe("Sending a blog: POST /api/blogs", () => {
+describe.only("Sending a blog: POST /api/blogs", () => {
   test("fails with statuscode 400 if the blog is invalid", async () => {
     let newBlog = new Blog(helper.blogWithMissingTitle);
 
@@ -67,7 +67,8 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .expect(400);
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
 
     newBlog = new Blog(helper.blogWithMissingUrl);
 
@@ -75,7 +76,8 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .expect(400);
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
   });
 
   test("saves the blog to db if valid", async () => {
