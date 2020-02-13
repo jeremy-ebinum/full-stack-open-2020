@@ -59,7 +59,7 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
   });
 });
 
-describe.only("Sending a blog: POST /api/blogs", () => {
+describe("Sending a blog: POST /api/blogs", () => {
   test("fails with statuscode 400 if the blog is invalid", async () => {
     let newBlog = new Blog(helper.blogWithMissingTitle);
 
@@ -129,6 +129,53 @@ describe("Deleting specific blog member: DELETE /api/blogs/id", () => {
     const blogsAtEnd = await helper.getBlogsInDb();
     const titles = blogsAtEnd.map(blog => blog.title);
     expect(titles).not.toContain(blogToDelete.title);
+  });
+});
+
+describe("Replacing specific blog member: PUT /api/blogs/id", () => {
+  test("fails with statuscode 400 if the id is invalid", async () => {
+    const invalidId = "spamandeggsandspam";
+    await api.put(`/api/blogs/${invalidId}`).expect(400);
+  });
+
+  test("fails with statuscode 400 if the replacement is invalid", async () => {
+    const blogsatStart = await helper.getBlogsInDb();
+    const blogToReplace = blogsatStart[0];
+    const replacementWithNoTitle = { ...blogToReplace, title: null };
+    const replacementWithNoUrl = { ...blogToReplace, url: null };
+
+    await api
+      .put(`/api/blogs/${blogToReplace.id}`)
+      .set("Content-Type", "application/json")
+      .send(replacementWithNoTitle)
+      .expect(400);
+
+    await api
+      .put(`/api/blogs/${blogToReplace.id}`)
+      .set("Content-Type", "application/json")
+      .send(replacementWithNoUrl)
+      .expect(400);
+  });
+
+  test("receives statuscode 404 if the blog doesn't exist", async () => {
+    const deletedValidId = await helper.getDeletedValidId();
+    await api.put(`/api/blogs/${deletedValidId}`).expect(404);
+  });
+
+  test("replaces the blog member bearing that id if valid", async () => {
+    const blogsatStart = await helper.getBlogsInDb();
+    const blogToReplace = blogsatStart[0];
+    const replacement = { ...blogToReplace, likes: 9999 };
+
+    await api
+      .put(`/api/blogs/${blogToReplace.id}`)
+      .set("Content-Type", "application/json")
+      .send(replacement)
+      .expect(200);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    const replacedBlog = blogsAtEnd.filter(b => b.id === replacement.id)[0];
+    expect(replacedBlog.likes).toBe(replacement.likes);
   });
 });
 
