@@ -39,15 +39,11 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
   test("fails with statuscode 400 if the id is invalid", async () => {
     const invalidId = "spamandeggsandspam";
     await api.get(`/api/blogs/${invalidId}`).expect(400);
-
-    // expect(response.status).toBe(400);
   });
 
   test("fails with statuscode 404 if the blog doesn't exist", async () => {
     const deletedValidId = await helper.getDeletedValidId();
-    const response = await api.get(`/api/blogs/${deletedValidId}`);
-
-    expect(response.status).toBe(404);
+    await api.get(`/api/blogs/${deletedValidId}`).expect(404);
   });
 
   test("succeeds if the member with that id exists", async () => {
@@ -71,9 +67,7 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .then(res => {
-        expect(res.status).toBe(400);
-      });
+      .expect(400);
 
     newBlog = new Blog(helper.blogWithMissingUrl);
 
@@ -81,9 +75,7 @@ describe("Sending a blog: POST /api/blogs", () => {
       .post("/api/blogs")
       .send(newBlog)
       .set("Content-Type", "application/json")
-      .then(res => {
-        expect(res.status).toBe(400);
-      });
+      .expect(400);
   });
 
   test("saves the blog to db if valid", async () => {
