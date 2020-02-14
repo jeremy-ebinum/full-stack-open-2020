@@ -1,4 +1,5 @@
 const supertest = require("supertest");
+const jwt = require("jsonwebtoken");
 const mockDb = require("./mockDb_helper");
 const helper = require("./test_helper");
 const User = require("../models/user");
@@ -118,6 +119,44 @@ describe("Sending a user: POST /api/users", () => {
 
     const usernames = usersAtEnd.map(user => user.username);
     expect(usernames).toContain(userToSave.username);
+  });
+});
+
+describe("Logging in a user: POST /api/login", () => {
+  test("fails with statuscode 401 if credentials are invalid", async () => {
+    const fakeUsername = "emanresu";
+    const fakePassword = "drowssap";
+
+    const isNotValidCreds = helper.initialUsers.every(user => {
+      return user.username !== fakeUsername && user.password !== fakePassword;
+    });
+
+    expect(isNotValidCreds).toBe(true);
+
+    await api
+      .post("/api/login")
+      .send({ username: fakeUsername, password: "password" })
+      .expect(401);
+
+    await api
+      .post("/api/login")
+      .send({ username: "username", password: fakePassword })
+      .expect(401);
+  });
+
+  test("authenticates user if credentials are valid", async () => {
+    const validUser = helper.plainUsers[0];
+
+    const response = await api
+      .post("/api/login")
+      .send({ username: validUser.username, password: validUser.password })
+      .expect(200);
+
+    const { token } = response.body;
+    expect(token).toBeDefined();
+
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    expect(decodedToken.username).toBe(validUser.username);
   });
 });
 

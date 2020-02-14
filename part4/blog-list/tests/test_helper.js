@@ -103,7 +103,7 @@ const getDeletedValidId = async () => {
   return id;
 };
 
-let initialUsers = [
+const plainUsers = [
   {
     username: "username",
     name: "Username",
@@ -123,7 +123,8 @@ let initialUsers = [
 
 const hashPasswordMixin = users => {
   const saltRounds = 1;
-  const usersWithHashedPasswords = users.map(user => {
+  const clonedUsers = JSON.parse(JSON.stringify(users));
+  const usersWithHashedPasswords = clonedUsers.map(user => {
     const passwordHash = bcrypt.hashSync(user.password, saltRounds);
     user.passwordHash = passwordHash;
     delete user.password;
@@ -134,7 +135,7 @@ const hashPasswordMixin = users => {
   return usersWithHashedPasswords;
 };
 
-initialUsers = hashPasswordMixin(initialUsers);
+const initialUsers = hashPasswordMixin(plainUsers);
 
 const getValidUserId = async () => {
   const user = hashPasswordMixin([
@@ -161,5 +162,6 @@ module.exports = {
   blogWithMissingLikes,
   getUsersInDb,
   getValidUserId,
+  plainUsers,
   initialUsers
 };

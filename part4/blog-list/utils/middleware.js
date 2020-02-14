@@ -5,6 +5,14 @@ const { ErrorHelper, handleError } = require("./error_helper");
 morgan.token("data", req => {
   const { body } = req;
 
+  if (body.password) {
+    body.password = "*".repeat(body.password.length);
+  }
+
+  if (body.token) {
+    body.token = "*".repeat(body.token.length);
+  }
+
   return JSON.stringify(body);
 });
 
@@ -69,7 +77,7 @@ const errorHandler = (err, req, res, next) => {
     return handleError(err, res);
   }
 
-  logger.error("IN errorHandler middleware\n", err.message);
+  logger.error(err);
   return next(err);
 };
 
