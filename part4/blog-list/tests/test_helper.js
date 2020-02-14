@@ -136,6 +136,21 @@ const hashPasswordMixin = users => {
 
 initialUsers = hashPasswordMixin(initialUsers);
 
+const getValidUserId = async () => {
+  const user = hashPasswordMixin([
+    {
+      username: "username9999",
+      password: "p455w0rd",
+      name: "Valid Id Getter"
+    }
+  ])[0];
+
+  const newUser = new User(user);
+  const savedUser = await newUser.save();
+
+  return savedUser._id.toString();
+};
+
 module.exports = {
   initialBlogs,
   validBlog,
@@ -145,5 +160,6 @@ module.exports = {
   getDeletedValidId,
   blogWithMissingLikes,
   getUsersInDb,
+  getValidUserId,
   initialUsers
 };

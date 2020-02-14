@@ -1,6 +1,8 @@
 const supertest = require("supertest");
+const mongoose = require("mongoose");
 const mockDb = require("./mockDb_helper");
 const helper = require("./test_helper");
+const User = require("../models/user");
 const Blog = require("../models/blog");
 const app = require("../app");
 
@@ -13,8 +15,17 @@ beforeAll(async () => mockDb.connect());
 beforeEach(async () => {
   await mockDb.clearDatabase();
 
-  const newBlogs = helper.initialBlogs.map(blog => new Blog(blog));
-  const promiseArray = newBlogs.map(blog => blog.save());
+  const newUsers = helper.initialUsers.map(user => new User(user));
+  const userPromises = newUsers.map(user => user.save());
+
+  const validUserId = await helper.getValidUserId();
+
+  const newBlogs = helper.initialBlogs.map(
+    blog => new Blog({ ...blog, user: validUserId })
+  );
+  const blogsPromises = newBlogs.map(blog => blog.save());
+
+  const promiseArray = userPromises.concat(blogsPromises);
 
   await Promise.all(promiseArray);
 });
@@ -32,6 +43,18 @@ describe("Fetching existing blogs collection: GET /api/blogs", () => {
   test("returns blogs that each have an 'id' prop", async () => {
     const response = await api.get("/api/blogs");
     expect(response.body[0].id).toBeDefined();
+  });
+
+  test("returns blogs w/ a ref id to the creator User", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body[0].user).toBeDefined();
+    let isValidId;
+    if (typeof response.body[0].user === "object") {
+      isValidId = mongoose.Types.ObjectId.isValid(response.body[0].user.id);
+    } else {
+      isValidId = mongoose.Types.ObjectId.isValid(response.body[0].user);
+    }
+    expect(isValidId).toBe(true);
   });
 });
 
@@ -55,7 +78,16 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
       .expect(200)
       .expect("Content-Type", /application\/json/);
 
-    expect(response.body).toEqual(blogToView);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        title: blogToView.title,
+        author: blogToView.author,
+        url: blogToView.url,
+        likes: blogToView.likes,
+        id: blogToView.id,
+        user: blogToView.user.toString()
+      })
+    );
   });
 });
 
