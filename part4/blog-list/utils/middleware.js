@@ -26,6 +26,15 @@ const morganLogger = () => {
   );
 };
 
+const tokenExtractor = (req, res, next) => {
+  const authorization = req.get("authorization");
+  req.token = null;
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    req.token = authorization.substring(7);
+  }
+  next();
+};
+
 const unknownRouteHandler = req => {
   const messages = [`There is no resource at ${req.url}`];
   throw new ErrorHelper(404, "Not Found", messages);
@@ -73,6 +82,12 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") {
     return handleValidationErrors(err, res);
   }
+  if (err.name === "JsonWebTokenError") {
+    return handleError(
+      new ErrorHelper(401, "Authentication Error", ["Invalid Token"]),
+      res
+    );
+  }
   if (err instanceof ErrorHelper) {
     return handleError(err, res);
   }
@@ -83,6 +98,7 @@ const errorHandler = (err, req, res, next) => {
 
 module.exports = {
   morganLogger,
+  tokenExtractor,
   unknownRouteHandler,
   errorHandler
 };

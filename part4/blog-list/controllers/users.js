@@ -5,20 +5,18 @@ const User = require("../models/user");
 
 const validateRequestBody = body => {
   if (!body.username || !body.password) {
-    throw new ErrorHelper(400, "Bad Request", [
-      "USERNAME and/or PASSWORD missing"
-    ]);
+    throw new ErrorHelper(400, "Bad Request", ["Username or Password missing"]);
   }
 
   if (body.username.length < 3) {
     throw new ErrorHelper(422, "Validation Error", [
-      "USERNAME must be at least (3) characters long"
+      "Username must be at least (3) characters long"
     ]);
   }
 
   if (body.password.length < 3) {
     throw new ErrorHelper(422, "Validation Error", [
-      "PASSWORD must be at least (3) characters long"
+      "Password must be at least (3) characters long"
     ]);
   }
 };

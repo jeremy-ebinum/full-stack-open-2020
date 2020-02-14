@@ -82,6 +82,14 @@ const getBlogsInDb = async () => {
   return blogs.map(blog => blog.toJSON());
 };
 
+const getLatestBlogInDb = async () => {
+  const blogs = await Blog.find()
+    .sort({ _id: -1 })
+    .limit(1);
+
+  return blogs.map(blog => blog.toJSON())[0];
+};
+
 const getDeletedValidId = async () => {
   const blog = new Blog({
     title: "None Existence",
@@ -137,31 +145,16 @@ const hashPasswordMixin = users => {
 
 const initialUsers = hashPasswordMixin(plainUsers);
 
-const getValidUserId = async () => {
-  const user = hashPasswordMixin([
-    {
-      username: "username9999",
-      password: "p455w0rd",
-      name: "Valid Id Getter"
-    }
-  ])[0];
-
-  const newUser = new User(user);
-  const savedUser = await newUser.save();
-
-  return savedUser._id.toString();
-};
-
 module.exports = {
   initialBlogs,
   validBlog,
   blogWithMissingTitle,
   blogWithMissingUrl,
   getBlogsInDb,
+  getLatestBlogInDb,
   getDeletedValidId,
   blogWithMissingLikes,
   getUsersInDb,
-  getValidUserId,
   plainUsers,
   initialUsers
 };

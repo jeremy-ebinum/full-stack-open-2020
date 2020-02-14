@@ -17,6 +17,7 @@ db.connect().catch(err => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(middleware.morganLogger());
+app.use(middleware.tokenExtractor);
 
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
