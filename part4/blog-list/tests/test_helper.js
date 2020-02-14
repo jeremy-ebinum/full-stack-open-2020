@@ -90,7 +90,7 @@ const getLatestBlogInDb = async () => {
   return blogs.map(blog => blog.toJSON())[0];
 };
 
-const getDeletedValidId = async () => {
+const getDeletedValidBlogId = async () => {
   const blog = new Blog({
     title: "None Existence",
     author: "John Doe",
@@ -152,7 +152,7 @@ module.exports = {
   blogWithMissingUrl,
   getBlogsInDb,
   getLatestBlogInDb,
-  getDeletedValidId,
+  getDeletedValidBlogId,
   blogWithMissingLikes,
   getUsersInDb,
   plainUsers,

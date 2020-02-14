@@ -23,14 +23,24 @@ beforeEach(async () => {
 
   const savedUsers = await helper.getUsersInDb();
 
-  const userForToken = {
+  expect(savedUsers.length).toBeGreaterThan(1);
+
+  const userForAllBlogs = {
     username: savedUsers[0].username,
     id: savedUsers[0].id
   };
 
-  const token = jwt.sign(userForToken, process.env.SECRET_KEY);
+  const userForNoBlogs = {
+    username: savedUsers[1].username,
+    id: savedUsers[1].id
+  };
+
+  const token = jwt.sign(userForAllBlogs, process.env.SECRET_KEY);
+  const unauthorizedToken = jwt.sign(userForNoBlogs, process.env.SECRET_KEY);
+
   globals.token = `Bearer ${token}`;
-  globals.tokenId = userForToken.id;
+  globals.tokenId = userForAllBlogs.id;
+  globals.unauthorizedToken = `Bearer ${unauthorizedToken}`;
 
   const validUserId = savedUsers[0].id;
 
@@ -222,7 +232,7 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
   });
 
   test("fails with status 404 if the blog doesn't exist", async () => {
-    const deletedValidId = await helper.getDeletedValidId();
+    const deletedValidId = await helper.getDeletedValidBlogId();
     await api.get(`/api/blogs/${deletedValidId}`).expect(404);
   });
 
@@ -250,7 +260,7 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
 
 // TEST CREATING BLOGS
 describe("Sending a blog: POST /api/blogs", () => {
-  test("fails with status 401 if unauthorized", async () => {
+  test("fails with status 401 if unauthenticated", async () => {
     const newBlog = new Blog(helper.validBlog);
 
     await api
@@ -259,7 +269,7 @@ describe("Sending a blog: POST /api/blogs", () => {
       .expect(401);
   });
 
-  test("fails with status 400 if authorized but the blog is invalid", async () => {
+  test("fails with status 400 if the blog is invalid", async () => {
     let newBlog = new Blog(helper.blogWithMissingTitle);
 
     await api
@@ -283,7 +293,7 @@ describe("Sending a blog: POST /api/blogs", () => {
     test("with the new blog saved to db", async () => {
       const newBlog = new Blog(helper.validBlog);
 
-      await api
+      const response = await api
         .post("/api/blogs")
         .set("Authorization", globals.token)
         .set("Content-Type", "application/json")
@@ -293,8 +303,8 @@ describe("Sending a blog: POST /api/blogs", () => {
 
       const blogsAtEnd = await helper.getBlogsInDb();
       expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1);
-      const titles = blogsAtEnd.map(blog => blog.title);
-      expect(titles).toContain(helper.validBlog.title);
+      const blogIds = blogsAtEnd.map(blog => blog.id);
+      expect(blogIds).toContain(response.body.id);
     });
 
     test("and the saved blog referencing the user who added it", async () => {
@@ -327,25 +337,51 @@ describe("Sending a blog: POST /api/blogs", () => {
 
 // TEST DELETING BLOG MEMBERS
 describe("Deleting specific blog member: DELETE /api/blogs/id", () => {
-  test("fails with status 400 if the id is invalid", async () => {
+  test("fails with status 401 if unauthenticated", async () => {
+    const blogsAtStart = await helper.getBlogsInDb();
+    const blogToDelete = blogsAtStart[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(401);
+  });
+
+  test("fails with status 400 if id is invalid", async () => {
     const invalidId = "spamandeggsandspam";
-    await api.delete(`/api/blogs/${invalidId}`).expect(400);
+    await api
+      .delete(`/api/blogs/${invalidId}`)
+      .set("Authorization", globals.token)
+      .expect(400);
+  });
+
+  test("fails with status 403 if the blog doesnt ref auth user", async () => {
+    const blogsAtStart = await helper.getBlogsInDb();
+    const blogToDelete = blogsAtStart[0];
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", globals.unauthorizedToken)
+      .expect(403);
   });
 
   test("receives status 404 if the blog doesn't exist", async () => {
-    const deletedValidId = await helper.getDeletedValidId();
-    await api.delete(`/api/blogs/${deletedValidId}`).expect(404);
+    const deletedValidId = await helper.getDeletedValidBlogId();
+    await api
+      .delete(`/api/blogs/${deletedValidId}`)
+      .set("Authorization", globals.token)
+      .expect(404);
   });
 
   test("deletes the blog member with that id if valid", async () => {
-    const blogsatStart = await helper.getBlogsInDb();
-    const blogToDelete = blogsatStart[0];
+    const blogsAtStart = await helper.getBlogsInDb();
+    const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", globals.token)
+      .expect(204);
 
     const blogsAtEnd = await helper.getBlogsInDb();
-    const titles = blogsAtEnd.map(blog => blog.title);
-    expect(titles).not.toContain(blogToDelete.title);
+    const blogIds = blogsAtEnd.map(blog => blog.id);
+    expect(blogIds).not.toContain(blogToDelete.id);
   });
 });
 
@@ -376,7 +412,7 @@ describe("Replacing specific blog member: PUT /api/blogs/id", () => {
   });
 
   test("receives status 404 if the blog doesn't exist", async () => {
-    const deletedValidId = await helper.getDeletedValidId();
+    const deletedValidId = await helper.getDeletedValidBlogId();
     await api.put(`/api/blogs/${deletedValidId}`).expect(404);
   });
 

@@ -6,11 +6,11 @@ morgan.token("data", req => {
   const { body } = req;
 
   if (body.password) {
-    body.password = "*".repeat(body.password.length);
+    body.password = "*".repeat(8);
   }
 
   if (body.token) {
-    body.token = "*".repeat(body.token.length);
+    body.token = "*".repeat(5);
   }
 
   return JSON.stringify(body);
