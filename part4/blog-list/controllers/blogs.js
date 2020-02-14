@@ -88,21 +88,35 @@ blogsRouter.delete("/:id", async (req, res, next) => {
 });
 
 blogsRouter.put("/:id", async (req, res, next) => {
-  const { body } = req;
+  const { body, token } = req;
 
   try {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    if (!token || !decodedToken.id) {
+      throw new ErrorHelper(401, "Authentication Error", [
+        "Invalid or missing authentication token"
+      ]);
+    }
+
     const blog = await Blog.findById(req.params.id);
-    if (blog) {
+    if (!blog) return res.status(404).end();
+
+    const belongsToUser = blog.user.toString() === decodedToken.id;
+
+    if (belongsToUser) {
+      blog.author = body.author || "";
       blog.title = body.title;
       blog.url = body.url;
-      blog.likes = body.likes;
+      blog.likes = body.likes || blog.likes;
       await blog.save();
-      res.status(200).end();
-    } else {
-      res.status(404).end();
+      return res.status(200).end();
     }
+
+    throw new ErrorHelper(403, "Forbidden", [
+      "User is not permitted to modify this resource"
+    ]);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 });
 
