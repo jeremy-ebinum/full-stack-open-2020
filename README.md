@@ -28,4 +28,9 @@ This repository contains excercise solutions to the 2019 edition of the Full Sta
 Part 3 serves as a backend written in express and node for Part 2's React UI\
 Code from [Part 2](<(https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part2)>) has been updated to work with the backend during the course of the exercises in Part 3\
 Exercises for Part 3 can be found in a separate repository\
-[Go to Part 3 Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019-part3)
+[Go to Part 3 Solution](https://github.com/jeremy-ebinum/full-stack-open-2019-part3)
+
+## Part 4 - [Testing Express servers, user administration](https://fullstackopen.com/en/part4)
+
+Part 4 is a backend api written with node express that allows users catalogue blog posts or articles\
+[Go to Part 4 Solution](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part4/bloglist-backend)
