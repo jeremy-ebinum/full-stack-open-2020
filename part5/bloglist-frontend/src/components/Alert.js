@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 //  run the timeoutFunc after a given period with useEffect hook
-const Alert = ({ timeoutFunc, id, type, message }) => {
+const Alert = ({ timeoutFunc, id, type, message, contextClass }) => {
   const alertTypes = {
     error: "c-alert--error",
     success: "c-alert--success",
@@ -13,10 +13,10 @@ const Alert = ({ timeoutFunc, id, type, message }) => {
   useEffect(() => {
     const removeAlert = () => timeoutFunc(id);
     setTimeout(removeAlert, 3000);
-  });
+  }, [id, timeoutFunc]);
 
   return (
-    <div className={`c-alert ${alertTypes[type]}`}>
+    <div className={`c-alert ${alertTypes[type]} ${contextClass}`}>
       <span className="c-alert__txt">{message}</span>
     </div>
   );

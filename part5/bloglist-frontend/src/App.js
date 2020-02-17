@@ -1,34 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import uniqueRandom from "unique-random";
+import loginService from "./services/login";
+import blogsService from "./services/blogs";
+import NavBar from "./components/NavBar";
 import AlertList from "./components/AlertList";
 import Login from "./components/Login";
 import ModalSpinner from "./components/ModalSpinner";
+import BlogList from "./components/BlogList";
 
 const random = uniqueRandom(1, 10000);
 
 function App() {
   const [alerts, setAlerts] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showModalSpinner, setShowModalSpinner] = useState(false);
 
-  const handleLogin = event => {
-    event.preventDefault();
-    console.log(`Logging in with ${username} and ${password}`);
+  useEffect(() => {
+    const setInitialBlogs = async () => {
+      const initialBlogs = await blogsService.getAll();
+      setBlogs(initialBlogs);
+    };
 
+    setInitialBlogs();
+  }, []);
+
+  useEffect(() => {
+    const rootStyle = document.documentElement.style;
+    if (user) {
+      rootStyle.setProperty("--body-bg-color", "var(--light-color)");
+    } else {
+      rootStyle.setProperty("--body-bg-color", "var(--primary-color-faded)");
+    }
+  }, [user]);
+
+  const handleLogin = async event => {
+    event.preventDefault();
     setShowModalSpinner(true);
 
-    queueAlerts([
-      {
-        type: "info",
-        message: `Logged in as ${username}`
-      }
-    ]);
+    try {
+      const user = await loginService.login({
+        username,
+        password
+      });
 
-    setUsername("");
-    setPassword("");
+      blogsService.setToken(user.token);
+      setUser(user);
+      queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
+    } catch (error) {
+      const errorMessage = error.response.data.error.message;
+      queueAlerts([{ type: "error", message: `${errorMessage}` }]);
+    } finally {
+      setShowModalSpinner(false);
+      setUsername("");
+      setPassword("");
+    }
+  };
+
+  const handleLogout = event => {
+    blogsService.setToken(null);
+    setUser(null);
+    queueAlerts([{ type: "info", message: "Logged out" }]);
   };
 
   const loginProps = {
@@ -42,8 +77,18 @@ function App() {
     handleSubmit: event => handleLogin(event)
   };
 
+  /**
+   * Add new alerts to the alerts state
+   *
+   * @param {Object[]} newAlerts - An array of alerts to be transformed
+   * @param {string} newAlerts[].type - "info" or "error" or "success"
+   * @param {string} newAlerts[].message - The alert message
+   */
   const queueAlerts = newAlerts => {
-    const timeoutFunc = id => setAlerts(alerts.filter(a => a.id !== id));
+    // Remove the current alert being queued
+    const timeoutFunc = id => {
+      setAlerts(currentAlerts => currentAlerts.filter(a => a.id !== id));
+    };
 
     const alertsWithTimeout = newAlerts.map(a => {
       return {
@@ -56,11 +101,35 @@ function App() {
     setAlerts(alerts.concat(...alertsWithTimeout));
   };
 
+  let blogsToShow;
+  if (user) {
+    blogsToShow = blogs.filter(blog => blog.user.username === user.username);
+  } else {
+    blogsToShow = [];
+  }
+
   return (
     <div className="o-container js-container">
-      <AlertList alerts={alerts} />
+      {!user && (
+        <>
+          <AlertList contextClass={"c-alert--inLogin"} alerts={alerts} />
+          <Login {...loginProps} />
+        </>
+      )}
 
-      {!user && <Login {...loginProps} />}
+      {user && (
+        <>
+          <NavBar
+            handleLogout={event => handleLogout(event)}
+            brand="Blog List"
+            name={`${user.name}`}
+          />
+          <div className="c-blogs">
+            <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
+            <BlogList blogs={blogsToShow} />
+          </div>
+        </>
+      )}
 
       {showModalSpinner && <ModalSpinner />}
     </div>

@@ -9,6 +9,7 @@ const AlertList = props => {
         key={alert.id}
         id={alert.id}
         type={alert.type}
+        contextClass={props.contextClass}
         message={alert.message}
       ></Alert>
     );

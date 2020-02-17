@@ -1,9 +1,9 @@
 /* VARIABLES
 *******************************************************************************/
 :root {
-  --max-page-w: 1600px;
+  --max-page-w: 1440px;
   --body-overflow: unset;
-  --primary-color: #1a535b;
+  --primary-color: hsl(187, 56%, 23%);
   --primary-color-accent: hsl(188, 56%, 18%);
   --primary-color-faded: rgba(4, 12, 14, 0.75);
   --success-color: #335b1a;
@@ -11,13 +11,16 @@
   --danger-color: #833125;
   --light-color: hsl(240, 100%, 99%);
   --dark-color: hsl(0, 0%, 0%);
-  --body-bg-color: hsl(210, 13%, 50%);
+  --body-bg-color: var(--primary-color-faded);
   --modal-bg-color: hsla(188, 56%, 23%, 50%);
   --modal-spinner-size: 3.5rem;
-  --content-w: 305px;
+  --login-w: 305px;
   --input-font-size: 0.85rem;
   --alert-padding: 0.4rem 0.3rem;
   --alert-font-size: 1rem;
+  --navbar-bg-color: hsl(188, 56%, 8%);
+  --navbar-padding: 0.5rem 1rem;
+  --navbar-brand-font-size: 1.5rem;
 }
 
 /* RESETS
@@ -32,8 +35,20 @@
 *******************************************************************************/
 @font-face {
   font-family: "Dosis";
+  src: url("./fonts/Dosis-Light.woff2") format("woff2");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Dosis";
   src: url("./fonts/Dosis-Medium.woff2") format("woff2");
   font-weight: 500;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("./fonts/Roboto-Light-webfont.woff") format("woff");
+  font-weight: 300;
 }
 
 @font-face {
@@ -61,7 +76,6 @@ body {
 .o-wrapper {
   min-height: 100vh;
   width: 100%;
-  max-width: var(--max-page-w);
 }
 
 .o-wrapper.o-container--hasModal {
@@ -74,12 +88,21 @@ body {
   align-items: center;
 }
 
+/* UTILITIES
+*******************************************************************************/
+.u-lead {
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  letter-spacing: 1px;
+}
+
 /* COMPONENTS
 *******************************************************************************/
 
 /* Alert Components will be created dynamically with JavaScript */
 .c-alert {
-  width: var(--content-w);
   background: #000;
   color: #fff;
   font-family: "Dosis";
@@ -88,6 +111,15 @@ body {
   padding: var(--alert-padding);
   margin-top: 0.5rem;
   font-size: var(--alert-font-size);
+}
+
+.c-alert.c-alert--inLogin {
+  width: var(--login-w);
+}
+
+.c-alert.c-alert--inBlog {
+  width: 90%;
+  margin: 0.5rem auto;
 }
 
 .c-alert.c-alert--error {
@@ -105,6 +137,7 @@ body {
   color: var(--light-color);
 }
 
+/* Modal Component */
 .c-modal {
   display: flex;
   justify-content: center;
@@ -124,6 +157,7 @@ body {
   align-items: center;
 }
 
+/* Spinner to indicate loading */
 .c-spinner {
   color: var(--light-color);
 }
@@ -132,6 +166,7 @@ body {
   font-size: var(--modal-spinner-size);
 }
 
+/* Button Component */
 .c-btn {
   text-align: center;
   border: none;
@@ -156,6 +191,18 @@ body {
   background: hsl(0, 0%, 10%);
 }
 
+.c-btn.c-btn--light-outline {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  border: 1px solid var(--light-color);
+}
+
+.c-btn.c-btn--light-outline:hover {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  border: 1px solid var(--light-color);
+}
+
 .c-btn.c-btn--primary {
   background: var(--primary-color);
 }
@@ -164,6 +211,7 @@ body {
   background: var(--primary-color-accent);
 }
 
+/* Input Row */
 .c-row {
   display: flex;
   flex-direction: column;
@@ -194,6 +242,7 @@ body {
   position: relative;
 }
 
+/* Input Addon */
 .c-input-addon {
   display: flex;
   align-items: center;
@@ -218,6 +267,7 @@ body {
   color: hsla(148, 6%, 52%, 100%);
 }
 
+/* Login Component */
 .c-login {
   background: var(--light-color);
   border: 1px solid var(--secondary-color);
@@ -225,7 +275,7 @@ body {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  width: var(--content-w);
+  width: var(--login-w);
   font-family: "Dosis";
 }
 
@@ -253,22 +303,116 @@ body {
   height: 45px;
 }
 
+/* Navbar Component */
+.c-navbar {
+  width: 100vw;
+  background-color: var(--navbar-bg-color);
+  color: var(--light-color);
+}
+
+.c-navbar__content {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--max-page-w);
+  padding: var(--navbar-padding);
+}
+
+.c-navbar__brand {
+  font-family: "Roboto";
+  font-weight: 700;
+  font-size: var(--navbar-brand-font-size);
+  text-transform: uppercase;
+}
+
+.c-navbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-navbar__userinfo {
+  font-weight: 300;
+  margin-right: 1rem;
+}
+.c-navbar__usericon {
+  margin-right: 0.5rem;
+}
+
+.c-navbar__logout {
+  font-weight: 700;
+  font-size: 0.8rem;
+  width: 65px;
+  height: 25px;
+}
+
+/* Blogs Page */
+.c-blogs {
+  width: 100%;
+  max-width: var(--max-page-w);
+  background-color: var(--light-color);
+  font-family: "Roboto";
+}
+
+/* BlogList component */
+.c-blogs__list {
+  padding: 1rem;
+}
+
+.c-blogs__heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-faded);
+}
+
+/* Single Blog Entry */
+.c-blog {
+  background-color: hsl(210, 13%, 95%);
+  font-family: "Dosis";
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  border-radius: 2px;
+  width: fit-content;
+}
+
+.c-blog__link {
+  text-decoration: none;
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+.c-blog__link:hover {
+  text-decoration: underline;
+}
+
+.c-blog__author {
+  margin-right: 0.5rem;
+  font-weight: 300;
+}
+
+/* MEDIA QUERIES
+*******************************************************************************/
 @media (min-width: 360px) {
   :root {
-    --content-w: 345px;
+    --login-w: 345px;
   }
 }
 
 @media (min-width: 400px) {
   :root {
-    --content-w: 380px;
+    --login-w: 380px;
   }
 }
 
 @media (min-width: 480px) {
   :root {
     --modal-spinner-size: 4rem;
-    --content-w: 450px;
+    --login-w: 450px;
     --input-font-size: 0.9rem;
   }
 }
@@ -279,12 +423,34 @@ body {
     --modal-spinner-size: 6rem;
     --alert-padding: 0.5rem 0.35rem;
     --alert-font-size: 1.2rem;
-    --content-w: 500px;
+    --login-w: 500px;
+    --navbar-padding: 1.5rem;
+    --navbar-brand-font-size: 1.7rem;
+  }
+
+  .c-navbar__content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .c-navbar__userinfo {
+    font-weight: 300;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+  }
+  .c-navbar__usericon {
+    margin-right: 0.5rem;
+  }
+
+  .c-navbar__logout {
+    font-weight: 700;
+    font-size: 1rem;
+    width: 100px;
+    height: 30px;
   }
 
   .c-login__header {
     justify-content: center;
-    font-size: 1.5rem;
     text-transform: uppercase;
   }
 
@@ -297,7 +463,46 @@ body {
     width: 70%;
     height: 50px;
   }
+
+  .c-blogs__list {
+    padding: 1.5rem;
+  }
+
+  .c-blogs__heading {
+    font-size: 1.7rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .c-blog {
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    border-radius: 4px;
+  }
+
+  .c-blog__link {
+    margin-right: 0.75rem;
+  }
+
+  .c-blog-author {
+    margin-right: 0.75rem;
+  }
 }
 
 @media (min-width: 1024px) {
+  :root {
+    --navbar-padding: 1.5rem 2rem;
+    --navbar-brand-font-size: 1.8rem;
+  }
+
+  .c-blogs__list {
+    padding: 1.5rem 2rem;
+  }
+
+  .c-blogs__heading {
+    font-size: 1.9rem;
+  }
+
+  .c-blog {
+    font-size: 1.2rem;
+  }
 }
