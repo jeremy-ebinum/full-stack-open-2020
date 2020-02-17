@@ -2,12 +2,15 @@
 *******************************************************************************/
 :root {
   --max-page-w: 1600px;
+  --body-overflow: unset;
   --primary-color: hsl(188, 56%, 23%);
   --primary-color-accent: hsl(188, 56%, 18%);
   --primary-color-faded: rgba(4, 12, 14, 0.75);
   --light-color: hsl(240, 100%, 99%);
   --dark-color: hsl(0, 0%, 0%);
   --body-bg-color: hsl(210, 13%, 50%);
+  --modal-bg-color: hsla(188, 56%, 23%, 50%);
+  --modal-spinner-size: 3.5rem;
   --login-w: 305px;
 }
 
@@ -44,6 +47,7 @@
 body {
   background-color: var(--body-bg-color);
   font-size: 16px;
+  overflow: var(--body-overflow, unset);
 }
 
 /* OBJECTS
@@ -54,6 +58,10 @@ body {
   max-width: var(--max-page-w);
 }
 
+.o-wrapper.o-container--hasModal {
+  position: relative;
+}
+
 .o-container {
   display: flex;
   flex-direction: column;
@@ -62,6 +70,33 @@ body {
 
 /* COMPONENTS
 *******************************************************************************/
+
+.c-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--modal-bg-color);
+  z-index: 9999;
+}
+
+.c-modal__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-spinner {
+  color: var(--light-color);
+}
+
+.c-spinner.c-spinner--inModal {
+  font-size: var(--modal-spinner-size);
+}
 
 .c-btn {
   text-align: center;
@@ -198,12 +233,14 @@ body {
 
 @media (min-width: 480px) {
   :root {
+    --modal-spinner-size: 4rem;
     --login-w: 450px;
   }
 }
 
 @media (min-width: 768px) {
   :root {
+    --modal-spinner-size: 6rem;
     --login-w: 500px;
   }
 

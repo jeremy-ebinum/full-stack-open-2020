@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import Login from "./components/Login";
+import ModalSpinner from "./components/ModalSpinner";
 
 function App() {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showModalSpinner, setShowModalSpinner] = useState(false);
 
   const handleLogin = event => {
-    console.log(`Logging in with ${username} and ${password}`);
     event.preventDefault();
+    console.log(`Logging in with ${username} and ${password}`);
+
+    setShowModalSpinner(true);
+    setUsername("");
+    setPassword("");
   };
 
   const loginProps = {
@@ -24,7 +30,11 @@ function App() {
   };
 
   return (
-    <div className="o-container">{!user && <Login {...loginProps} />}</div>
+    <div className="o-container js-container">
+      {!user && <Login {...loginProps} />}
+
+      {showModalSpinner && <ModalSpinner />}
+    </div>
   );
 }
 
