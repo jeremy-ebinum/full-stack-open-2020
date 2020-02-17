@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import uniqueRandom from "unique-random";
+import AlertList from "./components/AlertList";
 import Login from "./components/Login";
 import ModalSpinner from "./components/ModalSpinner";
 
+const random = uniqueRandom(1, 10000);
+
 function App() {
+  const [alerts, setAlerts] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +19,14 @@ function App() {
     console.log(`Logging in with ${username} and ${password}`);
 
     setShowModalSpinner(true);
+
+    queueAlerts([
+      {
+        type: "info",
+        message: `Logged in as ${username}`
+      }
+    ]);
+
     setUsername("");
     setPassword("");
   };
@@ -29,8 +42,24 @@ function App() {
     handleSubmit: event => handleLogin(event)
   };
 
+  const queueAlerts = newAlerts => {
+    const timeoutFunc = id => setAlerts(alerts.filter(a => a.id !== id));
+
+    const alertsWithTimeout = newAlerts.map(a => {
+      return {
+        ...a,
+        id: `${a.type}-${random()}`,
+        timeoutFunc: timeoutFunc
+      };
+    });
+
+    setAlerts(alerts.concat(...alertsWithTimeout));
+  };
+
   return (
     <div className="o-container js-container">
+      <AlertList alerts={alerts} />
+
       {!user && <Login {...loginProps} />}
 
       {showModalSpinner && <ModalSpinner />}

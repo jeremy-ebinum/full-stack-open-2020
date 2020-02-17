@@ -3,15 +3,21 @@
 :root {
   --max-page-w: 1600px;
   --body-overflow: unset;
-  --primary-color: hsl(188, 56%, 23%);
+  --primary-color: #1a535b;
   --primary-color-accent: hsl(188, 56%, 18%);
   --primary-color-faded: rgba(4, 12, 14, 0.75);
+  --success-color: #335b1a;
+  --info-color: #257783;
+  --danger-color: #833125;
   --light-color: hsl(240, 100%, 99%);
   --dark-color: hsl(0, 0%, 0%);
   --body-bg-color: hsl(210, 13%, 50%);
   --modal-bg-color: hsla(188, 56%, 23%, 50%);
   --modal-spinner-size: 3.5rem;
-  --login-w: 305px;
+  --content-w: 305px;
+  --input-font-size: 0.85rem;
+  --alert-padding: 0.4rem 0.3rem;
+  --alert-font-size: 1rem;
 }
 
 /* RESETS
@@ -70,6 +76,34 @@ body {
 
 /* COMPONENTS
 *******************************************************************************/
+
+/* Alert Components will be created dynamically with JavaScript */
+.c-alert {
+  width: var(--content-w);
+  background: #000;
+  color: #fff;
+  font-family: "Dosis";
+  font-weight: 500;
+  text-align: center;
+  padding: var(--alert-padding);
+  margin-top: 0.5rem;
+  font-size: var(--alert-font-size);
+}
+
+.c-alert.c-alert--error {
+  background-color: var(--danger-color);
+  color: var(--light-color);
+}
+
+.c-alert.c-alert--success {
+  background-color: var(--success-color);
+  color: var(--light-color);
+}
+
+.c-alert.c-alert--info {
+  background-color: var(--info-color);
+  color: var(--light-color);
+}
 
 .c-modal {
   display: flex;
@@ -145,7 +179,7 @@ body {
   padding: 0.25rem 1rem;
   font-family: "Roboto";
   font-weight: 400;
-  font-size: 1rem;
+  font-size: var(--input-font-size);
   width: 85%;
   height: 45px;
   transition: all 0.1s ease-in;
@@ -188,10 +222,10 @@ body {
   background: var(--light-color);
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  width: var(--login-w);
+  width: var(--content-w);
   font-family: "Dosis";
 }
 
@@ -221,27 +255,31 @@ body {
 
 @media (min-width: 360px) {
   :root {
-    --login-w: 345px;
+    --content-w: 345px;
   }
 }
 
 @media (min-width: 400px) {
   :root {
-    --login-w: 380px;
+    --content-w: 380px;
   }
 }
 
 @media (min-width: 480px) {
   :root {
     --modal-spinner-size: 4rem;
-    --login-w: 450px;
+    --content-w: 450px;
+    --input-font-size: 0.9rem;
   }
 }
 
 @media (min-width: 768px) {
   :root {
+    --input-font-size: 1rem;
     --modal-spinner-size: 6rem;
-    --login-w: 500px;
+    --alert-padding: 0.5rem 0.35rem;
+    --alert-font-size: 1.2rem;
+    --content-w: 500px;
   }
 
   .c-login__header {

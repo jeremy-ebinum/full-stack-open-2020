@@ -9,6 +9,7 @@ dependencies:
   react: 16.12.0
   react-dom: 16.12.0_react@16.12.0
   react-scripts: 3.4.0
+  unique-random: 2.1.0
 devDependencies:
   eslint-config-airbnb: 18.0.1
   eslint-config-prettier: 6.10.0
@@ -10475,6 +10476,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Vmp0jIp2ln35UTXuryvjzkjGdRyf9b2lTXuSYUiPmzRcl3FDtYqAwOnTJkAngD9SWhnoJzDbTKwaOrZ+STtxNQ==
+  /unique-random/2.1.0:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-iQ1ZgWac3b8YxGThecQFRQiqgk6xFERRwHZIWeVVsqlbmgCRl0PY13R4mUkodNgctmg5b5odG1nyW/IbOxQTqg==
   /unique-slug/2.0.2:
     dependencies:
       imurmurhash: 0.1.4
@@ -11170,3 +11177,4 @@ specifiers:
   react: ^16.12.0
   react-dom: ^16.12.0
   react-scripts: 3.4.0
+  unique-random: ^2.1.0
