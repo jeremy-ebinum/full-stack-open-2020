@@ -18,14 +18,26 @@ function App() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showModalSpinner, setShowModalSpinner] = useState(false);
+  const [showNavbarSpinner, setShowNavbarSpinner] = useState(false);
 
   useEffect(() => {
     const setInitialBlogs = async () => {
+      setShowNavbarSpinner(true);
       const initialBlogs = await blogsService.getAll();
       setBlogs(initialBlogs);
+      setShowNavbarSpinner(false);
     };
 
     setInitialBlogs();
+  }, []);
+
+  useEffect(() => {
+    const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
+    if (loggedInBloglistUser) {
+      const user = JSON.parse(loggedInBloglistUser);
+      setUser(user);
+      blogsService.setToken(user.token);
+    }
   }, []);
 
   useEffect(() => {
@@ -49,6 +61,7 @@ function App() {
 
       blogsService.setToken(user.token);
       setUser(user);
+      localStorage.setItem("loggedInBloglistUser", JSON.stringify(user));
       queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
     } catch (error) {
       const errorMessage = error.response.data.error.message;
@@ -63,6 +76,7 @@ function App() {
   const handleLogout = event => {
     blogsService.setToken(null);
     setUser(null);
+    localStorage.removeItem("loggedInBloglistUser");
     queueAlerts([{ type: "info", message: "Logged out" }]);
   };
 
@@ -121,8 +135,9 @@ function App() {
         <>
           <NavBar
             handleLogout={event => handleLogout(event)}
-            brand="Blog List"
-            name={`${user.name}`}
+            brandTitle="Blog List"
+            nameOfLoggedInUser={`${user.name}`}
+            showSpinner={showNavbarSpinner}
           />
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />

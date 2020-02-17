@@ -341,6 +341,14 @@ body {
   margin-right: 0.5rem;
 }
 
+.c-navbar__spinner {
+  margin-left: 0.5rem;
+}
+
+.c-navbar__spinner.isHidden {
+  display: none;
+}
+
 .c-navbar__logout {
   font-weight: 700;
   font-size: 0.8rem;

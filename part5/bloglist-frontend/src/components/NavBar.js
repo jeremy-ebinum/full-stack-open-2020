@@ -1,20 +1,32 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const NavBar = props => {
+const NavBar = ({
+  nameOfLoggedInUser,
+  brandTitle,
+  showSpinner,
+  handleLogout
+}) => {
+  const spinnerClass = `c-navbar__spinner ${showSpinner ? "" : "isHidden"}`;
+
   return (
     <div className="c-navbar">
       <div className="c-navbar__content">
-        <span className="c-navbar__brand">{props.brand}</span>
+        <span className="c-navbar__brand">{brandTitle}</span>
         <div className="c-navbar__actions">
           <div className="c-navbar__userinfo">
             <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
-            {props.name}
+            {nameOfLoggedInUser}
+            <FontAwesomeIcon
+              className={spinnerClass}
+              icon={faCircleNotch}
+              spin
+            />
           </div>
           <div className="c-navbar__logout">
             <button
-              onClick={props.handleLogout}
+              onClick={handleLogout}
               className="c-btn c-btn--light-outline"
             >
               Logout

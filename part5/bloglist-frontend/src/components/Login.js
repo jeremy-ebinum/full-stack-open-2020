@@ -24,7 +24,7 @@ const Login = props => {
 
   return (
     <form className="c-login" onSubmit={props.handleSubmit}>
-      <div className="c-login__header">Login to Service</div>
+      <div className="c-login__header">Login to Application</div>
       <div className="c-login__body">
         <div className="c-row">
           <input
@@ -49,7 +49,7 @@ const Login = props => {
         </div>
         <div className="c-login__button">
           <button type="submit" className="c-btn c-btn--primary">
-            Sign In
+            Login
           </button>
         </div>
       </div>
