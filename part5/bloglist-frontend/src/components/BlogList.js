@@ -8,7 +8,7 @@ const BlogList = props => {
 
   return (
     <div className="c-blogs__list">
-      <h1 className="c-blogs__heading">Blogs</h1>
+      <h2 className="c-blogs__heading">Blogs</h2>
       {!blogs.length && <p className="u-lead">No Blogs have been added yet</p>}
       {blogs}
     </div>

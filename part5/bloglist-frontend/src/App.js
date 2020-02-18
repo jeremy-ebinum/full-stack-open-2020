@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import AlertList from "./components/AlertList";
 import Login from "./components/Login";
 import ModalSpinner from "./components/ModalSpinner";
+import BlogForm from "./components/BlogForm";
 import BlogList from "./components/BlogList";
 
 const random = uniqueRandom(1, 10000);
@@ -17,6 +18,9 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogAuthor, setBlogAuthor] = useState("");
+  const [blogUrl, setBlogUrl] = useState("");
   const [showModalSpinner, setShowModalSpinner] = useState(false);
   const [showNavbarSpinner, setShowNavbarSpinner] = useState(false);
 
@@ -91,6 +95,21 @@ function App() {
     handleSubmit: event => handleLogin(event)
   };
 
+  const addBlog = async event => {
+    event.preventDefault();
+    console.log(`Adding Blog ${blogTitle}`);
+  };
+
+  const blogFormProps = {
+    titleValue: blogTitle,
+    authorValue: blogAuthor,
+    urlValue: blogUrl,
+    handleTitleChange: ({ target }) => setBlogTitle(target.value),
+    handleAuthorChange: ({ target }) => setBlogAuthor(target.value),
+    handleUrlChange: ({ target }) => setBlogUrl(target.value),
+    handleSubmit: event => addBlog(event)
+  };
+
   /**
    * Add new alerts to the alerts state
    *
@@ -141,6 +160,7 @@ function App() {
           />
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
+            <BlogForm {...blogFormProps} />
             <BlogList blogs={blogsToShow} />
           </div>
         </>

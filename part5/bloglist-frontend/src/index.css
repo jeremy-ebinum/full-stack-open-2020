@@ -7,6 +7,7 @@
   --primary-color-accent: hsl(188, 56%, 18%);
   --primary-color-faded: rgba(4, 12, 14, 0.75);
   --success-color: #335b1a;
+  --success-color-accent: hsl(97, 56%, 33%);
   --info-color: #257783;
   --danger-color: #833125;
   --light-color: hsl(240, 100%, 99%);
@@ -211,6 +212,14 @@ body {
   background: var(--primary-color-accent);
 }
 
+.c-btn.c-btn--success {
+  background: var(--success-color);
+}
+
+.c-btn.c-btn--success:hover {
+  background: var(--success-color-accent);
+}
+
 /* Input Row */
 .c-row {
   display: flex;
@@ -218,6 +227,23 @@ body {
   align-items: center;
   width: 100%;
   margin-bottom: 1.5rem;
+}
+
+.c-row.c-row--inBlog {
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.c-row.c-row--hasAddon {
+  position: relative;
+}
+
+.c-row__label {
+  font-family: "Dosis";
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 0.25rem;
 }
 
 .c-row__input {
@@ -238,8 +264,9 @@ body {
   box-shadow: 1px 2px 0 0 var(--primary-color-faded);
 }
 
-.c-row.c-row--hasAddon {
-  position: relative;
+.c-row__input.c-row__input--inBlog {
+  width: 90%;
+  height: 35px;
 }
 
 /* Input Addon */
@@ -368,9 +395,29 @@ body {
   font-family: "Roboto";
 }
 
+/* BlogForm component */
+.c-blog-form {
+  padding: 0 1rem;
+  margin-top: 1rem;
+}
+
+.c-blog-form__heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-faded);
+}
+
+.c-blog-form__submit {
+  font-size: 0.9rem;
+  width: 80px;
+  height: 35px;
+}
+
 /* BlogList component */
 .c-blogs__list {
-  padding: 1rem;
+  padding: 0 1rem;
+  margin-top: 1rem;
 }
 
 .c-blogs__heading {
@@ -419,6 +466,12 @@ body {
   :root {
     --login-w: 380px;
   }
+
+  .c-blog-form__submit {
+    font-size: 0.9rem;
+    width: 100px;
+    height: 38px;
+  }
 }
 
 @media (min-width: 480px) {
@@ -426,6 +479,18 @@ body {
     --modal-spinner-size: 4rem;
     --login-w: 450px;
     --input-font-size: 0.9rem;
+  }
+
+  .c-row__input.c-row__input--inBlog {
+    width: 80%;
+    max-width: 520px;
+    height: 35px;
+  }
+
+  .c-blog {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
   }
 }
 
@@ -476,8 +541,43 @@ body {
     height: 50px;
   }
 
+  .c-blog-form {
+    padding: 0 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .c-blog-form__heading {
+    font-size: 1.7rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .c-row.c-row--inBlog {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .c-row__label {
+    font-size: 1.1rem;
+    text-align: right;
+    flex: 50px 0 0;
+    margin-right: 0.75rem;
+  }
+
+  .c-blog-form__submit {
+    font-size: 1rem;
+    width: 120px;
+    height: 40px;
+    margin-left: calc(50px + 00.75rem);
+  }
+
+  .c-row__input.c-row__input--inBlog {
+    flex: auto 1 0;
+    width: 65%;
+  }
+
   .c-blogs__list {
-    padding: 1.5rem;
+    padding: 0 1.5rem;
+    margin-top: 2rem;
   }
 
   .c-blogs__heading {
@@ -506,8 +606,25 @@ body {
     --navbar-brand-font-size: 1.8rem;
   }
 
+  .c-blog-form {
+    padding: 0 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .c-blog-form__heading {
+    font-size: 1.9rem;
+  }
+
+  .c-row__input.c-row__input--inBlog {
+    flex: auto 1 0;
+    width: 70%;
+    max-width: 540px;
+    height: 40px;
+  }
+
   .c-blogs__list {
-    padding: 1.5rem 2rem;
+    padding: 0 2rem;
+    margin-top: 3rem;
   }
 
   .c-blogs__heading {
