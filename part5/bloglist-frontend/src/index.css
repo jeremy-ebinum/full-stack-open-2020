@@ -8,7 +8,8 @@
   --primary-color-faded: rgba(4, 12, 14, 0.75);
   --success-color: #335b1a;
   --success-color-accent: hsl(97, 56%, 33%);
-  --info-color: #257783;
+  --info-color: hsl(188, 56%, 33%);
+  --info-color-accent: hsl(188, 56%, 38%);
   --danger-color: #833125;
   --light-color: hsl(240, 100%, 99%);
   --dark-color: hsl(0, 0%, 0%);
@@ -19,7 +20,6 @@
   --input-font-size: 0.85rem;
   --alert-padding: 0.4rem 0.3rem;
   --alert-font-size: 1rem;
-  --navbar-bg-color: hsl(188, 56%, 8%);
   --navbar-padding: 0.5rem 1rem;
   --navbar-brand-font-size: 1.5rem;
 }
@@ -44,12 +44,6 @@
   font-family: "Dosis";
   src: url("./fonts/Dosis-Medium.woff2") format("woff2");
   font-weight: 500;
-}
-
-@font-face {
-  font-family: "Roboto";
-  src: url("./fonts/Roboto-Light-webfont.woff") format("woff");
-  font-weight: 300;
 }
 
 @font-face {
@@ -120,7 +114,8 @@ body {
 
 .c-alert.c-alert--inBlog {
   width: 90%;
-  margin: 0.5rem auto;
+  max-width: 1200px;
+  margin: 0.25rem auto;
 }
 
 .c-alert.c-alert--error {
@@ -337,7 +332,12 @@ body {
 /* Navbar Component */
 .c-navbar {
   width: 100vw;
-  background-color: var(--navbar-bg-color);
+  background: linear-gradient(
+    45deg,
+    var(--primary-color),
+    var(--primary-color-accent) 40%,
+    var(--primary-color-faded)
+  );
   color: var(--light-color);
 }
 
@@ -355,6 +355,7 @@ body {
   font-weight: 700;
   font-size: var(--navbar-brand-font-size);
   text-transform: uppercase;
+  margin-bottom: 0.25rem;
 }
 
 .c-navbar__actions {
@@ -365,6 +366,7 @@ body {
 }
 
 .c-navbar__userinfo {
+  font-family: "Dosis";
   font-weight: 300;
   margin-right: 1rem;
 }
@@ -381,10 +383,11 @@ body {
 }
 
 .c-navbar__logout {
-  font-weight: 700;
-  font-size: 0.8rem;
-  width: 65px;
-  height: 25px;
+  font-family: "Dosis";
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 70px;
+  height: 24px;
 }
 
 /* Blogs Page */
@@ -402,14 +405,18 @@ body {
 }
 
 .c-blog-form__heading {
+  font-family: "Dosis";
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: var(--primary-color-faded);
+  color: var(--success-color);
+  text-shadow: 1px 1px 2px var(--primary-color-faded);
 }
 
 .c-blog-form__submit {
-  font-size: 0.9rem;
+  font-family: "Dosis";
+  font-weight: bold;
+  font-size: 1rem;
   width: 80px;
   height: 35px;
 }
@@ -421,10 +428,12 @@ body {
 }
 
 .c-blogs__heading {
+  font-family: "Dosis";
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: var(--primary-color-faded);
+  color: var(--info-color-accent);
+  text-shadow: 1px 2px 2px var(--primary-color-faded);
 }
 
 /* Single Blog Entry */
@@ -468,9 +477,7 @@ body {
   }
 
   .c-blog-form__submit {
-    font-size: 0.9rem;
     width: 100px;
-    height: 38px;
   }
 }
 
@@ -481,10 +488,22 @@ body {
     --input-font-size: 0.9rem;
   }
 
+  .c-navbar__content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .c-blog-form {
+    margin-top: 1.5rem;
+  }
+  .c-blogs__list {
+    margin-top: 2rem;
+  }
+
   .c-row__input.c-row__input--inBlog {
-    width: 80%;
+    width: 85%;
     max-width: 520px;
-    height: 35px;
+    height: 34px;
   }
 
   .c-blog {
@@ -505,13 +524,7 @@ body {
     --navbar-brand-font-size: 1.7rem;
   }
 
-  .c-navbar__content {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
   .c-navbar__userinfo {
-    font-weight: 300;
     margin-right: 1rem;
     font-size: 1.2rem;
   }
