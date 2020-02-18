@@ -248,9 +248,13 @@ body {
   align-items: center;
   position: absolute;
   top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.c-input-addon.c-input-addon--append {
   right: 7.5%;
   margin-right: 10px;
-  height: 100%;
 }
 
 .c-input-addon--isToggler {
