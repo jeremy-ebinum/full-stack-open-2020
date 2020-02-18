@@ -14,12 +14,10 @@ const handleError = (err, res) => {
     const { statusCode, kind, message, messages } = err;
 
     res.status(statusCode).json({
-      error: {
-        statusCode,
-        kind,
-        message,
-        messages
-      }
+      statusCode,
+      kind,
+      message,
+      messages
     });
   } catch (exception) {
     logger.error("IN handleError helper\n", exception.message);
