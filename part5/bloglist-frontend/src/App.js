@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import uniqueRandom from "unique-random";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
+import Toggleable from "./components/Toggleable";
 import NavBar from "./components/NavBar";
 import AlertList from "./components/AlertList";
 import Login from "./components/Login";
@@ -21,6 +22,7 @@ function App() {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
+  const blogFormRef = useRef();
   const [fetchError, setFetchError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -175,7 +177,10 @@ function App() {
 
     try {
       const returnedBlog = await blogsService.create(newBlog);
+      blogFormRef.current.toggleVisibility();
+      setIsLoading(false);
       setBlogs(blogs.concat(returnedBlog));
+      resetBlogForm();
       const title = returnedBlog.title;
       const titleToShow = title.length > 45 ? title.slice(0, 44) + "… " : title;
       queueAlerts([
@@ -186,10 +191,8 @@ function App() {
         }
       ]);
     } catch (error) {
-      handleAddBlogErrors(error);
-    } finally {
-      resetBlogForm();
       setIsLoading(false);
+      handleAddBlogErrors(error);
     }
   };
 
@@ -202,6 +205,18 @@ function App() {
     handleUrlChange: ({ target }) => setBlogUrl(target.value),
     handleSubmit: event => addBlog(event)
   };
+
+  const blogForm = () => (
+    <Toggleable
+      ref={blogFormRef}
+      showContextClass="c-toggleable__show--inBlogForm"
+      showButtonClass="c-btn c-btn--success"
+      showButtonLabel="+ Blog"
+      hideContextClass="c-toggleable__hide--inBlogForm"
+    >
+      <BlogForm {...blogFormProps} />
+    </Toggleable>
+  );
 
   return (
     <div className="o-container js-container">
@@ -222,7 +237,7 @@ function App() {
           />
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
-            <BlogForm {...blogFormProps} />
+            {blogForm()}
             <BlogList
               blogs={blogs.filter(blog => blog.user.username === user.username)}
               isLoading={isLoading}
