@@ -21,19 +21,60 @@ function App() {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
-  const [showModalSpinner, setShowModalSpinner] = useState(false);
-  const [showNavbarSpinner, setShowNavbarSpinner] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  /**
+   * Add new alerts to the alerts state
+   *
+   * @param {Object[]} newAlerts - An array of alerts to be transformed
+   * @param {string} newAlerts[].type - "info" or "error" or "success"
+   * @param {string} newAlerts[].message - The alert message
+   */
+  const queueAlerts = newAlerts => {
+    // Remove the current alert being queued
+    const timeoutFunc = id => {
+      setAlerts(currentAlerts => currentAlerts.filter(a => a.id !== id));
+    };
+
+    const alertsWithTimeout = newAlerts.map(a => {
+      return {
+        ...a,
+        id: `${a.type}-${random()}`,
+        timeoutFunc: timeoutFunc
+      };
+    });
+
+    setAlerts(alerts.concat(...alertsWithTimeout));
+  };
 
   useEffect(() => {
     const setInitialBlogs = async () => {
-      setShowNavbarSpinner(true);
-      const initialBlogs = await blogsService.getAll();
-      setBlogs(initialBlogs);
-      setShowNavbarSpinner(false);
+      setFetchError(null);
+      setIsLoading(true);
+
+      try {
+        const initialBlogs = await blogsService.getAll();
+        setBlogs(initialBlogs);
+      } catch (error) {
+        if (error.status >= 500) {
+          setFetchError({ message: "Oops! Something went wrong" });
+        } else {
+          setFetchError(error.response.data.error);
+        }
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     setInitialBlogs();
   }, []);
+
+  if (fetchError) {
+    queueAlerts([{ type: "error", message: fetchError.message }]);
+    setFetchError(null);
+  }
 
   useEffect(() => {
     const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
@@ -55,7 +96,7 @@ function App() {
 
   const handleLogin = async event => {
     event.preventDefault();
-    setShowModalSpinner(true);
+    setIsLoggingIn(true);
 
     try {
       const user = await loginService.login({
@@ -71,7 +112,7 @@ function App() {
       const errorMessage = error.response.data.error.message;
       queueAlerts([{ type: "error", message: `${errorMessage}` }]);
     } finally {
-      setShowModalSpinner(false);
+      setIsLoggingIn(false);
       setUsername("");
       setPassword("");
     }
@@ -110,30 +151,6 @@ function App() {
     handleSubmit: event => addBlog(event)
   };
 
-  /**
-   * Add new alerts to the alerts state
-   *
-   * @param {Object[]} newAlerts - An array of alerts to be transformed
-   * @param {string} newAlerts[].type - "info" or "error" or "success"
-   * @param {string} newAlerts[].message - The alert message
-   */
-  const queueAlerts = newAlerts => {
-    // Remove the current alert being queued
-    const timeoutFunc = id => {
-      setAlerts(currentAlerts => currentAlerts.filter(a => a.id !== id));
-    };
-
-    const alertsWithTimeout = newAlerts.map(a => {
-      return {
-        ...a,
-        id: `${a.type}-${random()}`,
-        timeoutFunc: timeoutFunc
-      };
-    });
-
-    setAlerts(alerts.concat(...alertsWithTimeout));
-  };
-
   let blogsToShow;
   if (user) {
     blogsToShow = blogs.filter(blog => blog.user.username === user.username);
@@ -156,17 +173,17 @@ function App() {
             handleLogout={event => handleLogout(event)}
             brandTitle="Blog List"
             nameOfLoggedInUser={`${user.name}`}
-            showSpinner={showNavbarSpinner}
+            isLoading={isLoading}
           />
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
             <BlogForm {...blogFormProps} />
-            <BlogList blogs={blogsToShow} />
+            <BlogList blogs={blogsToShow} isLoading={isLoading} />
           </div>
         </>
       )}
 
-      {showModalSpinner && <ModalSpinner />}
+      {isLoggingIn && <ModalSpinner />}
     </div>
   );
 }

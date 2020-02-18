@@ -5,10 +5,10 @@ import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 const NavBar = ({
   nameOfLoggedInUser,
   brandTitle,
-  showSpinner,
+  isLoading,
   handleLogout
 }) => {
-  const spinnerClass = `c-navbar__spinner ${showSpinner ? "" : "isHidden"}`;
+  const spinnerClass = `c-navbar__spinner ${isLoading ? "" : "isHidden"}`;
 
   return (
     <div className="c-navbar">
