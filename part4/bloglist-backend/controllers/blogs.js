@@ -54,6 +54,9 @@ blogsRouter.post("/", async (req, res, next) => {
     const savedBlog = await blog.save();
     user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
+    await savedBlog
+      .populate({ path: "user", select: ["name", "username"] })
+      .execPopulate();
     res.status(201).json(savedBlog.toJSON());
   } catch (e) {
     next(e);
