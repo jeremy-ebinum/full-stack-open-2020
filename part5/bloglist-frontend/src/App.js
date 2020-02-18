@@ -118,10 +118,11 @@ function App() {
     }
   };
 
-  const handleLogout = event => {
+  const handleLogout = () => {
     blogsService.setToken(null);
     setUser(null);
     localStorage.removeItem("loggedInBloglistUser");
+    resetBlogForm();
     queueAlerts([{ type: "info", message: "Logged out" }]);
   };
 
@@ -136,9 +137,41 @@ function App() {
     handleSubmit: event => handleLogin(event)
   };
 
+  const resetBlogForm = () => {
+    setBlogTitle("");
+    setBlogAuthor("");
+    setBlogUrl("");
+  };
+
   const addBlog = async event => {
     event.preventDefault();
-    console.log(`Adding Blog ${blogTitle}`);
+    const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
+    setIsLoading(true);
+
+    try {
+      const returnedBlog = await blogsService.create(newBlog);
+      setBlogs(blogs.concat(returnedBlog));
+      const title = returnedBlog.title;
+      const titleToShow = title.length > 45 ? title.slice(0, 44) + "… " : title;
+      queueAlerts([
+        {
+          type: "success",
+          message: `Added ${titleToShow} by ${returnedBlog.author ||
+            "unknown author"}`
+        }
+      ]);
+    } catch (error) {
+      if (error.status >= 500) {
+        queueAlerts([{ type: "error", message: "Oops! something went wrong" }]);
+      } else {
+        queueAlerts([
+          { type: "error", message: error.response.data.error.message }
+        ]);
+      }
+    } finally {
+      resetBlogForm();
+      setIsLoading(false);
+    }
   };
 
   const blogFormProps = {
@@ -150,13 +183,6 @@ function App() {
     handleUrlChange: ({ target }) => setBlogUrl(target.value),
     handleSubmit: event => addBlog(event)
   };
-
-  let blogsToShow;
-  if (user) {
-    blogsToShow = blogs.filter(blog => blog.user.username === user.username);
-  } else {
-    blogsToShow = [];
-  }
 
   return (
     <div className="o-container js-container">
@@ -170,7 +196,7 @@ function App() {
       {user && (
         <>
           <NavBar
-            handleLogout={event => handleLogout(event)}
+            handleLogout={() => handleLogout()}
             brandTitle="Blog List"
             nameOfLoggedInUser={`${user.name}`}
             isLoading={isLoading}
@@ -178,7 +204,10 @@ function App() {
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
             <BlogForm {...blogFormProps} />
-            <BlogList blogs={blogsToShow} isLoading={isLoading} />
+            <BlogList
+              blogs={blogs.filter(blog => blog.user.username === user.username)}
+              isLoading={isLoading}
+            />
           </div>
         </>
       )}
