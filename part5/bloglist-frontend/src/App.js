@@ -58,10 +58,10 @@ function App() {
         const initialBlogs = await blogsService.getAll();
         setBlogs(initialBlogs);
       } catch (error) {
-        if (error.status >= 500) {
-          setFetchError({ message: "Oops! Something went wrong" });
+        if (error.response.status >= 400 && error.response.status < 500) {
+          setFetchError(error.response.data);
         } else {
-          setFetchError(error.response.data.error);
+          setFetchError({ message: "Oops! Something went wrong" });
         }
       } finally {
         setIsLoading(false);
@@ -94,6 +94,15 @@ function App() {
     }
   }, [user]);
 
+  const handleLoginErrors = error => {
+    if (error.response.status >= 400 && error.response.status < 500) {
+      const errorMessage = error.response.data.message;
+      queueAlerts([{ type: "error", message: `${errorMessage}` }]);
+    } else {
+      queueAlerts([{ type: "error", message: "Oops! Something went wrong" }]);
+    }
+  };
+
   const handleLogin = async event => {
     event.preventDefault();
     setIsLoggingIn(true);
@@ -109,8 +118,7 @@ function App() {
       localStorage.setItem("loggedInBloglistUser", JSON.stringify(user));
       queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
     } catch (error) {
-      const errorMessage = error.response.data.error.message;
-      queueAlerts([{ type: "error", message: `${errorMessage}` }]);
+      handleLoginErrors(error);
     } finally {
       setIsLoggingIn(false);
       setUsername("");
@@ -143,6 +151,23 @@ function App() {
     setBlogUrl("");
   };
 
+  const handleAddBlogErrors = error => {
+    const statusCode = error.response.status;
+
+    if (statusCode >= 400 && statusCode < 500) {
+      const errorMessages = error.response.data.messages;
+      const alerts = errorMessages.map(m => {
+        return {
+          type: "error",
+          message: m
+        };
+      });
+      queueAlerts(alerts);
+    } else {
+      queueAlerts([{ type: "error", message: "Oops! something went wrong" }]);
+    }
+  };
+
   const addBlog = async event => {
     event.preventDefault();
     const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
@@ -161,13 +186,7 @@ function App() {
         }
       ]);
     } catch (error) {
-      if (error.status >= 500) {
-        queueAlerts([{ type: "error", message: "Oops! something went wrong" }]);
-      } else {
-        queueAlerts([
-          { type: "error", message: error.response.data.error.message }
-        ]);
-      }
+      handleAddBlogErrors(error);
     } finally {
       resetBlogForm();
       setIsLoading(false);
