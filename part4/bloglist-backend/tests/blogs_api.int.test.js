@@ -94,9 +94,9 @@ describe("Sending a user: POST /api/users", () => {
         .send({ username: existingUsername, name: "Name", password: "passw" })
         .expect(422);
 
-      const isUniqueError = /unique/.test(response.body.error.message);
+      const isUniqueError = /unique/.test(response.body.message);
       expect(isUniqueError).toBe(true);
-      expect(response.body.error.message.toLowerCase()).toContain("username");
+      expect(response.body.message.toLowerCase()).toContain("username");
 
       const usersAtEnd = await helper.getUsersInDb();
       expect(usersAtEnd.length).toBe(helper.initialUsers.length);
@@ -110,9 +110,9 @@ describe("Sending a user: POST /api/users", () => {
         .expect(422);
 
       const minLengthRegex = /at least \(\d+\)/;
-      const isMinLengthError = minLengthRegex.test(response.body.error.message);
+      const isMinLengthError = minLengthRegex.test(response.body.message);
       expect(isMinLengthError).toBe(true);
-      expect(response.body.error.message.toLowerCase()).toContain("username");
+      expect(response.body.message.toLowerCase()).toContain("username");
 
       const usersAtEnd = await helper.getUsersInDb();
       expect(usersAtEnd.length).toBe(helper.initialUsers.length);
@@ -126,9 +126,9 @@ describe("Sending a user: POST /api/users", () => {
         .expect(422);
 
       const minLengthRegex = /at least \(\d+\)/;
-      const isMinLengthError = minLengthRegex.test(response.body.error.message);
+      const isMinLengthError = minLengthRegex.test(response.body.message);
       expect(isMinLengthError).toBe(true);
-      expect(response.body.error.message.toLowerCase()).toContain("password");
+      expect(response.body.message.toLowerCase()).toContain("password");
 
       const usersAtEnd = await helper.getUsersInDb();
       expect(usersAtEnd.length).toBe(helper.initialUsers.length);
