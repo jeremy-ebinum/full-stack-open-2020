@@ -263,6 +263,10 @@ function App() {
     </Toggleable>
   );
 
+  const blogsSortedByLikesDesc = [...blogs].sort((currBlog, nextBlog) => {
+    return nextBlog.likes - currBlog.likes;
+  });
+
   return (
     <div className="o-container js-container">
       {!user && (
@@ -283,7 +287,7 @@ function App() {
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
             {blogForm()}
             <BlogList
-              blogs={blogs}
+              blogs={blogsSortedByLikesDesc}
               isLoading={isLoading}
               handleLike={likeBlog}
             />
