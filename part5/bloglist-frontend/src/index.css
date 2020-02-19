@@ -188,7 +188,7 @@ body {
 }
 
 .c-btn:hover {
-  background: hsl(0, 0%, 10%);
+  background: hsl(0, 0%, 20%);
 }
 
 .c-btn.c-btn--noBg {
@@ -224,6 +224,14 @@ body {
 
 .c-btn.c-btn--primary:hover {
   background: var(--primary-color-accent);
+}
+
+.c-btn.c-btn--info {
+  background: var(--info-color);
+}
+
+.c-btn.c-btn--info:hover {
+  background: var(--info-color-accent);
 }
 
 .c-btn.c-btn--success {
@@ -462,6 +470,7 @@ body {
   max-width: var(--max-page-w);
   background-color: var(--light-color);
   font-family: "Roboto";
+  padding: 1rem 0;
 }
 
 /* BlogForm component */
@@ -507,11 +516,22 @@ body {
   background-color: hsl(210, 13%, 95%);
   font-family: "Dosis";
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
   padding: 0.25rem;
   border-radius: 2px;
   width: fit-content;
+  cursor: pointer;
+}
+
+.c-blog__title {
+  margin-right: 0.5rem;
+}
+
+.c-blog__author {
+  margin-right: 0.5rem;
+  font-weight: 300;
 }
 
 .c-blog__link {
@@ -524,9 +544,29 @@ body {
   text-decoration: underline;
 }
 
-.c-blog__author {
-  margin-right: 0.5rem;
-  font-weight: 300;
+.c-blog__likes {
+  margin: 0.35rem 0.5rem 0.35rem 0;
+  width: 100%;
+  display: flex;
+  /* margin-right: 0.5rem; */
+  align-items: center;
+}
+
+.c-blog__like-button {
+  margin-left: 0.5rem;
+  width: 45px;
+  height: 24px;
+  z-index: 1;
+}
+
+.c-blog__user {
+  width: 100%;
+}
+
+.c-blog__usericon {
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
+  color: var(--primary-color-faded);
 }
 
 /* MEDIA QUERIES
@@ -738,5 +778,11 @@ body {
 
   .c-blog {
     font-size: 1.2rem;
+    margin: 0.75rem 0;
+  }
+
+  .c-blog__likes {
+    margin: 0.35rem 0.5rem 0.35rem 0;
+    width: auto;
   }
 }
