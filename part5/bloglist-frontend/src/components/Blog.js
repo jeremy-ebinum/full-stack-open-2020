@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+// import UserContext from "../UserContext";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   const [showDetails, setShowDetails] = useState(false);
+  // const user = useContext(UserContext);
+
+  // const belongsToUser = blog.user.username === user.username;
 
   const toggleShowDetails = event => {
     const isBlogLink = event.target.classList.contains("js-blogLink");
@@ -31,10 +35,12 @@ const Blog = ({ blog }) => {
           Visit Blog
         </a>
         <div className="c-blog__likes">
-          {blog.likes} {blog.likes !== 1 ? "Likes" : "Like"}
+          <span className="c-blog__likes-txt">
+            {blog.likes} {blog.likes !== 1 ? "Likes" : "Like"}
+          </span>
           <div className="c-blog__like-button">
             <button
-              onClick={event => console.log("LIKED!")}
+              onClick={event => handleLike(event, blog.id)}
               className="c-btn c-btn--info js-likeButton"
             >
               Like

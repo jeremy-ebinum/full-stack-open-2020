@@ -197,6 +197,50 @@ function App() {
     }
   };
 
+  const handleLikeBlogErrors = (error, id) => {
+    const statusCode = error.response.status;
+
+    if (statusCode === 404) {
+      setBlogs(blogs.filter(blog => blog.id !== id));
+      return queueAlerts([
+        { type: "error", message: "That blog doesn't exist anymore" }
+      ]);
+    } else if (error.response.status >= 400 && error.response.status < 500) {
+      const errorMessage = error.response.data.message;
+      queueAlerts([{ type: "error", message: `${errorMessage}` }]);
+    } else {
+      queueAlerts([{ type: "error", message: "Oops! something went wrong" }]);
+    }
+  };
+
+  const likeBlog = async (event, id) => {
+    const blog = blogs.find(blog => blog.id === id);
+
+    if (!blog) {
+      return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+    }
+
+    // const belongsToLoggedInUser = blog.user.username === user.username;
+
+    // if (belongsToLoggedInUser) {
+    //   return queueAlerts([
+    //     { type: "info", message: "You are not allowed to like your blog" }
+    //   ]);
+    // }
+
+    const updatedBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id };
+
+    setIsLoading(true);
+    try {
+      const returnedBlog = await blogsService.update(id, updatedBlog);
+      setBlogs(blogs.map(blog => (blog.id !== id ? blog : returnedBlog)));
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      handleLikeBlogErrors(error, id);
+    }
+  };
+
   const blogFormProps = {
     titleValue: blogTitle,
     authorValue: blogAuthor,
@@ -238,7 +282,11 @@ function App() {
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
             {blogForm()}
-            <BlogList blogs={blogs} isLoading={isLoading} />
+            <BlogList
+              blogs={blogs}
+              isLoading={isLoading}
+              handleLike={likeBlog}
+            />
           </div>
         </UserContext.Provider>
       )}

@@ -552,6 +552,10 @@ body {
   align-items: center;
 }
 
+.c-blog__likes-txt {
+  color: var(--info-color-accent);
+}
+
 .c-blog__like-button {
   margin-left: 0.5rem;
   width: 45px;

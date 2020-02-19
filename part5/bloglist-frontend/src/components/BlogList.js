@@ -1,7 +1,7 @@
 import React from "react";
 import Blog from "./Blog";
 
-const BlogList = ({ blogs, isLoading }) => {
+const BlogList = ({ blogs, isLoading, handleLike }) => {
   return (
     <div className="c-blogs__list">
       <h2 className="c-blogs__heading">Blogs</h2>
@@ -11,7 +11,7 @@ const BlogList = ({ blogs, isLoading }) => {
       )}
 
       {blogs.map(blog => {
-        return <Blog key={blog.id} blog={blog} />;
+        return <Blog key={blog.id} blog={blog} handleLike={handleLike} />;
       })}
     </div>
   );
