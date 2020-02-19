@@ -53,6 +53,7 @@ function App() {
     setAlerts(alerts.concat(...alertsWithTimeout));
   };
 
+  // Fetch blogs from backend on initial app load
   useEffect(() => {
     const setInitialBlogs = async () => {
       setFetchError(null);
@@ -80,6 +81,7 @@ function App() {
     setFetchError(null);
   }
 
+  // Get persisted logged in user from localStorage
   useEffect(() => {
     const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
     if (loggedInBloglistUser) {
@@ -89,6 +91,7 @@ function App() {
     }
   }, []);
 
+  // Handle DOM updates depending on if the login or blogs page is shown
   useEffect(() => {
     const rootStyle = document.documentElement.style;
 
@@ -123,7 +126,7 @@ function App() {
     }
   };
 
-  const handleLogin = async event => {
+  const login = async event => {
     event.preventDefault();
     setIsLoggingIn(true);
 
@@ -146,23 +149,12 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
+  const logout = () => {
     blogsService.setToken(null);
     setUser(null);
     localStorage.removeItem("loggedInBloglistUser");
     resetBlogForm();
     queueAlerts([{ type: "info", message: "Logged out" }]);
-  };
-
-  const loginProps = {
-    showPassword,
-    passwordType: `${showPassword ? "text" : "password"}`,
-    usernameValue: username,
-    passwordValue: password,
-    handleUsernameChange: ({ target }) => setUsername(target.value),
-    handlePasswordChange: ({ target }) => setPassword(target.value),
-    handlePasswordTogglerClick: () => setShowPassword(!showPassword),
-    handleSubmit: event => handleLogin(event)
   };
 
   const resetBlogForm = () => {
@@ -235,17 +227,9 @@ function App() {
       return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
     }
 
-    // const belongsToLoggedInUser = blog.user.username === user.username;
-
-    // if (belongsToLoggedInUser) {
-    //   return queueAlerts([
-    //     { type: "info", message: "You are not allowed to like your blog" }
-    //   ]);
-    // }
-
     const updatedBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id };
-
     setIsLoading(true);
+
     try {
       const returnedBlog = await blogsService.update(id, updatedBlog);
       setBlogs(blogs.map(blog => (blog.id !== id ? blog : returnedBlog)));
@@ -285,6 +269,17 @@ function App() {
     }
   };
 
+  const loginProps = {
+    showPassword,
+    passwordType: `${showPassword ? "text" : "password"}`,
+    usernameValue: username,
+    passwordValue: password,
+    handleUsernameChange: ({ target }) => setUsername(target.value),
+    handlePasswordChange: ({ target }) => setPassword(target.value),
+    handlePasswordTogglerClick: () => setShowPassword(!showPassword),
+    handleSubmit: event => login(event)
+  };
+
   const blogFormProps = {
     titleValue: blogTitle,
     authorValue: blogAuthor,
@@ -311,7 +306,7 @@ function App() {
     return nextBlog.likes - currBlog.likes;
   });
 
-  const scrollToTop = event => {
+  const scrollToTop = () => {
     document.documentElement.scrollTop = 0;
   };
 
@@ -330,7 +325,7 @@ function App() {
         <div className="o-container js-container">
           <UserContext.Provider value={user}>
             <NavBar
-              handleLogout={() => handleLogout()}
+              handleLogout={() => logout()}
               brandTitle="Blog List"
               isLoading={isLoading}
             />
@@ -347,7 +342,7 @@ function App() {
             {hasScrollTop && (
               <div className="c-to-top">
                 <button
-                  onClick={event => scrollToTop(event)}
+                  onClick={() => scrollToTop()}
                   className="c-btn c-btn--transparent"
                 >
                   Back To Top
