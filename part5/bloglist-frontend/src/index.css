@@ -2,7 +2,7 @@
 *******************************************************************************/
 :root {
   --max-page-w: 1440px;
-  --body-overflow: unset;
+  --body-overflow: auto;
   --primary-color: hsl(187, 56%, 23%);
   --primary-color-accent: hsl(188, 56%, 18%);
   --primary-color-faded: rgba(4, 12, 14, 0.75);
@@ -65,7 +65,7 @@
 body {
   background-color: var(--body-bg-color);
   font-size: 16px;
-  overflow: var(--body-overflow, unset);
+  overflow: var(--body-overflow);
 }
 
 /* OBJECTS
@@ -101,6 +101,19 @@ body {
 
 /* COMPONENTS
 *******************************************************************************/
+
+.c-to-top {
+  font-family: "Dosis";
+  font-weight: 500;
+  font-size: 0.8rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  width: 80px;
+  height: 30px;
+  margin-left: -40px;
+  z-index: 3;
+}
 
 /* Alert Components will be created dynamically with JavaScript */
 .c-alert {
@@ -191,6 +204,14 @@ body {
 
 .c-btn:hover {
   background: hsl(0, 0%, 20%);
+}
+
+.c-btn.c-btn--transparent {
+  background: hsla(0, 0%, 0%, 60%);
+}
+
+.c-btn.c-btn--transparent:hover {
+  background: hsla(0, 0%, 0%, 90%);
 }
 
 .c-btn.c-btn--noBg {
@@ -376,6 +397,9 @@ body {
     var(--primary-color-faded)
   );
   color: var(--light-color);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .c-navbar__content {
@@ -674,6 +698,13 @@ body {
     --login-w: 500px;
     --navbar-padding: 1.5rem;
     --navbar-brand-font-size: 1.7rem;
+  }
+
+  .c-to-top {
+    font-size: 1rem;
+    width: 120px;
+    height: 35px;
+    margin-left: -60px;
   }
 
   .c-navbar__userinfo {

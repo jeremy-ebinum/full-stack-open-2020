@@ -23,10 +23,11 @@ function App() {
   const [blogTitle, setBlogTitle] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
-  const blogFormRef = useRef();
   const [fetchError, setFetchError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasScrollTop, setHasScrollTop] = useState(false);
+  const blogFormRef = useRef();
 
   /**
    * Add new alerts to the alerts state
@@ -90,8 +91,24 @@ function App() {
 
   useEffect(() => {
     const rootStyle = document.documentElement.style;
+
+    const handleScroll = () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const pageHeight = document.documentElement.offsetHeight;
+      const percentScrollTop = Math.round((scrollTop / pageHeight) * 100);
+
+      if (!user) return;
+
+      if (percentScrollTop > 10) {
+        setHasScrollTop(true);
+      } else {
+        setHasScrollTop(false);
+      }
+    };
+
     if (user) {
       rootStyle.setProperty("--body-bg-color", "var(--light-color)");
+      window.addEventListener("scroll", handleScroll);
     } else {
       rootStyle.setProperty("--body-bg-color", "var(--primary-color-faded)");
     }
@@ -294,37 +311,53 @@ function App() {
     return nextBlog.likes - currBlog.likes;
   });
 
+  const scrollToTop = event => {
+    document.documentElement.scrollTop = 0;
+  };
+
   return (
-    <div className="o-container js-container">
+    <>
       {!user && (
-        <>
+        <div className="o-container js-container">
           <AlertList contextClass={"c-alert--inLogin"} alerts={alerts} />
           <Login {...loginProps} />
-        </>
+
+          {isLoggingIn && <ModalSpinner />}
+        </div>
       )}
 
       {user && (
-        <UserContext.Provider value={user}>
-          <NavBar
-            handleLogout={() => handleLogout()}
-            brandTitle="Blog List"
-            isLoading={isLoading}
-          />
-          <div className="c-blogs">
-            <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
-            {blogForm()}
-            <BlogList
-              blogs={blogsSortedByLikesDesc}
+        <div className="o-container js-container">
+          <UserContext.Provider value={user}>
+            <NavBar
+              handleLogout={() => handleLogout()}
+              brandTitle="Blog List"
               isLoading={isLoading}
-              handleLike={likeBlog}
-              handleDelete={deleteBlog}
             />
-          </div>
-        </UserContext.Provider>
+            <div className="c-blogs">
+              <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
+              {blogForm()}
+              <BlogList
+                blogs={blogsSortedByLikesDesc}
+                isLoading={isLoading}
+                handleLike={likeBlog}
+                handleDelete={deleteBlog}
+              />
+            </div>
+            {hasScrollTop && (
+              <div className="c-to-top">
+                <button
+                  onClick={event => scrollToTop(event)}
+                  className="c-btn c-btn--transparent"
+                >
+                  Back To Top
+                </button>
+              </div>
+            )}
+          </UserContext.Provider>
+        </div>
       )}
-
-      {isLoggingIn && <ModalSpinner />}
-    </div>
+    </>
   );
 }
 
