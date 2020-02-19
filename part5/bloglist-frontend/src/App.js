@@ -202,9 +202,7 @@ function App() {
 
     if (statusCode === 404) {
       setBlogs(blogs.filter(blog => blog.id !== id));
-      return queueAlerts([
-        { type: "error", message: "That blog doesn't exist anymore" }
-      ]);
+      return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
     } else if (error.response.status >= 400 && error.response.status < 500) {
       const errorMessage = error.response.data.message;
       queueAlerts([{ type: "error", message: `${errorMessage}` }]);
@@ -238,6 +236,35 @@ function App() {
     } catch (error) {
       setIsLoading(false);
       handleLikeBlogErrors(error, id);
+    }
+  };
+
+  const handleDeleteBlogErrors = (error, id) => {
+    const statusCode = error.response.status;
+
+    if (statusCode === 404) {
+      setBlogs(blogs.filter(blog => blog.id !== id));
+      return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+    } else {
+      queueAlerts([{ type: "error", message: "Oops! something went wrong" }]);
+    }
+  };
+
+  const deleteBlog = async (event, id, title) => {
+    const titleToShow = title.length > 45 ? title.slice(0, 44) + "… " : title;
+    const willDelete = window.confirm(`Delete ${titleToShow}?`);
+
+    if (!willDelete) return;
+
+    try {
+      setIsLoading(true);
+      await blogsService.remove(id);
+      setBlogs(blogs.filter(blog => blog.id !== id));
+      setIsLoading(false);
+      queueAlerts([{ type: "info", message: `Deleted Blog: ${titleToShow}` }]);
+    } catch (error) {
+      setIsLoading(false);
+      handleDeleteBlogErrors(error, id);
     }
   };
 
@@ -290,6 +317,7 @@ function App() {
               blogs={blogsSortedByLikesDesc}
               isLoading={isLoading}
               handleLike={likeBlog}
+              handleDelete={deleteBlog}
             />
           </div>
         </UserContext.Provider>

@@ -11,6 +11,7 @@
   --info-color: hsl(188, 56%, 33%);
   --info-color-accent: hsl(188, 56%, 38%);
   --danger-color: #833125;
+  --danger-color-accent: hsl(8, 56%, 43%);
   --light-color: hsl(240, 100%, 99%);
   --muted-color: hsl(0, 0%, 66%);
   --dark-color: hsl(0, 0%, 0%);
@@ -241,6 +242,14 @@ body {
 
 .c-btn.c-btn--success:hover {
   background: var(--success-color-accent);
+}
+
+.c-btn.c-btn--danger {
+  background: var(--danger-color);
+}
+
+.c-btn.c-btn--danger:hover {
+  background: var(--danger-color-accent);
 }
 
 /* Input Row */
@@ -562,20 +571,35 @@ body {
 }
 
 .c-blog__like-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9em;
   margin-left: 0.5rem;
-  width: 45px;
-  height: 24px;
+  width: 40px;
+  height: 20px;
   z-index: 1;
 }
 
 .c-blog__user {
   width: 100%;
+  margin: 0.25rem 0.5rem 0.25rem 0;
 }
 
 .c-blog__usericon {
   margin-left: 0.5rem;
   margin-right: 0.25rem;
   color: var(--primary-color-faded);
+}
+
+.c-blog__delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9em;
+  width: 60px;
+  height: 20px;
+  z-index: 1;
 }
 
 /* MEDIA QUERIES
@@ -752,6 +776,17 @@ body {
   .c-blog-author {
     margin-right: 0.75rem;
   }
+
+  .c-blog__like-button {
+    font-size: 1em;
+    width: 45px;
+    height: 24px;
+  }
+  .c-blog__delete-button {
+    font-size: 0.9em;
+    width: 70px;
+    height: 24px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -796,6 +831,8 @@ body {
 
   .c-blog__likes {
     margin: 0.35rem 0.5rem 0.35rem 0;
+  }
+  .c-blog__user {
     width: auto;
   }
 }

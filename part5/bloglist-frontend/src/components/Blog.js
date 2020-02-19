@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-// import UserContext from "../UserContext";
+import UserContext from "../UserContext";
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false);
-  // const user = useContext(UserContext);
+  const user = useContext(UserContext);
 
-  // const belongsToUser = blog.user.username === user.username;
+  const belongsToUser = blog.user.username === user.username;
 
   const toggleShowDetails = event => {
     const isBlogLink = event.target.classList.contains("js-blogLink");
     const isLikeButton = event.target.classList.contains("js-likeButton");
-    if (!isBlogLink && !isLikeButton) {
-      setShowDetails(!showDetails);
-    }
+    const isDeleteButton = event.target.classList.contains("js-deleteButton");
+
+    if (isBlogLink || isLikeButton || isDeleteButton) return;
+    setShowDetails(!showDetails);
   };
 
   const displayBlog = () => {
@@ -30,7 +31,9 @@ const Blog = ({ blog, handleLike }) => {
     return (
       <>
         <span className="c-blog__title">{blog.title}</span>
+
         <span className="c-blog__author"> — {blog.author}</span>
+
         <a
           className="c-blog__link js-blogLink"
           href={blog.url}
@@ -39,6 +42,7 @@ const Blog = ({ blog, handleLike }) => {
         >
           Visit Blog
         </a>
+
         <div className="c-blog__likes">
           <span className="c-blog__likes-txt">
             {blog.likes} {blog.likes !== 1 ? "Likes" : "Like"}
@@ -52,11 +56,23 @@ const Blog = ({ blog, handleLike }) => {
             </button>
           </div>
         </div>
+
         <span className="c-blog__user">
           Added by:
           <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
-          {blog.user.name}
+          {belongsToUser ? "You" : blog.user.name}
         </span>
+
+        {belongsToUser && (
+          <div className="c-blog__delete-button">
+            <button
+              onClick={event => handleDelete(event, blog.id, blog.title)}
+              className="c-btn c-btn--danger js-deleteButton"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </>
     );
   };
