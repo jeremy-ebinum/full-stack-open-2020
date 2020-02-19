@@ -238,10 +238,7 @@ function App() {
           <div className="c-blogs">
             <AlertList contextClass={"c-alert--inBlog"} alerts={alerts} />
             {blogForm()}
-            <BlogList
-              blogs={blogs.filter(blog => blog.user.username === user.username)}
-              isLoading={isLoading}
-            />
+            <BlogList blogs={blogs} isLoading={isLoading} />
           </div>
         </>
       )}
