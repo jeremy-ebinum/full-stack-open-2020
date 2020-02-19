@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import uniqueRandom from "unique-random";
+import UserContext from "./UserContext";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
 import Toggleable from "./components/Toggleable";
@@ -228,11 +229,10 @@ function App() {
       )}
 
       {user && (
-        <>
+        <UserContext.Provider value={user}>
           <NavBar
             handleLogout={() => handleLogout()}
             brandTitle="Blog List"
-            nameOfLoggedInUser={`${user.name}`}
             isLoading={isLoading}
           />
           <div className="c-blogs">
@@ -240,7 +240,7 @@ function App() {
             {blogForm()}
             <BlogList blogs={blogs} isLoading={isLoading} />
           </div>
-        </>
+        </UserContext.Provider>
       )}
 
       {isLoggingIn && <ModalSpinner />}

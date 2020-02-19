@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import UserContext from "../UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const NavBar = ({
-  nameOfLoggedInUser,
-  brandTitle,
-  isLoading,
-  handleLogout
-}) => {
+const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
+  const user = useContext(UserContext);
   const spinnerClass = `c-navbar__spinner ${isLoading ? "" : "isHidden"}`;
 
   return (
@@ -17,7 +14,7 @@ const NavBar = ({
         <div className="c-navbar__actions">
           <div className="c-navbar__userinfo">
             <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
-            {nameOfLoggedInUser}
+            {user.name}
             <FontAwesomeIcon
               className={spinnerClass}
               icon={faCircleNotch}
