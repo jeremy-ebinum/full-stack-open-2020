@@ -104,20 +104,21 @@ blogsRouter.put("/:id", async (req, res, next) => {
     const blog = await Blog.findById(req.params.id);
     if (!blog) return res.status(404).end();
 
-    const belongsToUser = blog.user.toString() === decodedToken.id;
+    blog.author = body.author;
+    blog.title = body.title;
+    blog.url = body.url;
+    blog.likes = body.likes;
+    blog.user = body.user;
 
-    if (belongsToUser) {
-      blog.author = body.author || "";
-      blog.title = body.title;
-      blog.url = body.url;
-      blog.likes = body.likes || blog.likes;
-      await blog.save();
-      return res.status(200).end();
-    }
+    const updatedBlog = await blog.save();
+    await updatedBlog
+      .populate({ path: "user", select: ["name", "username"] })
+      .execPopulate();
 
-    throw new ErrorHelper(403, "Forbidden", [
-      "User is not permitted to modify this resource"
-    ]);
+    return res
+      .json(updatedBlog.toJSON())
+      .status(200)
+      .end();
   } catch (e) {
     return next(e);
   }

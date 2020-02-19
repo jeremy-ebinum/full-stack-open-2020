@@ -410,16 +410,6 @@ describe("Replacing specific blog member: PUT /api/blogs/id", () => {
       .expect(404);
   });
 
-  test("fails with status 403 if blog doesn't ref auth user", async () => {
-    const blogsatStart = await helper.getBlogsInDb();
-    const blogToReplace = blogsatStart[0];
-
-    await api
-      .put(`/api/blogs/${blogToReplace.id}`)
-      .set("Authorization", globals.unauthorizedToken)
-      .expect(403);
-  });
-
   test("fails with status 400 if the replacement is invalid", async () => {
     const blogsatStart = await helper.getBlogsInDb();
     const blogToReplace = blogsatStart[0];
