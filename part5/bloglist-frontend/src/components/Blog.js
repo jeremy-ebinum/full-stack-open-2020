@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 // import UserContext from "../UserContext";
 
 const Blog = ({ blog, handleLike }) => {
@@ -19,7 +19,12 @@ const Blog = ({ blog, handleLike }) => {
 
   const displayBlog = () => {
     if (!showDetails) {
-      return <span className="c-blog__title">{blog.title}</span>;
+      return (
+        <>
+          <span className="c-blog__title">{blog.title}</span>
+          <FontAwesomeIcon className="c-blog__expandicon" icon={faAngleDown} />
+        </>
+      );
     }
 
     return (

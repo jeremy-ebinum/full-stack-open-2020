@@ -12,6 +12,7 @@
   --info-color-accent: hsl(188, 56%, 38%);
   --danger-color: #833125;
   --light-color: hsl(240, 100%, 99%);
+  --muted-color: hsl(0, 0%, 66%);
   --dark-color: hsl(0, 0%, 0%);
   --body-bg-color: var(--primary-color-faded);
   --modal-bg-color: hsla(188, 56%, 23%, 50%);
@@ -529,6 +530,10 @@ body {
   margin-right: 0.5rem;
 }
 
+.c-blog__expandicon {
+  color: var(--muted-color);
+}
+
 .c-blog__author {
   margin-right: 0.5rem;
   font-weight: 300;
@@ -753,6 +758,10 @@ body {
   :root {
     --navbar-padding: 1.5rem 2rem;
     --navbar-brand-font-size: 1.8rem;
+  }
+
+  .c-blogs {
+    padding: 1rem;
   }
 
   .c-blog-form {
