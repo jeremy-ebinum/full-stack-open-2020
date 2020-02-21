@@ -115,6 +115,10 @@ body {
   z-index: 3;
 }
 
+.c-to-top.isHidden {
+  display: none;
+}
+
 /* Alert Components will be created dynamically with JavaScript */
 .c-alert {
   background: #000;

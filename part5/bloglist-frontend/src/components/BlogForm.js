@@ -62,4 +62,16 @@ BlogForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export default BlogForm;
+const shouldNotUpdate = (prevProps, nextProps) => {
+  const sameTitle = prevProps.values.blogTitle === nextProps.values.blogTitle;
+  const sameAuthor =
+    prevProps.values.blogAuthor === nextProps.values.blogAuthor;
+  const sameUrl = prevProps.values.blogUrl === nextProps.values.blogUrl;
+
+  if (sameTitle && sameAuthor && sameUrl) {
+    return true;
+  }
+
+  return false;
+};
+export default React.memo(BlogForm, shouldNotUpdate);

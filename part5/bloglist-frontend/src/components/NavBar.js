@@ -43,4 +43,4 @@ NavBar.propTypes = {
   handleLogout: PropTypes.func.isRequired,
 };
 
-export default NavBar;
+export default React.memo(NavBar);

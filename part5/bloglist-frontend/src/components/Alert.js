@@ -31,4 +31,4 @@ Alert.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export default Alert;
+export default React.memo(Alert);

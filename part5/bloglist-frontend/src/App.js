@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useUIDSeed } from "react-uid";
 import UserContext from "./UserContext";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
 import Toggleable from "./components/Toggleable";
-import ToTopButton from "./components/ToTopButton";
+import ToTopScroller from "./components/ToTopScroller";
 import NavBar from "./components/NavBar";
 import AlertList from "./components/AlertList";
 import Login from "./components/Login";
@@ -24,9 +24,9 @@ function App() {
   const [fetchError, setFetchError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasScrollTop, setHasScrollTop] = useState(false);
 
   const blogFormRef = useRef();
+  const toTopScrollerRef = useRef();
   const uidSeed = useUIDSeed();
 
   /**
@@ -36,22 +36,25 @@ function App() {
    * @param {string} newAlerts[].type - "info" or "error" or "success"
    * @param {string} newAlerts[].message - The alert message
    */
-  const queueAlerts = (newAlerts) => {
-    // Remove the current alert being queued
-    const timeoutFunc = (id) => {
-      setAlerts((currentAlerts) => currentAlerts.filter((a) => a.id !== id));
-    };
-
-    const alertsWithTimeout = newAlerts.map((a) => {
-      return {
-        ...a,
-        id: `alert-${a.type}-${uidSeed(a)}`,
-        timeoutFunc,
+  const queueAlerts = useCallback(
+    (newAlerts) => {
+      // Remove the current alert being queued
+      const timeoutFunc = (id) => {
+        setAlerts((currentAlerts) => currentAlerts.filter((a) => a.id !== id));
       };
-    });
 
-    setAlerts(alerts.concat(...alertsWithTimeout));
-  };
+      const alertsWithTimeout = newAlerts.map((a) => {
+        return {
+          ...a,
+          id: `alert-${a.type}-${uidSeed(a)}`,
+          timeoutFunc,
+        };
+      });
+
+      setAlerts(alerts.concat(...alertsWithTimeout));
+    },
+    [alerts, uidSeed]
+  );
 
   // Fetch blogs from backend on initial app load
   useEffect(() => {
@@ -103,9 +106,9 @@ function App() {
       if (!user) return;
 
       if (percentScrollTop > 10) {
-        setHasScrollTop(true);
+        toTopScrollerRef.current.show();
       } else {
-        setHasScrollTop(false);
+        toTopScrollerRef.current.hide();
       }
     };
 
@@ -129,50 +132,56 @@ function App() {
     window.addEventListener("keydown", handleBlogToggleConflicts);
   }, [user]);
 
-  const handleApiErrors = (error, id) => {
-    const statusCode = error.response.status;
+  const handleApiErrors = useCallback(
+    (error, id) => {
+      const statusCode = error.response.status;
 
-    if (statusCode === 404) {
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-      return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
-    }
+      if (statusCode === 404) {
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+        return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+      }
 
-    if (statusCode >= 400 && statusCode < 500) {
-      const errorMessages = error.response.data.messages;
-      const errorAlerts = errorMessages.map((m) => ({
-        type: "error",
-        message: m,
-      }));
-      return queueAlerts(errorAlerts);
-    }
+      if (statusCode >= 400 && statusCode < 500) {
+        const errorMessages = error.response.data.messages;
+        const errorAlerts = errorMessages.map((m) => ({
+          type: "error",
+          message: m,
+        }));
+        return queueAlerts(errorAlerts);
+      }
 
-    return queueAlerts([
-      { type: "error", message: "Oops! something went wrong" },
-    ]);
-  };
+      return queueAlerts([
+        { type: "error", message: "Oops! something went wrong" },
+      ]);
+    },
+    [blogs, queueAlerts]
+  );
 
-  const login = async (event) => {
-    event.preventDefault();
-    setIsLoggingIn(true);
+  const login = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setIsLoggingIn(true);
 
-    try {
-      const authUser = await loginService.login({
-        username,
-        password,
-      });
+      try {
+        const authUser = await loginService.login({
+          username,
+          password,
+        });
 
-      blogsService.setToken(authUser.token);
-      setUser(authUser);
-      localStorage.setItem("loggedInBloglistUser", JSON.stringify(authUser));
-      queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
-    } catch (error) {
-      handleApiErrors(error);
-    } finally {
-      setIsLoggingIn(false);
-      setUsername("");
-      setPassword("");
-    }
-  };
+        blogsService.setToken(authUser.token);
+        setUser(authUser);
+        localStorage.setItem("loggedInBloglistUser", JSON.stringify(authUser));
+        queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
+      } catch (error) {
+        handleApiErrors(error);
+      } finally {
+        setIsLoggingIn(false);
+        setUsername("");
+        setPassword("");
+      }
+    },
+    [username, password, handleApiErrors, queueAlerts]
+  );
 
   const resetBlogForm = () => {
     setBlogTitle("");
@@ -180,87 +189,99 @@ function App() {
     setBlogUrl("");
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     blogsService.setToken(null);
     localStorage.removeItem("loggedInBloglistUser");
     setUser(null);
     resetBlogForm();
     queueAlerts([{ type: "info", message: "Logged out" }]);
-  };
+  }, [queueAlerts]);
 
-  const addBlog = async (event) => {
-    event.preventDefault();
-    const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
-    setIsLoading(true);
-
-    try {
-      const returnedBlog = await blogsService.create(newBlog);
-      blogFormRef.current.toggleVisibility();
-      setBlogs(blogs.concat(returnedBlog));
-      resetBlogForm();
-      const { title } = returnedBlog;
-      const titleToShow = title.length > 45 ? `${title.slice(0, 44)}… ` : title;
-      queueAlerts([
-        {
-          type: "success",
-          message: `Added ${titleToShow} by ${returnedBlog.author ||
-            "unknown author"}`,
-        },
-      ]);
-    } catch (error) {
-      handleApiErrors(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const likeBlog = async (event, id) => {
-    const blogToLike = blogs.find((blog) => blog.id === id);
-
-    if (!blogToLike) {
-      queueAlerts([{ type: "error", message: "Blog does not exist" }]);
-    } else {
-      const updatedBlog = {
-        ...blogToLike,
-        likes: blogToLike.likes + 1,
-        user: blogToLike.user.id,
-      };
-
+  const addBlog = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
       setIsLoading(true);
 
       try {
-        const returnedBlog = await blogsService.update(id, updatedBlog);
-        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
-        setIsLoading(false);
+        const returnedBlog = await blogsService.create(newBlog);
+        blogFormRef.current.toggleVisibility();
+        setBlogs(blogs.concat(returnedBlog));
+        resetBlogForm();
+        const { title } = returnedBlog;
+        const titleToShow =
+          title.length > 45 ? `${title.slice(0, 44)}… ` : title;
+        queueAlerts([
+          {
+            type: "success",
+            message: `Added ${titleToShow} by ${returnedBlog.author ||
+              "unknown author"}`,
+          },
+        ]);
       } catch (error) {
-        handleApiErrors(error, id);
+        handleApiErrors(error);
       } finally {
         setIsLoading(false);
       }
-    }
-  };
+    },
+    [blogAuthor, blogTitle, blogUrl, blogs, handleApiErrors, queueAlerts]
+  );
 
-  const deleteBlog = async (event, id, title) => {
-    const titleToShow = title.length > 45 ? `${title.slice(0, 44)}… ` : title;
-    const willDelete = window.confirm(`Delete ${titleToShow}?`);
+  const likeBlog = useCallback(
+    async (event, id) => {
+      const blogToLike = blogs.find((blog) => blog.id === id);
 
-    if (!willDelete) return;
-    setIsLoading(true);
+      if (!blogToLike) {
+        queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+      } else {
+        const updatedBlog = {
+          ...blogToLike,
+          likes: blogToLike.likes + 1,
+          user: blogToLike.user.id,
+        };
 
-    try {
-      await blogsService.remove(id);
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-      setIsLoading(false);
-      queueAlerts([{ type: "info", message: `Deleted Blog: ${titleToShow}` }]);
-    } catch (error) {
-      setIsLoading(false);
-      handleApiErrors(error, id);
-    } finally {
+        setIsLoading(true);
+
+        try {
+          const returnedBlog = await blogsService.update(id, updatedBlog);
+          setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+          setIsLoading(false);
+        } catch (error) {
+          handleApiErrors(error, id);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    },
+    [blogs, handleApiErrors, queueAlerts]
+  );
+
+  const deleteBlog = useCallback(
+    async (event, id, title) => {
+      const titleToShow = title.length > 45 ? `${title.slice(0, 44)}… ` : title;
+      const willDelete = window.confirm(`Delete ${titleToShow}?`);
+
+      if (!willDelete) return;
       setIsLoading(true);
-    }
-  };
 
-  const handleChange = (event) => {
+      try {
+        await blogsService.remove(id);
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+        setIsLoading(false);
+        queueAlerts([
+          { type: "info", message: `Deleted Blog: ${titleToShow}` },
+        ]);
+      } catch (error) {
+        setIsLoading(false);
+        handleApiErrors(error, id);
+      } finally {
+        setIsLoading(true);
+      }
+    },
+    [blogs, handleApiErrors, queueAlerts]
+  );
+
+  const handleChange = useCallback((event) => {
     const { name, value } = event.target;
 
     const changeFuncs = {
@@ -278,7 +299,7 @@ function App() {
     } else {
       changeFuncs[name]();
     }
-  };
+  }, []);
 
   const ShowBlogFormBtn = () => (
     <>
@@ -323,10 +344,6 @@ function App() {
     return nextBlog.likes - currBlog.likes;
   });
 
-  const scrollToTop = () => {
-    document.documentElement.scrollTop = 0;
-  };
-
   return (
     <>
       {!user && (
@@ -347,7 +364,7 @@ function App() {
         <div className="o-container js-container">
           <UserContext.Provider value={user}>
             <NavBar
-              handleLogout={() => logout()}
+              handleLogout={logout}
               brandTitle="Blog List"
               isLoading={isLoading}
             />
@@ -363,11 +380,13 @@ function App() {
             </div>
           </UserContext.Provider>
 
-          {hasScrollTop && <ToTopButton handleScrollToTop={scrollToTop} />}
+          <ToTopScroller ref={toTopScrollerRef} />
         </div>
       )}
     </>
   );
 }
+
+App.whyDidYouRender = true;
 
 export default App;

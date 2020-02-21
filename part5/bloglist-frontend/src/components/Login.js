@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useUID } from "react-uid";
 import PropTypes from "prop-types";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Input from "./Input";
 import InputAddon from "./InputAddon";
+import { Fragment } from "react";
 
 const Login = ({ values, handleChange, handleSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const passwordInputType = showPassword ? "text" : "password";
+  const passwordTogglerIcon = showPassword ? faEyeSlash : faEye;
+  const passwordTogglerKey = useUID();
+  const { username, password } = values;
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const toggleShowPassword = useCallback(() => {
+    setShowPassword((prevState) => !prevState);
+  }, []);
 
   return (
     <form className="c-login" onSubmit={handleSubmit}>
@@ -20,29 +26,31 @@ const Login = ({ values, handleChange, handleSubmit }) => {
           <Input
             name="username"
             handleChange={handleChange}
-            value={values.username}
+            value={username}
             placeholder="Enter Username"
           />
         </div>
         <div className="c-row c-row--hasAddon">
           <Input
             name="password"
-            type={`${showPassword ? "text" : "password"}`}
+            type={passwordInputType}
             handleChange={handleChange}
-            value={values.password}
+            value={password}
             placeholder="Enter Password"
           />
           <InputAddon type="append">
-            <button
-              type="button"
-              onClick={toggleShowPassword}
-              className="c-btn c-btn--noBg c-btn--fitContent"
-            >
-              <FontAwesomeIcon
-                className="c-input-addon__icon"
-                icon={showPassword ? faEyeSlash : faEye}
-              />
-            </button>
+            <Fragment key={passwordTogglerKey}>
+              <button
+                type="button"
+                onClick={toggleShowPassword}
+                className="c-btn c-btn--noBg c-btn--fitContent"
+              >
+                <FontAwesomeIcon
+                  className="c-input-addon__icon"
+                  icon={passwordTogglerIcon}
+                />
+              </button>
+            </Fragment>
           </InputAddon>
         </div>
         <div className="c-login__button">
@@ -61,4 +69,13 @@ Login.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export default Login;
+const shouldNotUpdate = (prevProps, nextProps) => {
+  const sameUsername = prevProps.values.username === nextProps.values.username;
+  const samePassword = prevProps.values.password === nextProps.values.password;
+
+  if (sameUsername && samePassword) {
+    return true;
+  }
+  return false;
+};
+export default React.memo(Login, shouldNotUpdate);

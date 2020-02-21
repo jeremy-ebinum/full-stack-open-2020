@@ -24,4 +24,15 @@ AlertList.propTypes = {
   contextClass: PropTypes.string.isRequired,
 };
 
-export default AlertList;
+const shouldNotUpdate = (prevProps, nextProps) => {
+  const sameAlerts = prevProps.alerts.length === nextProps.alerts.length;
+  const sameContextClass = prevProps.contextClass === nextProps.contextClass;
+
+  if (sameAlerts && sameContextClass) {
+    return true;
+  }
+
+  return false;
+};
+
+export default React.memo(AlertList, shouldNotUpdate);

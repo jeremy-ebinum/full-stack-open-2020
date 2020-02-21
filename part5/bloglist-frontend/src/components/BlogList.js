@@ -32,4 +32,15 @@ BlogList.propTypes = {
   handleDelete: PropTypes.func.isRequired,
 };
 
-export default BlogList;
+const shouldNotUpdate = (prevProps, nextProps) => {
+  const sameLoadingStatus = prevProps.isLoading === nextProps.isLoading;
+  const sameBlogs = prevProps.blogs.length === nextProps.blogs.length;
+
+  if (sameBlogs && sameLoadingStatus) {
+    return true;
+  }
+
+  return false;
+};
+
+export default React.memo(BlogList, shouldNotUpdate);

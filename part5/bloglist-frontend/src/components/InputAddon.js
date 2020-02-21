@@ -21,4 +21,15 @@ InputAddon.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default InputAddon;
+const shouldNotUpdate = (prevProps, nextProps) => {
+  const sameType = prevProps.type === nextProps.type;
+  const sameChildren = prevProps.children.key === nextProps.children.key;
+
+  if (sameType && sameChildren) {
+    return true;
+  }
+
+  return false;
+};
+
+export default React.memo(InputAddon, shouldNotUpdate);

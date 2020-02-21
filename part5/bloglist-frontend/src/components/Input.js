@@ -17,12 +17,12 @@ const Input = ({
   return (
     <input
       name={name}
-      id={id || null}
-      type={type || "text"}
+      id={id}
+      type={type}
       className={inputClass}
       onChange={handleChange}
       value={value}
-      placeholder={placeholder || ""}
+      placeholder={placeholder}
     />
   );
 };
@@ -44,4 +44,4 @@ Input.defaultProps = {
   placeholder: null,
 };
 
-export default Input;
+export default React.memo(Input);
