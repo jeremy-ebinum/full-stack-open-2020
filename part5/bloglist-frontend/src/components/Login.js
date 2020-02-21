@@ -1,39 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Input from "./Input";
 import InputAddon from "./InputAddon";
 
-const Login = props => {
-  let icon;
-  if (props.showPassword) {
-    icon = faEyeSlash;
-  } else {
-    icon = faEye;
-  }
+const Login = ({ values, handleChange, handleSubmit }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
-    <form className="c-login" onSubmit={props.handleSubmit}>
+    <form className="c-login" onSubmit={handleSubmit}>
       <div className="c-login__header">Login to Application</div>
       <div className="c-login__body">
         <div className="c-row">
           <Input
-            handleChange={props.handleUsernameChange}
-            value={props.usernameValue}
+            name="username"
+            handleChange={handleChange}
+            value={values.username}
             placeholder="Enter Username"
           />
         </div>
         <div className="c-row c-row--hasAddon">
           <Input
-            type={props.passwordType}
-            handleChange={props.handlePasswordChange}
-            value={props.passwordValue}
+            name="password"
+            type={`${showPassword ? "text" : "password"}`}
+            handleChange={handleChange}
+            value={values.password}
             placeholder="Enter Password"
           />
-          <InputAddon
-            type="toggler"
-            icon={icon}
-            clickHandler={props.handlePasswordTogglerClick}
-          />
+          <InputAddon type="append">
+            <button
+              type="button"
+              onClick={toggleShowPassword}
+              className="c-btn c-btn--noBg c-btn--fitContent"
+            >
+              <FontAwesomeIcon
+                className="c-input-addon__icon"
+                icon={showPassword ? faEyeSlash : faEye}
+              />
+            </button>
+          </InputAddon>
         </div>
         <div className="c-login__button">
           <button type="submit" className="c-btn c-btn--primary">
@@ -43,6 +53,12 @@ const Login = props => {
       </div>
     </form>
   );
+};
+
+Login.propTypes = {
+  values: PropTypes.objectOf(PropTypes.string).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default Login;

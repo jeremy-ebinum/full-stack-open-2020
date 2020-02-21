@@ -1,49 +1,57 @@
 import React, { useState, useImperativeHandle } from "react";
+import PropTypes from "prop-types";
 
-const Toggleable = React.forwardRef((props, ref) => {
-  const [visible, setVisible] = useState(false);
+const Toggleable = React.forwardRef(
+  ({ cb, contextClass, buttons, children }, ref) => {
+    const [visible, setVisible] = useState(false);
 
-  // hide or show depending on if props.children is visible using state
-  const hideWhenVisible = visible
-    ? "c-toggleable__show isHidden"
-    : "c-toggleable__show";
-  const showWhenVisible = visible
-    ? "c-toggleable__content"
-    : "c-toggleable__content isHidden";
+    let hideWhenVisible;
+    let showWhenVisible;
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    if (visible) {
+      hideWhenVisible = "c-toggleable__show isHidden";
+      showWhenVisible = "c-toggleable__content";
+    } else {
+      hideWhenVisible = "c-toggleable__show";
+      showWhenVisible = "c-toggleable__content isHidden";
+    }
 
-  useImperativeHandle(ref, () => {
-    return {
-      toggleVisibility
+    const toggleVisibility = () => {
+      if (visible) cb();
+      setVisible(!visible);
     };
-  });
 
-  return (
-    <div className="c-toggleable">
-      <div className={`${hideWhenVisible} ${props.showContextClass}`}>
-        <button
-          className={`${props.showButtonClass}`}
-          onClick={toggleVisibility}
+    useImperativeHandle(ref, () => {
+      return {
+        toggleVisibility,
+      };
+    });
+
+    return (
+      <div className="c-toggleable">
+        <div
+          className={`${hideWhenVisible} c-toggleable__show--${contextClass}`}
         >
-          {props.showButtonLabel}
-        </button>
-      </div>
-      <div className={`${showWhenVisible}`}>
-        <div className={`c-toggleable__hide ${props.hideContextClass}`}>
-          <button
-            className={props.hideButtonClass || "c-btn"}
-            onClick={toggleVisibility}
-          >
-            {props.hideButtonLabel || "Cancel"}
-          </button>
+          {buttons.show}
         </div>
-        {props.children}
+        <div className={`${showWhenVisible}`}>
+          <div
+            className={`c-toggleable__hide c-toggleable__hide--${contextClass}`}
+          >
+            {buttons.hide}
+          </div>
+          {children}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
+
+Toggleable.propTypes = {
+  cb: PropTypes.func.isRequired,
+  contextClass: PropTypes.string.isRequired,
+  buttons: PropTypes.objectOf(PropTypes.element).isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default Toggleable;

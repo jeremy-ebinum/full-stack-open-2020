@@ -1,21 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Alert from "./Alert";
 
-const AlertList = props => {
-  const alerts = props.alerts.map(alert => {
+const AlertList = ({ alerts, contextClass }) => {
+  const alertsToDisplay = alerts.map((alert) => {
     return (
       <Alert
-        timeoutFunc={alert.timeoutFunc}
         key={alert.id}
+        timeoutFunc={alert.timeoutFunc}
         id={alert.id}
         type={alert.type}
-        contextClass={props.contextClass}
+        contextClass={contextClass}
         message={alert.message}
-      ></Alert>
+      />
     );
   });
 
-  return alerts;
+  return alertsToDisplay;
+};
+
+AlertList.propTypes = {
+  alerts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  contextClass: PropTypes.string.isRequired,
 };
 
 export default AlertList;

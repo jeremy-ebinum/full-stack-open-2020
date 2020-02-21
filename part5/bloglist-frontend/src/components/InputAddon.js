@@ -1,27 +1,24 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
 
-const InputAddon = ({ type, icon, clickHandler }) => {
-  let Addon;
-  if (type === "toggler") {
-    Addon = props => {
-      return (
-        <div
-          role="button"
-          onClick={clickHandler}
-          className="c-input-addon c-input-addon--append c-input-addon--isToggler"
-        >
-          {props.children}
-        </div>
-      );
-    };
-  }
+const InputAddon = ({ type, children }) => {
+  const displayAddon = () => {
+    switch (type) {
+      case "append":
+        return (
+          <div className="c-input-addon c-input-addon--append">{children}</div>
+        );
+      default:
+        return null;
+    }
+  };
 
-  return (
-    <Addon>
-      <FontAwesomeIcon className="c-input-addon__icon" icon={icon} />
-    </Addon>
-  );
+  return <>{displayAddon()}</>;
+};
+
+InputAddon.propTypes = {
+  type: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default InputAddon;

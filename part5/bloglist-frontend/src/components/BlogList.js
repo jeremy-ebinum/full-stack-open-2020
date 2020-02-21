@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Blog from "./Blog";
 
 const BlogList = ({ blogs, isLoading, handleLike, handleDelete }) => {
@@ -10,7 +11,7 @@ const BlogList = ({ blogs, isLoading, handleLike, handleDelete }) => {
         <p className="u-lead">No Blogs have been added yet</p>
       )}
 
-      {blogs.map(blog => {
+      {blogs.map((blog) => {
         return (
           <Blog
             key={blog.id}
@@ -22,6 +23,13 @@ const BlogList = ({ blogs, isLoading, handleLike, handleDelete }) => {
       })}
     </div>
   );
+};
+
+BlogList.propTypes = {
+  blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 export default BlogList;

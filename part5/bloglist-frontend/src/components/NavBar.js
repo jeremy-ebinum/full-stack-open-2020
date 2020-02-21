@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import UserContext from "../UserContext";
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import UserContext from "../UserContext";
 
 const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
   const user = useContext(UserContext);
@@ -23,6 +24,7 @@ const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
           </div>
           <div className="c-navbar__logout">
             <button
+              type="button"
               onClick={handleLogout}
               className="c-btn c-btn--light-outline"
             >
@@ -33,6 +35,12 @@ const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
       </div>
     </div>
   );
+};
+
+NavBar.propTypes = {
+  brandTitle: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
 
 export default NavBar;

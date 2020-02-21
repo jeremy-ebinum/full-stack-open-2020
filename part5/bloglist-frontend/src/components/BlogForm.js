@@ -1,42 +1,49 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { useUIDSeed } from "react-uid";
 import Input from "./Input";
 
-const BlogForm = props => {
+const BlogForm = ({ values, handleChange, handleSubmit }) => {
+  const uidSeed = useUIDSeed();
+
   return (
-    <form className="c-blog-form" onSubmit={props.handleSubmit}>
+    <form className="c-blog-form" onSubmit={handleSubmit}>
       <h2 className="c-blog-form__heading">Add New Blog</h2>
       <div className="c-row c-row--inBlog">
-        <label htmlFor="blog-title" className="c-row__label">
+        <label htmlFor={uidSeed("title")} className="c-row__label">
           Title
         </label>
         <Input
-          id="blog-title"
+          name="title"
+          id={uidSeed("title")}
           contextClass="c-row__input--inBlog"
-          handleChange={props.handleTitleChange}
-          value={props.titleValue}
+          handleChange={handleChange}
+          value={values.blogTitle}
         />
       </div>
       <div className="c-row c-row--inBlog">
-        <label htmlFor="blog-author" className="c-row__label">
+        <label htmlFor={uidSeed("author")} className="c-row__label">
           Author
         </label>
         <Input
-          id="blog-author"
+          name="author"
+          id={uidSeed("author")}
           contextClass="c-row__input--inBlog"
-          handleChange={props.handleAuthorChange}
-          value={props.authorValue}
+          handleChange={handleChange}
+          value={values.blogAuthor}
         />
       </div>
       <div className="c-row c-row--inBlog">
-        <label htmlFor="blog-url" className="c-row__label">
+        <label htmlFor={uidSeed("url")} className="c-row__label">
           URL
         </label>
         <Input
+          id={uidSeed("url")}
           type="url"
-          id="blog-url"
+          name="url"
           contextClass="c-row__input--inBlog"
-          handleChange={props.handleUrlChange}
-          value={props.urlValue}
+          handleChange={handleChange}
+          value={values.blogUrl}
         />
       </div>
 
@@ -47,6 +54,12 @@ const BlogForm = props => {
       </div>
     </form>
   );
+};
+
+BlogForm.propTypes = {
+  values: PropTypes.objectOf(PropTypes.string).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default BlogForm;

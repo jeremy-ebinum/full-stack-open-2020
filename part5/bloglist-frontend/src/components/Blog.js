@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "../UserContext";
@@ -9,13 +10,19 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
 
   const belongsToUser = blog.user.username === user.username;
 
-  const toggleShowDetails = event => {
+  const toggleShowDetails = (event) => {
     const isBlogLink = event.target.classList.contains("js-blogLink");
     const isLikeButton = event.target.classList.contains("js-likeButton");
     const isDeleteButton = event.target.classList.contains("js-deleteButton");
 
     if (isBlogLink || isLikeButton || isDeleteButton) return;
     setShowDetails(!showDetails);
+  };
+
+  const focusBlog = (event) => {
+    if (event.keyCode === 13 || event.keyCode === 32) {
+      event.target.click();
+    }
   };
 
   const displayBlog = () => {
@@ -32,7 +39,10 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       <>
         <span className="c-blog__title">{blog.title}</span>
 
-        <span className="c-blog__author"> — {blog.author}</span>
+        <span className="c-blog__author">
+          {" — "}
+          {blog.author}
+        </span>
 
         <a
           className="c-blog__link js-blogLink"
@@ -45,11 +55,13 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
 
         <div className="c-blog__likes">
           <span className="c-blog__likes-txt">
-            {blog.likes} {blog.likes !== 1 ? "Likes" : "Like"}
+            {blog.likes}
+            {blog.likes !== 1 ? " Likes" : " Like"}
           </span>
           <div className="c-blog__like-button">
             <button
-              onClick={event => handleLike(event, blog.id)}
+              type="button"
+              onClick={(event) => handleLike(event, blog.id)}
               className="c-btn c-btn--info js-likeButton"
             >
               Like
@@ -66,7 +78,8 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         {belongsToUser && (
           <div className="c-blog__delete-button">
             <button
-              onClick={event => handleDelete(event, blog.id, blog.title)}
+              type="button"
+              onClick={(event) => handleDelete(event, blog.id, blog.title)}
               className="c-btn c-btn--danger js-deleteButton"
             >
               Delete
@@ -78,10 +91,25 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
   };
 
   return (
-    <div onClick={event => toggleShowDetails(event)} className="c-blog">
+    <div
+      role="button"
+      aria-expanded={showDetails ? "true" : "false"}
+      tabIndex={0}
+      onKeyDown={(event) => focusBlog(event)}
+      onClick={(event) => toggleShowDetails(event)}
+      className="c-blog js-blog"
+    >
       {displayBlog()}
     </div>
   );
+};
+
+Blog.propTypes = {
+  blog: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
+  ).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired,
 };
 
 export default Blog;

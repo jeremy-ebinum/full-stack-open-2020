@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 
-const Modal = props => {
+const Modal = (props) => {
+  const { children } = props;
+
   useEffect(() => {
-    let rootStyle = document.documentElement.style;
-    let wrapper = document.querySelector(".js-wrapper");
+    const rootStyle = document.documentElement.style;
+    const wrapper = document.querySelector(".js-wrapper");
     rootStyle.setProperty("--body-overflow", "hidden");
     wrapper.classList.add("o-wrapper--hasModal");
     return () => {
@@ -14,9 +17,13 @@ const Modal = props => {
 
   return (
     <div className="c-modal">
-      <div className="c-modal__content">{props.children}</div>
+      <div className="c-modal__content">{children}</div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

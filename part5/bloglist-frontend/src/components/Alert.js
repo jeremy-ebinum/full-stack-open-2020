@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 
 //  run the timeoutFunc after a given period with useEffect hook
-const Alert = ({ timeoutFunc, id, type, message, contextClass }) => {
+const Alert = ({ timeoutFunc, id, type, contextClass, message }) => {
   const alertTypes = {
     error: "c-alert--error",
     success: "c-alert--success",
-    info: "c-alert--info"
+    info: "c-alert--info",
   };
 
   if (!alertTypes[type]) throw new Error("Invalid Alert Type");
@@ -20,6 +21,14 @@ const Alert = ({ timeoutFunc, id, type, message, contextClass }) => {
       <span className="c-alert__txt">{message}</span>
     </div>
   );
+};
+
+Alert.propTypes = {
+  timeoutFunc: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  contextClass: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default Alert;
