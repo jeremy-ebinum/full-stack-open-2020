@@ -368,7 +368,7 @@ function App() {
               brandTitle="Blog List"
               isLoading={isLoading}
             />
-            <div className="c-blogs">
+            <div className="c-blogs" data-testid="blogs-container">
               <AlertList contextClass="c-alert--inBlog" alerts={alerts} />
               {blogForm()}
               <BlogList
