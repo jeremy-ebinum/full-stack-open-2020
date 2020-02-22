@@ -30,6 +30,10 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       return (
         <>
           <span className="c-blog__title">{blog.title}</span>
+          <span className="c-blog__author">
+            {" — "}
+            {blog.author}
+          </span>
           <FontAwesomeIcon className="c-blog__expandicon" icon={faAngleDown} />
         </>
       );
@@ -98,6 +102,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       onKeyDown={(event) => focusBlog(event)}
       onClick={(event) => toggleShowDetails(event)}
       className="c-blog js-blog"
+      data-testid="blog"
     >
       {displayBlog()}
     </div>
