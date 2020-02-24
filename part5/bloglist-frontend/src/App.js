@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useUIDSeed } from "react-uid";
+import { getTestIDs } from "./helpers/testHelper";
 import UserContext from "./UserContext";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
@@ -11,6 +12,8 @@ import Login from "./components/Login";
 import ModalSpinner from "./components/ModalSpinner";
 import BlogForm from "./components/BlogForm";
 import BlogList from "./components/BlogList";
+
+export const testIDs = getTestIDs();
 
 function App() {
   const [alerts, setAlerts] = useState([]);
@@ -345,7 +348,7 @@ function App() {
   });
 
   return (
-    <>
+    <div className="o-wrapper js-wrapper">
       {!user && (
         <div className="o-container js-container">
           <AlertList contextClass="c-alert--inLogin" alerts={alerts} />
@@ -368,7 +371,7 @@ function App() {
               brandTitle="Blog List"
               isLoading={isLoading}
             />
-            <div className="c-blogs" data-testid="blogs-container">
+            <div className="c-blogs" data-testid={testIDs.blogs}>
               <AlertList contextClass="c-alert--inBlog" alerts={alerts} />
               {blogForm()}
               <BlogList
@@ -383,10 +386,8 @@ function App() {
           <ToTopScroller ref={toTopScrollerRef} />
         </div>
       )}
-    </>
+    </div>
   );
 }
-
-App.whyDidYouRender = true;
 
 export default App;

@@ -3,9 +3,12 @@ import { useUID } from "react-uid";
 import PropTypes from "prop-types";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getTestIDs } from "../helpers/testHelper";
 import Input from "./Input";
 import InputAddon from "./InputAddon";
 import { Fragment } from "react";
+
+export const testIDs = getTestIDs();
 
 const Login = ({ values, handleChange, handleSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +30,7 @@ const Login = ({ values, handleChange, handleSubmit }) => {
             name="username"
             handleChange={handleChange}
             value={username}
+            ariaLabel="username"
             placeholder="Enter Username"
           />
         </div>
@@ -36,6 +40,7 @@ const Login = ({ values, handleChange, handleSubmit }) => {
             type={passwordInputType}
             handleChange={handleChange}
             value={password}
+            ariaLabel="password"
             placeholder="Enter Password"
           />
           <InputAddon type="append">
@@ -44,6 +49,7 @@ const Login = ({ values, handleChange, handleSubmit }) => {
                 type="button"
                 onClick={toggleShowPassword}
                 className="c-btn c-btn--noBg c-btn--fitContent"
+                data-testid={testIDs.toggleShowPassword}
               >
                 <FontAwesomeIcon
                   className="c-input-addon__icon"

@@ -2,7 +2,10 @@ import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { getTestIDs } from "../helpers/testHelper";
 import UserContext from "../UserContext";
+
+export const testIDs = getTestIDs();
 
 const Blog = ({ blog, handleLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -102,7 +105,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       onKeyDown={(event) => focusBlog(event)}
       onClick={(event) => toggleShowDetails(event)}
       className="c-blog js-blog"
-      data-testid="blog"
+      data-testid={testIDs[`blog_${blog.id}`]}
     >
       {displayBlog()}
     </div>

@@ -8,6 +8,7 @@ const Input = ({
   handleChange,
   value,
   placeholder,
+  ariaLabel,
   contextClass,
 }) => {
   const inputClass = contextClass
@@ -23,6 +24,7 @@ const Input = ({
       onChange={handleChange}
       value={value}
       placeholder={placeholder}
+      aria-label={ariaLabel}
     />
   );
 };
@@ -34,6 +36,7 @@ Input.propTypes = {
   handleChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  ariaLabel: PropTypes.string,
   contextClass: PropTypes.string,
 };
 
@@ -42,6 +45,7 @@ Input.defaultProps = {
   type: "text",
   contextClass: null,
   placeholder: null,
+  ariaLabel: null,
 };
 
 export default React.memo(Input);

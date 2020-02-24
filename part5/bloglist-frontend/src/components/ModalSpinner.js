@@ -1,12 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { getTestIDs } from "../helpers/testHelper";
 import Modal from "./Modal";
+
+export const testIDs = getTestIDs();
 
 const ModalSpinner = () => {
   return (
     <Modal>
       <FontAwesomeIcon
+        data-testid={testIDs.modalSpinner}
         className="c-spinner c-spinner--inModal"
         icon={faSpinner}
         spin

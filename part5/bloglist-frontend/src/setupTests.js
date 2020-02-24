@@ -6,6 +6,7 @@ import "@testing-library/jest-dom/extend-expect";
 
 // Mocks
 jest.mock("./services/blogs");
+jest.mock("./services/login");
 
 // localStorage
 let savedItems = {};
@@ -15,12 +16,14 @@ const localStorageMock = {
     savedItems[key] = item;
   },
   getItem: (key) => savedItems[key],
+  removeItem: (key) => delete savedItems[key],
   clear: () => {
     savedItems = {};
   },
 };
 
-Object.defineProperty(window, "localStorage", { value: localStorageMock });
+global.localStorage = localStorageMock;
+// Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
 // false positives
 const originalError = console.error;
