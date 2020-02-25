@@ -4,7 +4,6 @@ import {
   within,
   fireEvent,
   cleanup,
-  act,
   waitForElement,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
@@ -19,8 +18,6 @@ import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
 import { testIDs as navbarTestIDs } from "./components/NavBar";
 import { testIDs as blogTestIDs } from "./components/Blog";
 
-jest.useFakeTimers();
-
 let blogs;
 beforeAll(() => {
   blogs = testHelper.blogs;
@@ -30,6 +27,7 @@ describe("<App />", () => {
   describe("When user is not logged in", () => {
     afterEach(() => {
       cleanup();
+      nock.cleanAll();
     });
 
     test("blogs are not rendered", async () => {
@@ -67,7 +65,7 @@ describe("<App />", () => {
       );
     });
 
-    test("a loading modal is shown on submitting the login form", async () => {
+    test("clicking the login buttton logs in the user", async () => {
       nock(testHelper.host)
         .post(testHelper.loginPath)
         .reply(200, testHelper.validLoggedInUser)
@@ -79,15 +77,13 @@ describe("<App />", () => {
         selector: "*[type='submit']",
       });
 
-      await act(async () => {
-        fireEvent.click(loginBtn);
-      });
+      fireEvent.click(loginBtn);
 
       await waitForElementToBeRemoved(() => [
         getByTestId(modalSpinnerTestIDs.modalSpinner),
       ]);
 
-      nock.cleanAll();
+      await findByText(blogs[0].title);
     });
   });
 
@@ -100,6 +96,10 @@ describe("<App />", () => {
     afterEach(() => {
       cleanup();
       nock.cleanAll();
+    });
+
+    afterAll(() => {
+      localStorage.removeItem("loggedInBloglistUser");
     });
 
     test("blogs are fetched from backend and rendered", async () => {
