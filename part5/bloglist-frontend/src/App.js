@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useUIDSeed } from "react-uid";
 import { getTestIDs } from "./helpers/testHelper";
+import { useField } from "./hooks";
 import UserContext from "./UserContext";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
@@ -19,11 +20,12 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [blogTitle, setBlogTitle] = useState("");
-  const [blogAuthor, setBlogAuthor] = useState("");
-  const [blogUrl, setBlogUrl] = useState("");
+  const [username, resetUsername] = useField({ placeholder: "Enter Username" });
+  const [password, resetPassword] = useField({ placeholder: "Enter Password" });
+  const blogFieldClass = "c-row__input c-row__input--inBlog";
+  const [title, resetTitle] = useField({ className: blogFieldClass });
+  const [author, resetAuhor] = useField({ className: blogFieldClass });
+  const [url, resetUrl] = useField({ className: blogFieldClass, type: "url" });
   const [fetchError, setFetchError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,9 +56,9 @@ function App() {
         };
       });
 
-      setAlerts(alerts.concat(...alertsWithTimeout));
+      setAlerts((prevAlerts) => prevAlerts.concat(...alertsWithTimeout));
     },
-    [alerts, uidSeed]
+    [uidSeed]
   );
 
   // Get persisted logged in user from localStorage
@@ -148,7 +150,7 @@ function App() {
       }
 
       if (statusCode === 404) {
-        setBlogs(blogs.filter((blog) => blog.id !== id));
+        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
         return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
       }
 
@@ -165,7 +167,7 @@ function App() {
         { type: "error", message: "Oops! something went wrong" },
       ]);
     },
-    [blogs, queueAlerts]
+    [queueAlerts]
   );
 
   const login = useCallback(
@@ -175,8 +177,8 @@ function App() {
 
       try {
         const authUser = await loginService.login({
-          username,
-          password,
+          username: username.value,
+          password: password.value,
         });
 
         blogsService.setToken(authUser.token);
@@ -188,19 +190,26 @@ function App() {
       } catch (error) {
         handleApiErrors(error);
       } finally {
+        resetUsername();
+        resetPassword();
         setIsLoggingIn(false);
-        setUsername("");
-        setPassword("");
       }
     },
-    [username, password, queueAlerts, handleApiErrors]
+    [
+      username.value,
+      password.value,
+      queueAlerts,
+      handleApiErrors,
+      resetUsername,
+      resetPassword,
+    ]
   );
 
-  const resetBlogForm = () => {
-    setBlogTitle("");
-    setBlogAuthor("");
-    setBlogUrl("");
-  };
+  const resetBlogForm = useCallback(() => {
+    resetTitle();
+    resetAuhor();
+    resetUrl();
+  }, [resetAuhor, resetTitle, resetUrl]);
 
   const logout = useCallback(() => {
     blogsService.setToken(null);
@@ -208,18 +217,22 @@ function App() {
     setUser(null);
     resetBlogForm();
     queueAlerts([{ type: "info", message: "Logged out" }]);
-  }, [queueAlerts]);
+  }, [queueAlerts, resetBlogForm]);
 
   const addBlog = useCallback(
     async (event) => {
       event.preventDefault();
-      const newBlog = { title: blogTitle, author: blogAuthor, url: blogUrl };
+      const newBlog = {
+        title: title.value,
+        author: author.value,
+        url: url.value,
+      };
       setIsLoading(true);
 
       try {
         const returnedBlog = await blogsService.create(newBlog);
         blogFormRef.current.toggleVisibility();
-        setBlogs(blogs.concat(returnedBlog));
+        setBlogs((prevBlogs) => prevBlogs.concat(returnedBlog));
         resetBlogForm();
         const { title } = returnedBlog;
         const titleToShow =
@@ -237,7 +250,14 @@ function App() {
         setIsLoading(false);
       }
     },
-    [blogAuthor, blogTitle, blogUrl, blogs, handleApiErrors, queueAlerts]
+    [
+      title.value,
+      author.value,
+      url.value,
+      resetBlogForm,
+      queueAlerts,
+      handleApiErrors,
+    ]
   );
 
   const likeBlog = useCallback(
@@ -291,26 +311,6 @@ function App() {
     [blogs, handleApiErrors, queueAlerts]
   );
 
-  const handleChange = useCallback((event) => {
-    const { name, value } = event.target;
-
-    const changeFuncs = {
-      username: () => setUsername(value),
-      password: () => setPassword(value),
-      title: () => setBlogTitle(value),
-      author: () => setBlogAuthor(value),
-      url: () => setBlogUrl(value),
-    };
-
-    const hasHandler = Object.keys(changeFuncs).includes(name);
-
-    if (!hasHandler) {
-      throw new Error("Invalid Input Change Handler");
-    } else {
-      changeFuncs[name]();
-    }
-  }, []);
-
   const ShowBlogFormBtn = () => (
     <>
       <button
@@ -344,8 +344,9 @@ function App() {
       testid={testIDs.toggleableBlogForm}
     >
       <BlogForm
-        values={{ blogTitle, blogAuthor, blogUrl }}
-        handleChange={handleChange}
+        title={title}
+        author={author}
+        url={url}
         handleSubmit={addBlog}
       />
     </Toggleable>
@@ -361,11 +362,7 @@ function App() {
         <div className="o-container js-container">
           <AlertList contextClass="c-alert--inLogin" alerts={alerts} />
 
-          <Login
-            values={{ username, password }}
-            handleChange={handleChange}
-            handleSubmit={login}
-          />
+          <Login username={username} password={password} handleSubmit={login} />
 
           {isLoggingIn && <ModalSpinner />}
         </div>

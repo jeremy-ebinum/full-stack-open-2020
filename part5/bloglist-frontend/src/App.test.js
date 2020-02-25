@@ -69,13 +69,12 @@ describe("<App />", () => {
 
     test("a loading modal is shown on submitting the login form", async () => {
       nock(testHelper.host)
-        .persist()
         .post(testHelper.loginPath)
         .reply(200, testHelper.validLoggedInUser)
         .get(testHelper.blogsPath)
         .reply(200, testHelper.blogs);
 
-      const { findByText, getByTestId, unmount } = render(<App />);
+      const { findByText, getByTestId } = render(<App />);
       const loginBtn = await findByText(/login|sign in/i, {
         selector: "*[type='submit']",
       });
@@ -88,7 +87,6 @@ describe("<App />", () => {
         getByTestId(modalSpinnerTestIDs.modalSpinner),
       ]);
 
-      unmount();
       nock.cleanAll();
     });
   });

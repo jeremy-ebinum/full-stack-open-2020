@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useUIDSeed } from "react-uid";
-import Input from "./Input";
 
-const BlogForm = ({ values, handleChange, handleSubmit }) => {
+const BlogForm = ({ title, author, url, handleSubmit }) => {
   const uidSeed = useUIDSeed();
 
   return (
@@ -13,38 +12,19 @@ const BlogForm = ({ values, handleChange, handleSubmit }) => {
         <label htmlFor={uidSeed("title")} className="c-row__label">
           Title
         </label>
-        <Input
-          name="title"
-          id={uidSeed("title")}
-          contextClass="c-row__input--inBlog"
-          handleChange={handleChange}
-          value={values.blogTitle}
-        />
+        <input {...title} id={uidSeed("title")} />
       </div>
       <div className="c-row c-row--inBlog">
         <label htmlFor={uidSeed("author")} className="c-row__label">
           Author
         </label>
-        <Input
-          name="author"
-          id={uidSeed("author")}
-          contextClass="c-row__input--inBlog"
-          handleChange={handleChange}
-          value={values.blogAuthor}
-        />
+        <input {...author} id={uidSeed("author")} />
       </div>
       <div className="c-row c-row--inBlog">
         <label htmlFor={uidSeed("url")} className="c-row__label">
           URL
         </label>
-        <Input
-          id={uidSeed("url")}
-          type="url"
-          name="url"
-          contextClass="c-row__input--inBlog"
-          handleChange={handleChange}
-          value={values.blogUrl}
-        />
+        <input {...url} id={uidSeed("url")} />
       </div>
 
       <div className="c-blog-form__submit">
@@ -57,16 +37,22 @@ const BlogForm = ({ values, handleChange, handleSubmit }) => {
 };
 
 BlogForm.propTypes = {
-  values: PropTypes.objectOf(PropTypes.string).isRequired,
-  handleChange: PropTypes.func.isRequired,
+  title: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+  ).isRequired,
+  author: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+  ).isRequired,
+  url: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+  ).isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 
 const shouldNotUpdate = (prevProps, nextProps) => {
-  const sameTitle = prevProps.values.blogTitle === nextProps.values.blogTitle;
-  const sameAuthor =
-    prevProps.values.blogAuthor === nextProps.values.blogAuthor;
-  const sameUrl = prevProps.values.blogUrl === nextProps.values.blogUrl;
+  const sameTitle = prevProps.title.value === nextProps.title.value;
+  const sameAuthor = prevProps.author.value === nextProps.author.value;
+  const sameUrl = prevProps.url.value === nextProps.url.value;
 
   if (sameTitle && sameAuthor && sameUrl) {
     return true;
@@ -74,4 +60,5 @@ const shouldNotUpdate = (prevProps, nextProps) => {
 
   return false;
 };
+
 export default React.memo(BlogForm, shouldNotUpdate);
