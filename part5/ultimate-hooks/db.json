@@ -1,0 +1,36 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "ultimate-hooks is now online",
+      "id": 3
+    },
+    {
+      "content": "SPAAAAAAMMMMM",
+      "id": 4
+    },
+    {
+      "content": "EGGSSSSSSSSSS",
+      "id": 5
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "jeremy ebinum",
+      "number": "2348000000000",
+      "id": 2
+    }
+  ]
+}
