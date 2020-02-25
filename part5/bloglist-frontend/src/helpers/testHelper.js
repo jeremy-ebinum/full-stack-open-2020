@@ -108,4 +108,20 @@ const validLoggedInUser = {
   name: "Uchiha Madara",
 };
 
-export default { host, blogsPath, loginPath, blogs, validLoggedInUser };
+const validLoggedInUserId = "5e47e5bddd1df91260420dc3";
+
+const validNewBlog = {
+  title: "The Necrohol of Nabudis",
+  author: "Final Fantasy Fandom Wiki",
+  url: "https://finalfantasy.fandom.com/wiki/Necrohol_of_Nabudis",
+};
+
+export default {
+  host,
+  blogsPath,
+  loginPath,
+  blogs,
+  validLoggedInUser,
+  validLoggedInUserId,
+  validNewBlog,
+};

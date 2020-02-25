@@ -6,6 +6,7 @@ dependencies:
   '@testing-library/react': 9.4.0_react-dom@16.12.0+react@16.12.0
   '@testing-library/user-event': 7.2.1
   axios: 0.19.2
+  lodash: 4.17.15
   prop-types: 15.7.2
   react: 16.12.0
   react-dom: 16.12.0_react@16.12.0
@@ -11295,6 +11296,7 @@ specifiers:
   eslint-config-prettier: ^6.10.0
   eslint-plugin-jest: ^23.7.0
   eslint-plugin-prettier: ^3.1.2
+  lodash: ^4.17.15
   nock: ^12.0.1
   prettier: ^1.19.1
   prop-types: ^15.7.2

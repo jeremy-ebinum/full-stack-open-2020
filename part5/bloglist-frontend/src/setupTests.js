@@ -23,3 +23,6 @@ const localStorageMock = {
 };
 
 global.localStorage = localStorageMock;
+
+// window.confirm
+window.confirm = () => true;

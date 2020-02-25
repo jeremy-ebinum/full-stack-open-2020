@@ -115,10 +115,6 @@ body {
   z-index: 3;
 }
 
-.c-to-top.isHidden {
-  display: none;
-}
-
 /* Alert Components will be created dynamically with JavaScript */
 .c-alert {
   background: #000;
@@ -470,18 +466,10 @@ body {
   height: 25px;
 }
 
-.c-toggleable__show.isHidden {
-  display: none;
-}
-
 .c-toggleable__content {
   position: relative;
   display: flex;
   flex-direction: column;
-}
-
-.c-toggleable__content.isHidden {
-  display: none;
 }
 
 .c-toggleable__hide {

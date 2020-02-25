@@ -2,19 +2,11 @@ import React, { useState, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 
 const Toggleable = React.forwardRef(
-  ({ cb, contextClass, buttons, children }, ref) => {
+  ({ cb, contextClass, buttons, testid, children }, ref) => {
     const [visible, setVisible] = useState(false);
 
-    let hideWhenVisible;
-    let showWhenVisible;
-
-    if (visible) {
-      hideWhenVisible = "c-toggleable__show isHidden";
-      showWhenVisible = "c-toggleable__content";
-    } else {
-      hideWhenVisible = "c-toggleable__show";
-      showWhenVisible = "c-toggleable__content isHidden";
-    }
+    const hideWhenVisible = { display: visible ? "none" : "" };
+    const showWhenVisible = { display: visible ? "" : "none" };
 
     const toggleVisibility = () => {
       if (visible) cb();
@@ -30,11 +22,16 @@ const Toggleable = React.forwardRef(
     return (
       <div className="c-toggleable">
         <div
-          className={`${hideWhenVisible} c-toggleable__show--${contextClass}`}
+          style={hideWhenVisible}
+          className={`c-toggleable__show c-toggleable__show--${contextClass}`}
         >
           {buttons.show}
         </div>
-        <div className={`${showWhenVisible}`}>
+        <div
+          style={showWhenVisible}
+          className="c-toggleable__content"
+          data-testid={testid}
+        >
           <div
             className={`c-toggleable__hide c-toggleable__hide--${contextClass}`}
           >
@@ -52,6 +49,11 @@ Toggleable.propTypes = {
   contextClass: PropTypes.string.isRequired,
   buttons: PropTypes.objectOf(PropTypes.element).isRequired,
   children: PropTypes.node.isRequired,
+  testid: PropTypes.string,
+};
+
+Toggleable.defaultProps = {
+  testid: null,
 };
 
 export default Toggleable;

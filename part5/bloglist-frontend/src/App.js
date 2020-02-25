@@ -258,7 +258,6 @@ function App() {
         try {
           const returnedBlog = await blogsService.update(id, updatedBlog);
           setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
-          setIsLoading(false);
         } catch (error) {
           handleApiErrors(error, id);
         } finally {
@@ -280,15 +279,13 @@ function App() {
       try {
         await blogsService.remove(id);
         setBlogs(blogs.filter((blog) => blog.id !== id));
-        setIsLoading(false);
         queueAlerts([
           { type: "info", message: `Deleted Blog: ${titleToShow}` },
         ]);
       } catch (error) {
-        setIsLoading(false);
         handleApiErrors(error, id);
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     },
     [blogs, handleApiErrors, queueAlerts]
@@ -344,6 +341,7 @@ function App() {
       cb={resetBlogForm}
       contextClass="inBlogForm"
       buttons={{ show: <ShowBlogFormBtn />, hide: <HideBlogFormBtn /> }}
+      testid={testIDs.toggleableBlogForm}
     >
       <BlogForm
         values={{ blogTitle, blogAuthor, blogUrl }}

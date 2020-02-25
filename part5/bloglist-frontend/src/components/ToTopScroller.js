@@ -2,7 +2,8 @@ import React, { useState, useImperativeHandle } from "react";
 
 const ToTopScroller = React.forwardRef((props, ref) => {
   const [isHidden, setIsHidden] = useState(true);
-  const toTopClass = isHidden ? "c-to-top isHidden" : "c-to-top";
+
+  const style = { display: isHidden ? "none" : "" };
 
   const scrollToTop = () => {
     document.documentElement.scrollTop = 0;
@@ -24,7 +25,7 @@ const ToTopScroller = React.forwardRef((props, ref) => {
   });
 
   return (
-    <div className={toTopClass}>
+    <div style={style} className="c-to-top">
       <button
         type="button"
         onClick={scrollToTop}
