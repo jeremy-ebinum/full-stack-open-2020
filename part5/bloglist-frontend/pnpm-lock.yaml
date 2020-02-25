@@ -17,6 +17,7 @@ devDependencies:
   eslint-config-prettier: 6.10.0
   eslint-plugin-jest: 23.7.0
   eslint-plugin-prettier: 3.1.2_prettier@1.19.1
+  nock: 12.0.1
   prettier: 1.19.1
 lockfileVersion: 5.1
 packages:
@@ -6488,7 +6489,6 @@ packages:
     resolution:
       integrity: sha1-mnWdOcXy/1A/1TAGRu1EX4jE+a8=
   /json-stringify-safe/5.0.1:
-    dev: false
     resolution:
       integrity: sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
   /json3/3.3.3:
@@ -7075,6 +7075,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
+  /mkdirp/1.0.3:
+    dev: true
+    engines:
+      node: '>=10'
+    hasBin: true
+    resolution:
+      integrity: sha512-6uCP4Qc0sWsgMLy1EOqqS/3rjDHOEnsStVr/4vtAIK2Y5i2kA7lFFejYrpIyiN9w0pYf4ckeCYT9f1r1P9KX5g==
   /move-concurrently/1.0.1:
     dependencies:
       aproba: 1.2.0
@@ -7164,6 +7171,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
+  /nock/12.0.1:
+    dependencies:
+      debug: 4.1.1
+      json-stringify-safe: 5.0.1
+      lodash: 4.17.15
+      mkdirp: 1.0.3
+      propagate: 2.0.1
+    dev: true
+    engines:
+      node: '>= 10.13'
+    resolution:
+      integrity: sha512-f5u5k7O5D2YXH2WEFQVLLPa36D5C0dxU9Lrg6KOuaFCMDt7yd1W4S3hbZClCMczxc4EZ0k1bEhPeMWSewrxYNw==
   /node-forge/0.9.0:
     dev: false
     engines:
@@ -8737,6 +8756,12 @@ packages:
       react-is: 16.12.0
     resolution:
       integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  /propagate/2.0.1:
+    dev: true
+    engines:
+      node: '>= 8'
+    resolution:
+      integrity: sha512-vGrhOavPSTz4QVNuBNdcNXePNdNMaO1xj9yBeH1ScQPjk/rhg9sSlCXPhMkFuaNNW/syTvYqsnbIJxMBfRbbag==
   /proxy-addr/2.0.5:
     dependencies:
       forwarded: 0.1.2
@@ -11270,6 +11295,7 @@ specifiers:
   eslint-config-prettier: ^6.10.0
   eslint-plugin-jest: ^23.7.0
   eslint-plugin-prettier: ^3.1.2
+  nock: ^12.0.1
   prettier: ^1.19.1
   prop-types: ^15.7.2
   react: ^16.12.0

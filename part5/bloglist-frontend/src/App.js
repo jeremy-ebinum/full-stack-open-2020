@@ -59,6 +59,16 @@ function App() {
     [alerts, uidSeed]
   );
 
+  // Get persisted logged in user from localStorage
+  useEffect(() => {
+    const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
+    if (loggedInBloglistUser) {
+      const storedUser = JSON.parse(loggedInBloglistUser);
+      setUser(storedUser);
+      blogsService.setToken(storedUser.token);
+    }
+  }, []);
+
   // Fetch blogs from backend on initial app load
   useEffect(() => {
     const setInitialBlogs = async () => {
@@ -79,23 +89,15 @@ function App() {
       }
     };
 
-    setInitialBlogs();
-  }, []);
+    if (user) {
+      setInitialBlogs();
+    }
+  }, [user]);
 
   if (fetchError) {
     queueAlerts([{ type: "error", message: fetchError.message }]);
     setFetchError(null);
   }
-
-  // Get persisted logged in user from localStorage
-  useEffect(() => {
-    const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
-    if (loggedInBloglistUser) {
-      const storedUser = JSON.parse(loggedInBloglistUser);
-      setUser(storedUser);
-      blogsService.setToken(storedUser.token);
-    }
-  }, []);
 
   // Handle DOM updates depending on if the login or blogs page is shown
   useEffect(() => {
@@ -139,6 +141,12 @@ function App() {
     (error, id) => {
       const statusCode = error.response.status;
 
+      if (!statusCode) {
+        return queueAlerts([
+          { type: "error", message: "Oops! something went wrong" },
+        ]);
+      }
+
       if (statusCode === 404) {
         setBlogs(blogs.filter((blog) => blog.id !== id));
         return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
@@ -174,7 +182,9 @@ function App() {
         blogsService.setToken(authUser.token);
         setUser(authUser);
         localStorage.setItem("loggedInBloglistUser", JSON.stringify(authUser));
-        queueAlerts([{ type: "info", message: `Logged in as ${username}` }]);
+        queueAlerts([
+          { type: "info", message: `Logged in as ${authUser.username}` },
+        ]);
       } catch (error) {
         handleApiErrors(error);
       } finally {
@@ -183,7 +193,7 @@ function App() {
         setPassword("");
       }
     },
-    [username, password, handleApiErrors, queueAlerts]
+    [username, password, queueAlerts, handleApiErrors]
   );
 
   const resetBlogForm = () => {

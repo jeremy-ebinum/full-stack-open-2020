@@ -19,6 +19,10 @@ export const getTestIDs = () => {
   return proxy;
 };
 
+const host = "http://localhost";
+const blogsPath = "/api/blogs";
+const loginPath = "/api/login";
+
 const blogs = [
   {
     title: "React patterns",
@@ -104,4 +108,4 @@ const validLoggedInUser = {
   name: "Uchiha Madara",
 };
 
-export default { blogs, validLoggedInUser };
+export default { host, blogsPath, loginPath, blogs, validLoggedInUser };

@@ -5,8 +5,8 @@
 import "@testing-library/jest-dom/extend-expect";
 
 // Mocks
-jest.mock("./services/blogs");
-jest.mock("./services/login");
+// jest.mock("./services/blogs");
+// jest.mock("./services/login");
 
 // localStorage
 let savedItems = {};
@@ -23,20 +23,3 @@ const localStorageMock = {
 };
 
 global.localStorage = localStorageMock;
-// Object.defineProperty(window, "localStorage", { value: localStorageMock });
-
-// false positives
-const originalError = console.error;
-
-beforeAll(() => {
-  console.error = (...args) => {
-    if (/Warning.*not wrapped in act/.test(args[0])) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-
-afterAll(() => {
-  console.error = originalError;
-});

@@ -1,11 +1,21 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  cleanup,
+  act,
+  waitForElement,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { prettyDOM } from "@testing-library/dom";
 import testHelper from "./helpers/testHelper";
+import nock from "nock";
 import App, { testIDs as appTestIDs } from "./App";
 import { testIDs as loginTestIDs } from "./components/Login";
 import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
-import { testIDs as blogTestIDs } from "./components/Blog";
+import { testIDs as navbarTestIDs } from "./components/NavBar";
+
+jest.useFakeTimers();
 
 let blogs;
 beforeAll(() => {
@@ -14,31 +24,29 @@ beforeAll(() => {
 
 describe("<App />", () => {
   describe("When user is not logged in", () => {
-    let component;
-    beforeEach(() => {
-      component = render(<App />);
+    afterEach(() => {
+      cleanup();
     });
 
     test("blogs are not rendered", async () => {
-      expect(component.queryByTestId(appTestIDs.blogs)).not.toBeInTheDocument();
-      expect(component.container).not.toHaveTextContent(blogs[0].title);
-      expect(component.container).not.toHaveTextContent(blogs[0].author);
+      const { container, queryByTestId } = render(<App />);
+      expect(queryByTestId(appTestIDs.blogs)).not.toBeInTheDocument();
+      expect(container).not.toHaveTextContent(blogs[0].title);
+      expect(container).not.toHaveTextContent(blogs[0].author);
     });
 
     test("login form is rendered", async () => {
-      const loginForm = await component.findByRole("form");
-      const loginButton = component.getByText((content, element) => {
-        const isLoginButton =
-          element.getAttribute("type") === "submit" &&
-          /login|sign in/gi.test(content);
-
-        return isLoginButton;
+      const { findByRole, getByText } = render(<App />);
+      const loginForm = await findByRole("form");
+      const loginBtn = getByText(/login|sign in/i, {
+        selector: "*[type='submit']",
       });
 
-      expect(loginForm).toContainElement(loginButton);
+      expect(loginForm).toContainElement(loginBtn);
     });
 
     test("clicking the password icon toggles password masking", async () => {
+      const component = render(<App />);
       await component.findByRole("form");
       const passwordInput = component.getByLabelText("password");
       const toggleBtn = component.getByTestId(loginTestIDs.toggleShowPassword);
@@ -56,47 +64,78 @@ describe("<App />", () => {
     });
 
     test("a loading modal is shown on submitting the login form", async () => {
-      const loginButton = await component.findByText((content, element) => {
-        return (
-          element.getAttribute("type") === "submit" &&
-          /login|sign in/gi.test(content)
-        );
+      nock(testHelper.host)
+        .persist()
+        .get(testHelper.blogsPath)
+        .reply(200, testHelper.blogs)
+        .post(testHelper.loginPath)
+        .reply(200, testHelper.validLoggedInUser);
+
+      const { findByText, getByTestId } = render(<App />);
+      const loginBtn = await findByText(/login|sign in/i, {
+        selector: "*[type='submit']",
       });
 
-      fireEvent.click(loginButton);
-      await component.findByTestId(modalSpinnerTestIDs.modalSpinner);
+      await act(async () => {
+        fireEvent.click(loginBtn);
+      });
+
+      await waitForElementToBeRemoved(() => [
+        getByTestId(modalSpinnerTestIDs.modalSpinner),
+      ]);
     });
   });
 
   describe("When user is logged in", () => {
-    let component;
     beforeEach(() => {
       const user = testHelper.validLoggedInUser;
-
       localStorage.setItem("loggedInBloglistUser", JSON.stringify(user));
+    });
 
-      component = render(<App />);
+    afterEach(() => {
+      cleanup();
     });
 
     test("blogs are fetched from backend and rendered", async () => {
-      const blogNodes = await blogs.reduce(async (acc, blog) => {
-        const result = await acc;
-        try {
-          const blogNode = await component.queryByTestId(
-            blogTestIDs[`blog_${blog.id}`]
-          );
+      nock(testHelper.host)
+        .persist()
+        .get(testHelper.blogsPath)
+        .reply(200, testHelper.blogs);
 
-          if (blogNode) result.push(blogNode);
-        } catch (error) {
-          console.error(error);
-        }
+      const { getByText } = render(<App />);
 
-        return result;
-      }, []);
+      const blogNodes = await waitForElement(() =>
+        blogs.reduce((elementsToWaitFor, blog) => {
+          elementsToWaitFor.push(getByText(blog.title));
+
+          return elementsToWaitFor;
+        }, [])
+      );
 
       expect(blogNodes.length).toBe(blogs.length);
-      expect(component.container).toHaveTextContent(blogs[0].title);
-      expect(component.container).toHaveTextContent(blogs[0].author);
+    });
+
+    test("clicking the logout button logs out the user", async () => {
+      nock(testHelper.host)
+        .persist()
+        .get(testHelper.blogsPath)
+        .reply(200, testHelper.blogs);
+
+      const { findByText, getByTestId, queryByText } = render(<App />);
+
+      const logoutBtn = await findByText(/logout|sign out/i, {
+        selector: "button",
+      });
+
+      await waitForElementToBeRemoved(() =>
+        getByTestId(navbarTestIDs.spinnerIcon)
+      );
+
+      expect(queryByText(blogs[0].title)).toBeInTheDocument();
+
+      fireEvent.click(logoutBtn);
+      expect(localStorage.getItem("loggedInBloglistUser")).toBe(null);
+      expect(queryByText(blogs[0].title)).toBe(null);
     });
   });
 });

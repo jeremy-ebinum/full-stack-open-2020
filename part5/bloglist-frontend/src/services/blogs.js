@@ -1,4 +1,10 @@
 import axios from "axios";
+import testHelper from "../helpers/testHelper";
+
+if (process.env.NODE_ENV === "test") {
+  axios.defaults.adapter = require("axios/lib/adapters/http");
+  axios.defaults.baseURL = testHelper.host;
+}
 
 const baseUrl = "/api/blogs";
 

@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { getTestIDs } from "../helpers/testHelper";
 import UserContext from "../UserContext";
+
+export const testIDs = getTestIDs();
 
 const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
   const user = useContext(UserContext);
-  const spinnerClass = `c-navbar__spinner ${isLoading ? "" : "isHidden"}`;
 
   return (
     <div className="c-navbar">
@@ -16,11 +18,14 @@ const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
           <div className="c-navbar__userinfo">
             <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
             {user.name}
-            <FontAwesomeIcon
-              className={spinnerClass}
-              icon={faCircleNotch}
-              spin
-            />
+            {isLoading && (
+              <FontAwesomeIcon
+                data-testid={testIDs.spinnerIcon}
+                className="c-navbar__spinner"
+                icon={faCircleNotch}
+                spin
+              />
+            )}
           </div>
           <div className="c-navbar__logout">
             <button

@@ -448,10 +448,6 @@ body {
   margin-left: 0.5rem;
 }
 
-.c-navbar__spinner.isHidden {
-  display: none;
-}
-
 .c-navbar__logout {
   font-family: "Dosis";
   font-weight: 500;

@@ -8,9 +8,8 @@ export const testIDs = getTestIDs();
 
 const ModalSpinner = () => {
   return (
-    <Modal>
+    <Modal testid={testIDs.modalSpinner}>
       <FontAwesomeIcon
-        data-testid={testIDs.modalSpinner}
         className="c-spinner c-spinner--inModal"
         icon={faSpinner}
         spin
