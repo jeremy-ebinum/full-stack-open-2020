@@ -3,7 +3,7 @@ import { createAnecdote } from "./reducers/anecdoteReducer";
 
 const App = (props) => {
   const store = props.store;
-  const anecdotes = store.getState();
+  const anecdotes = store.getState().sort((a, b) => b.votes - a.votes);
 
   const vote = (id) => {
     // console.log("vote", id);
