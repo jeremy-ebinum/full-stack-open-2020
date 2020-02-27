@@ -15,13 +15,13 @@ const App = ({ store }) => {
     <>
       <GlobalStyles />
       <Wrapper>
-        <Notification store={store} />
+        <Notification />
         <AnecdotesFormContainer column>
-          <AnecdoteForm store={store} />
+          <AnecdoteForm />
         </AnecdotesFormContainer>
-        <Filter store={store} />
+        <Filter />
         <AnecdotesListContainer column>
-          <AnecdoteList store={store} />
+          <AnecdoteList />
         </AnecdotesListContainer>
       </Wrapper>
     </>

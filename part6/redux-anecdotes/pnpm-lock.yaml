@@ -1,6 +1,7 @@
 dependencies:
   react: 16.12.0
   react-dom: 16.12.0_react@16.12.0
+  react-redux: 7.2.0_cbb074364ace735d13d38692c50e064b
   react-scripts: 3.4.0
   react-uid: 2.2.0_react@16.12.0
   redux: 4.0.5
@@ -5047,7 +5048,7 @@ packages:
       integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=
   /hoist-non-react-statics/3.3.2:
     dependencies:
-      react-is: 16.12.0
+      react-is: 16.13.0
     dev: false
     resolution:
       integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -8852,6 +8853,33 @@ packages:
   /react-is/16.12.0:
     resolution:
       integrity: sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
+  /react-is/16.13.0:
+    dev: false
+    resolution:
+      integrity: sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
+  /react-redux/7.2.0_cbb074364ace735d13d38692c50e064b:
+    dependencies:
+      '@babel/runtime': 7.8.4
+      hoist-non-react-statics: 3.3.2
+      loose-envify: 1.4.0
+      prop-types: 15.7.2
+      react: 16.12.0
+      react-dom: 16.12.0_react@16.12.0
+      react-is: 16.13.0
+      redux: 4.0.5
+    dev: false
+    peerDependencies:
+      react: ^16.8.3
+      react-dom: '*'
+      react-native: '*'
+      redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    resolution:
+      integrity: sha512-EvCAZYGfOLqwV7gh849xy9/pt55rJXPwmYvI4lilPM5rUT/1NxuuN59ipdBksRVSvz0KInbPnp4IfoXJXCqiDA==
   /react-scripts/3.4.0:
     dependencies:
       '@babel/core': 7.8.4
@@ -11200,6 +11228,7 @@ specifiers:
   prettier: ^1.19.1
   react: ^16.12.0
   react-dom: ^16.12.0
+  react-redux: ^7.2.0
   react-scripts: 3.4.0
   react-uid: ^2.2.0
   redux: ^4.0.5

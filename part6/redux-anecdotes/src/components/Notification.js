@@ -1,13 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NotificationContainer, Alert } from "./Styles";
 
-const Notification = ({ store }) => {
-  const { notifications } = store.getState();
-
+const Notification = (props) => {
   return (
     <NotificationContainer>
-      {notifications.map((notification) => (
-        <Alert key={notification.id} className={notification.className}>
+      {props.notifications.map((notification) => (
+        <Alert key={notification.id} className={notification.level}>
           {notification.message}
         </Alert>
       ))}
@@ -15,4 +14,7 @@ const Notification = ({ store }) => {
   );
 };
 
-export default Notification;
+const mapStateToProps = (state) => {
+  return { notifications: state.notifications };
+};
+export default connect(mapStateToProps)(Notification);

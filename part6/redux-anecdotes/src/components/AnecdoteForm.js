@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { connect } from "react-redux";
 import { getTrimmedStr } from "../helpers/helper";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { queueNotification } from "../reducers/notificationReducer";
@@ -10,24 +11,8 @@ import {
   AnecdoteInput,
 } from "./Styles";
 
-const AnecdoteForm = ({ store }) => {
+const AnecdoteForm = (props) => {
   const ref = useRef();
-
-  const newAnecdote = (event) => {
-    event.preventDefault();
-    const content = event.target.anecdote.value;
-    let message;
-
-    if (content.length < 2) {
-      message = "Content is too short";
-      return queueNotification(store, "info", message);
-    }
-    store.dispatch(createAnecdote(content));
-    event.target.anecdote.value = "";
-    const contentToShow = getTrimmedStr(content);
-    message = `You added "${contentToShow}"`;
-    queueNotification(store, "success", message);
-  };
 
   useEffect(() => {
     ref.current.focus();
@@ -36,7 +21,7 @@ const AnecdoteForm = ({ store }) => {
   return (
     <>
       <Heading>Add New Anecdote</Heading>
-      <Form onSubmit={newAnecdote}>
+      <Form onSubmit={props.newAnecdote}>
         <FormRow>
           <AnecdoteInput
             ref={ref}
@@ -52,4 +37,25 @@ const AnecdoteForm = ({ store }) => {
   );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = (dispatch) => {
+  const newAnecdote = (event) => {
+    event.preventDefault();
+    const content = event.target.anecdote.value;
+    let message;
+
+    if (content.length < 2) {
+      message = "Content is too short";
+      return queueNotification(dispatch, message, "info");
+    }
+
+    dispatch(createAnecdote(content));
+    event.target.anecdote.value = "";
+    const contentToShow = getTrimmedStr(content);
+    message = `You added "${contentToShow}"`;
+    queueNotification(dispatch, message, "success");
+  };
+
+  return { newAnecdote };
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);

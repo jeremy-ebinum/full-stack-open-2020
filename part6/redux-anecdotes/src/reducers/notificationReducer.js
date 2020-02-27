@@ -14,10 +14,10 @@ const notificationReducer = (state = initialState, action) => {
   }
 };
 
-export const newNotification = (className, message) => {
+export const newNotification = (message, level) => {
   return {
     type: "NEW_NOTIFICATION",
-    data: { id: uid({}), className, message },
+    data: { id: uid({}), message, level },
   };
 };
 
@@ -28,14 +28,14 @@ export const removeNotification = (id) => {
   };
 };
 
-export const queueNotification = (store, className, message) => {
-  const action = newNotification(className, message);
+export const queueNotification = (dispatch, message, level) => {
+  const action = newNotification(message, level);
   const id = action.data.id;
 
-  store.dispatch(action);
+  dispatch(action);
 
   setTimeout(() => {
-    store.dispatch(removeNotification(id));
+    dispatch(removeNotification(id));
   }, 5000);
 };
 

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { connect } from "react-redux";
 import { useUIDSeed } from "react-uid";
 import { setFilter, clearFilter } from "../reducers/filterReducer";
 import {
@@ -8,16 +9,16 @@ import {
   ClearFliterButton,
 } from "./Styles";
 
-const Filter = ({ store }) => {
+const Filter = (props) => {
   const seed = useUIDSeed();
   const ref = useRef();
 
   const handleChange = (event) => {
-    store.dispatch(setFilter(event.target.value));
+    props.dispatch(setFilter(event.target.value));
   };
 
   const clear = () => {
-    store.dispatch(clearFilter());
+    props.dispatch(clearFilter());
     ref.current.value = "";
   };
 
@@ -35,4 +36,4 @@ const Filter = ({ store }) => {
   );
 };
 
-export default Filter;
+export default connect()(Filter);
