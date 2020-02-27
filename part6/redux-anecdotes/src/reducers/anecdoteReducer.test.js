@@ -1,5 +1,6 @@
 import deepFreeze from "deep-freeze";
-import anecdoteReducer, { initialState, getId } from "./anecdoteReducer";
+import { uid } from "react-uid";
+import anecdoteReducer, { initialState } from "./anecdoteReducer";
 
 describe("anecdoteReducer()", () => {
   test("returns it's initial state when initialized with an undefined state", () => {
@@ -27,7 +28,7 @@ describe("anecdoteReducer()", () => {
   });
 
   test("NEW_ANECDOTE purely adds a new anecdote", () => {
-    const newAnecdote = { content: "SPAM AND EGGS", id: getId(), votes: 0 };
+    const newAnecdote = { content: "SPAM AND EGGS", id: uid({}), votes: 0 };
 
     const action = {
       type: "NEW_ANECDOTE",
