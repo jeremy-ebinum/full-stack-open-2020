@@ -146,16 +146,6 @@ export const Input = styled.input`
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
-export const AnecdoteInput = styled(Input)`
-  height: 80px;
-
-  @media (min-width: 768px) {
-    height: 100px;
-    font-size: 1.2rem;
-    max-width: 768px;
-  }
-`;
-
 export const Button = styled.button`
   display: inline-block;
   border: 1px solid transparent;
@@ -199,6 +189,69 @@ export const SuccessButton = styled(Button)`
 
   &:hover {
     background: #10946c;
+  }
+`;
+
+export const WarningButton = styled(Button)`
+  background-color: #bf1549;
+
+  &:hover {
+    background: #ab1341;
+  }
+`;
+
+export const FilterContainer = styled(Container)`
+  flex-direction: column;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const FilterLabel = styled.label`
+  color: #f9f9f9;
+  font-size: 1.3rem;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+`;
+
+export const FilterInput = styled(Input)`
+  padding: 0.35rem 1rem;
+  width: 80%;
+  max-width: 320px;
+  border-color: transparent;
+  border-radius: 20px;
+  font-size: 1rem;
+  margin: 0.5rem;
+
+  @media (min-width: 768px) {
+    margin: 0.5rem 1rem;
+    width: 50%;
+    max-width: 360px;
+    font-size: 1.1rem;
+  }
+`;
+
+export const ClearFliterButton = styled(WarningButton)`
+  font-size: 0.8rem;
+  border-radius: 10px;
+  width: auto;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+`;
+
+export const AnecdoteInput = styled(Input)`
+  height: 80px;
+
+  @media (min-width: 768px) {
+    height: 100px;
+    font-size: 1.2rem;
+    max-width: 768px;
   }
 `;
 

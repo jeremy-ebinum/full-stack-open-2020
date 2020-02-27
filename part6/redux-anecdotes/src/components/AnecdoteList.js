@@ -5,8 +5,12 @@ import { voteFor } from "../reducers/anecdoteReducer";
 import { Card, Container, Heading, PrimaryButton, Txt } from "./Styles";
 
 const AnecdoteList = ({ store }) => {
-  const anecdotes = store.getState().anecdotes;
-  const anecdotesToShow = anecdotes.sort((a, b) => b.votes - a.votes);
+  const { anecdotes, filter } = store.getState();
+  const anecdotesByVotesDesc = anecdotes.sort((a, b) => b.votes - a.votes);
+  const anecdotesToShow = anecdotesByVotesDesc.filter((a) => {
+    if (filter === "") return true;
+    return a.content.toLowerCase().includes(filter.toLowerCase());
+  });
 
   const vote = (anecdote) => {
     const id = anecdote.id;
