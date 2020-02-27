@@ -1,12 +1,18 @@
 import React from "react";
+import { Alert } from "./Styles";
 
-const Notification = () => {
-  const style = {
-    border: "solid",
-    padding: 10,
-    borderWidth: 1,
-  };
-  return <div style={style}>{"render here notification..."}</div>;
+const Notification = ({ store }) => {
+  const { notifications } = store.getState();
+
+  return (
+    <div>
+      {notifications.map((notification) => (
+        <Alert key={notification.id} className={notification.className}>
+          {notification.message}
+        </Alert>
+      ))}
+    </div>
+  );
 };
 
 export default Notification;

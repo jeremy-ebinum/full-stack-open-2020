@@ -5,6 +5,7 @@ import {
   AnecdotesListContainer,
   AnecdotesFormContainer,
 } from "./components/Styles";
+import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 
@@ -13,6 +14,7 @@ const App = ({ store }) => {
     <>
       <GlobalStyles />
       <Wrapper>
+        <Notification store={store} />
         <AnecdotesFormContainer column>
           <AnecdoteForm store={store} />
         </AnecdotesFormContainer>

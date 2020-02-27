@@ -21,6 +21,39 @@ export const Container = styled.div`
   align-items: ${(props) => (props.align ? props.align : "unset")};
 `;
 
+export const Alert = styled.div`
+  width: 100%;
+  margin: auto;
+  font-family: monospace;
+  background: ghostwhite;
+  color: #131515;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.4rem 0.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+
+  &.info {
+    background: #b8cdf8;
+    color: #131515;
+  }
+
+  &.success {
+    background: #10946c;
+    color: ghostwhite;
+  }
+
+  @media (min-width: 480px) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    max-width: 1024px;
+  }
+`;
+
 export const AnecdotesListContainer = styled(Container)`
   @media (min-width: 768px) {
     justify-content: center;
