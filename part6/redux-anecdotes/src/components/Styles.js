@@ -49,12 +49,17 @@ export const Alert = styled.div`
   font-size: 0.9rem;
 
   &.info {
-    background-color: rgba(184, 205, 248, 0.75);
-    color: #131515;
+    background-color: rgba(0, 100, 148, 0.75);
+    color: ghostwhite;
   }
 
   &.success {
     background: rgba(16, 148, 108, 0.75);
+    color: ghostwhite;
+  }
+
+  &.warning {
+    background: rgba(191, 21, 73, 0.75);
     color: ghostwhite;
   }
 
@@ -101,7 +106,7 @@ export const FormRow = styled(Container)`
   }
 `;
 
-export const Heading = styled.h2`
+export const Heading = styled.h1`
   font-size: 1.5rem;
   color: #f9f9f9;
   margin-bottom: 0.5rem;
@@ -117,6 +122,20 @@ export const Heading = styled.h2`
 
   @media (min-width: 1280px) {
     font-size: 2rem;
+  }
+`;
+
+export const MainHeading = styled(Heading)`
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (min-width: 1280px) {
+    font-size: 2.4rem;
   }
 `;
 
@@ -227,7 +246,7 @@ export const FilterInput = styled(Input)`
   border-color: transparent;
   border-radius: 20px;
   font-size: 1rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
 
   @media (min-width: 768px) {
     margin: 0.5rem 1rem;

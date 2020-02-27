@@ -1,28 +1,21 @@
 import React from "react";
-import {
-  GlobalStyles,
-  Wrapper,
-  AnecdotesListContainer,
-  AnecdotesFormContainer,
-} from "./components/Styles";
+import { GlobalStyles, Wrapper } from "./components/Styles";
+import { MainHeading } from "./components/Styles";
 import Notification from "./components/Notification";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Filter from "./components/Filter";
 
-const App = ({ store }) => {
+const App = () => {
   return (
     <>
       <GlobalStyles />
       <Wrapper>
+        <MainHeading>Programming Anecdotes</MainHeading>
         <Notification />
-        <AnecdotesFormContainer column>
-          <AnecdoteForm />
-        </AnecdotesFormContainer>
+        <AnecdoteForm />
         <Filter />
-        <AnecdotesListContainer column>
-          <AnecdoteList />
-        </AnecdotesListContainer>
+        <AnecdoteList />
       </Wrapper>
     </>
   );

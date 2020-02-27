@@ -4,11 +4,11 @@ import { getTrimmedStr } from "../helpers/helper";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { queueNotification } from "../reducers/notificationReducer";
 import {
-  Heading,
   CreateAnecdoteButton,
   Form,
   FormRow,
   AnecdoteInput,
+  AnecdotesFormContainer,
 } from "./Styles";
 
 const AnecdoteForm = (props) => {
@@ -19,8 +19,7 @@ const AnecdoteForm = (props) => {
   }, []);
 
   return (
-    <>
-      <Heading>Add New Anecdote</Heading>
+    <AnecdotesFormContainer column>
       <Form onSubmit={props.newAnecdote}>
         <FormRow>
           <AnecdoteInput
@@ -31,9 +30,9 @@ const AnecdoteForm = (props) => {
             placeholder="Everything is easy unless you need to do it yourself..."
           />
         </FormRow>
-        <CreateAnecdoteButton type="submit">create</CreateAnecdoteButton>
+        <CreateAnecdoteButton type="submit">ADD ANECDOTE</CreateAnecdoteButton>
       </Form>
-    </>
+    </AnecdotesFormContainer>
   );
 };
 
@@ -45,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
 
     if (content.length < 2) {
       message = "Content is too short";
-      return queueNotification(dispatch, message, "info");
+      return queueNotification(dispatch, message, "warning");
     }
 
     dispatch(createAnecdote(content));

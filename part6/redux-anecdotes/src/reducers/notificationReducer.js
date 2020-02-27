@@ -17,7 +17,7 @@ const notificationReducer = (state = initialState, action) => {
 export const newNotification = (message, level) => {
   return {
     type: "NEW_NOTIFICATION",
-    data: { id: uid({}), message, level },
+    data: { id: uid({}), message, level, date: Date.now() },
   };
 };
 

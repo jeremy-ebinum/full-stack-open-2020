@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import { getTrimmedStr } from "../helpers/helper";
 import { queueNotification } from "../reducers/notificationReducer";
 import { voteFor } from "../reducers/anecdoteReducer";
-import { Card, Container, Heading, PrimaryButton, Txt } from "./Styles";
+import {
+  Card,
+  Container,
+  PrimaryButton,
+  Txt,
+  AnecdotesListContainer,
+} from "./Styles";
 
 const AnecdoteList = (props) => {
   const vote = (id) => {
@@ -15,8 +21,7 @@ const AnecdoteList = (props) => {
   };
 
   return (
-    <>
-      <Heading>Anecdotes</Heading>
+    <AnecdotesListContainer>
       {props.anecdotesToShow.map((anecdote) => (
         <Card key={anecdote.id}>
           <Container>
@@ -34,7 +39,7 @@ const AnecdoteList = (props) => {
           </Container>
         </Card>
       ))}
-    </>
+    </AnecdotesListContainer>
   );
 };
 

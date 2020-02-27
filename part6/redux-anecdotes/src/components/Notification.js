@@ -5,7 +5,7 @@ import { NotificationContainer, Alert } from "./Styles";
 const Notification = (props) => {
   return (
     <NotificationContainer>
-      {props.notifications.map((notification) => (
+      {props.notificationsToShow.map((notification) => (
         <Alert key={notification.id} className={notification.level}>
           {notification.message}
         </Alert>
@@ -14,7 +14,21 @@ const Notification = (props) => {
   );
 };
 
+const notificationsToShow = (notifications) => {
+  if (notifications.length <= 3) {
+    return notifications;
+  } else {
+    const notificationsByDateDesc = [...notifications].sort(
+      (a, b) => b.date - a.date
+    );
+
+    const notificationsToShow = notificationsByDateDesc.slice(0, 3).reverse();
+
+    return notificationsToShow;
+  }
+};
+
 const mapStateToProps = (state) => {
-  return { notifications: state.notifications };
+  return { notificationsToShow: notificationsToShow(state.notifications) };
 };
 export default connect(mapStateToProps)(Notification);
