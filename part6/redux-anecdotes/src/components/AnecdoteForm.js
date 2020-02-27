@@ -16,10 +16,16 @@ const AnecdoteForm = ({ store }) => {
   const newAnecdote = (event) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
+    let message;
+
+    if (content.length < 2) {
+      message = "Content is too short";
+      return queueNotification(store, "info", message);
+    }
     store.dispatch(createAnecdote(content));
     event.target.anecdote.value = "";
     const contentToShow = getTrimmedStr(content);
-    const message = `You added "${contentToShow}"`;
+    message = `You added "${contentToShow}"`;
     queueNotification(store, "success", message);
   };
 
@@ -38,7 +44,6 @@ const AnecdoteForm = ({ store }) => {
             aria-label="Enter new anecdote"
             name="anecdote"
             placeholder="Everything is easy unless you need to do it yourself..."
-            minLength="10"
           />
         </FormRow>
         <CreateAnecdoteButton type="submit">create</CreateAnecdoteButton>

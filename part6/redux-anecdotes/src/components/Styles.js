@@ -21,6 +21,21 @@ export const Container = styled.div`
   align-items: ${(props) => (props.align ? props.align : "unset")};
 `;
 
+export const FixedContainer = styled(Container)`
+  position: fixed;
+  top: 1rem;
+  left: 0;
+`;
+
+export const NotificationContainer = styled(FixedContainer)`
+  background: transparent;
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
+`;
+
 export const Alert = styled.div`
   width: 100%;
   margin: auto;
@@ -34,12 +49,12 @@ export const Alert = styled.div`
   font-size: 0.9rem;
 
   &.info {
-    background: #b8cdf8;
+    background-color: rgba(184, 205, 248, 0.75);
     color: #131515;
   }
 
   &.success {
-    background: #10946c;
+    background: rgba(16, 148, 108, 0.75);
     color: ghostwhite;
   }
 
@@ -132,10 +147,10 @@ export const Input = styled.input`
 `;
 
 export const AnecdoteInput = styled(Input)`
-  height: 125px;
+  height: 80px;
 
   @media (min-width: 768px) {
-    height: 150px;
+    height: 100px;
     font-size: 1.2rem;
     max-width: 768px;
   }
