@@ -1,5 +1,6 @@
 import React from "react";
 import { voteFor } from "../reducers/anecdoteReducer";
+import { Card, Container, Heading, PrimaryButton, Txt } from "./Styles";
 
 const AnecdoteList = ({ store }) => {
   const anecdotes = store.getState().sort((a, b) => b.votes - a.votes);
@@ -9,14 +10,19 @@ const AnecdoteList = ({ store }) => {
   };
   return (
     <>
+      <Heading>Anecdotes</Heading>
       {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
+        <Card key={anecdote.id}>
+          <Container>
+            <Txt>{anecdote.content}</Txt>
+          </Container>
+          <Container align="center" margin="0.25rem 0">
+            <Txt>Has {anecdote.votes} votes</Txt>
+            <PrimaryButton margin="0.5rem" onClick={() => vote(anecdote.id)}>
+              vote
+            </PrimaryButton>
+          </Container>
+        </Card>
       ))}
     </>
   );
