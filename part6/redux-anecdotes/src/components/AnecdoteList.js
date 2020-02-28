@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getTrimmedStr } from "../helpers/helper";
 import { queueNotification } from "../reducers/notificationReducer";
@@ -11,18 +12,18 @@ import {
   AnecdotesListContainer,
 } from "./Styles";
 
-const AnecdoteList = (props) => {
+const AnecdoteList = ({ anecdotesToShow, dispatch }) => {
   const vote = (id) => {
-    const content = props.anecdotesToShow.find((a) => a.id === id).content;
-    props.dispatch(voteFor(id));
+    const content = anecdotesToShow.find((a) => a.id === id).content;
+    dispatch(voteFor(id));
     const contentToShow = getTrimmedStr(content);
     const message = `You voted for "${contentToShow}"`;
-    queueNotification(props.dispatch, message, "info");
+    queueNotification(dispatch, message, "info");
   };
 
   return (
     <AnecdotesListContainer>
-      {props.anecdotesToShow.map((anecdote) => (
+      {anecdotesToShow.map((anecdote) => (
         <Card key={anecdote.id}>
           <Container>
             <Txt>{anecdote.content}</Txt>
@@ -52,6 +53,11 @@ const mapStateToProps = (state) => {
   });
 
   return { anecdotesToShow };
+};
+
+AnecdoteList.propTypes = {
+  anecdotesToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(AnecdoteList);

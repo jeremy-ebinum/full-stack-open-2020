@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getTrimmedStr, getCancelTokenSource } from "../helpers/helper";
+import { getTrimmedStr } from "../helpers/helper";
 import { setAddLoading } from "../reducers/loadingReducer";
 import anecdotesService from "../services/anecdotes";
 import { createAnecdote } from "../reducers/anecdoteReducer";
@@ -13,31 +14,37 @@ import {
   AnecdotesFormContainer,
 } from "./Styles";
 
-const AnecdoteForm = (props) => {
-  const { dispatch } = props;
-  const ref = useRef();
+const AnecdoteForm = ({ dispatch }) => {
+  const anecdoteInputRef = useRef();
+  const isMounted = useRef();
 
   useEffect(() => {
-    ref.current.focus();
-  }, []);
+    isMounted.current = true;
+    anecdoteInputRef.current.focus();
+
+    return () => {
+      dispatch(setAddLoading(false));
+      isMounted.current = false;
+    };
+  }, [dispatch]);
 
   const addAnecdote = async (event) => {
     event.preventDefault();
-    const content = ref.current.value;
+    const content = anecdoteInputRef.current.value;
     let message;
     try {
       if (content.length < 2) {
         message = "Content is too short";
         return queueNotification(dispatch, message, "warning");
       }
-      const source = getCancelTokenSource();
       dispatch(setAddLoading(true));
-      const newAnecdote = await anecdotesService.create(content, source.token);
-      dispatch(createAnecdote(newAnecdote));
-      ref.current.value = "";
-      const contentToShow = getTrimmedStr(content);
-      message = `You added "${contentToShow}"`;
-      queueNotification(dispatch, message, "success");
+      const newAnecdote = await anecdotesService.create(content);
+      anecdoteInputRef.current.value = "";
+      if (isMounted.current) {
+        dispatch(createAnecdote(newAnecdote));
+        message = `You added "${getTrimmedStr(content)}"`;
+        queueNotification(dispatch, message, "success");
+      }
     } catch (e) {
       console.error(e.message);
     } finally {
@@ -50,7 +57,7 @@ const AnecdoteForm = (props) => {
       <Form onSubmit={addAnecdote}>
         <FormRow>
           <AnecdoteInput
-            ref={ref}
+            ref={anecdoteInputRef}
             as="textarea"
             aria-label="Enter new anecdote"
             name="anecdote"
@@ -61,6 +68,10 @@ const AnecdoteForm = (props) => {
       </Form>
     </AnecdotesFormContainer>
   );
+};
+
+AnecdoteForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(AnecdoteForm);

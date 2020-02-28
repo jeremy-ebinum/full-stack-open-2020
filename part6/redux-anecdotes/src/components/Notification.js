@@ -1,11 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { NotificationContainer, Alert } from "./Styles";
 
-const Notification = (props) => {
+const Notification = ({ notificationsToShow }) => {
   return (
     <NotificationContainer>
-      {props.notificationsToShow.map((notification) => (
+      {notificationsToShow.map((notification) => (
         <Alert key={notification.id} className={notification.level}>
           {notification.message}
         </Alert>
@@ -22,10 +23,16 @@ const notificationsToShow = (notifications) => {
       (a, b) => b.date - a.date
     );
 
-    const notificationsToShow = notificationsByDateDesc.slice(0, 3).reverse();
+    const lastThreeNotifications = notificationsByDateDesc
+      .slice(0, 3)
+      .reverse();
 
-    return notificationsToShow;
+    return lastThreeNotifications;
   }
+};
+
+Notification.propTypes = {
+  notificationsToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => {

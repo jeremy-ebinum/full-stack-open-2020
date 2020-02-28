@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getCancelTokenSource } from "./helpers/helper";
 import anecdotesService from "./services/anecdotes";
@@ -13,19 +14,18 @@ import AnecdoteList from "./components/AnecdoteList";
 import ModalSpinner from "./components/ModalSpinner";
 import Filter from "./components/Filter";
 
-const App = (props) => {
-  const { isFetchingAnecdotes, initializeAnecdotes, setInitLoading } = props;
+const App = ({ isFetchingAnecdotes, initializeAnecdotes, setInitLoading }) => {
+  const isMounted = useRef();
 
   useEffect(() => {
-    let isCancelled = false;
+    isMounted.current = true;
     const source = getCancelTokenSource();
+    setInitLoading(true);
 
     const fetchAnecdotes = async () => {
-      if (isCancelled) return;
       try {
-        setInitLoading(true);
         const anecdotes = await anecdotesService.getAll(source.token);
-        initializeAnecdotes(anecdotes);
+        if (isMounted.current) initializeAnecdotes(anecdotes);
       } catch (e) {
         console.error(e.message);
       } finally {
@@ -38,7 +38,7 @@ const App = (props) => {
     return () => {
       source.cancel();
       setInitLoading(false);
-      isCancelled = true;
+      isMounted.current = false;
     };
   }, [initializeAnecdotes, setInitLoading]);
 
@@ -60,6 +60,12 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return { isFetchingAnecdotes: state.loading.isInitLoading };
+};
+
+App.propTypes = {
+  isFetchingAnecdotes: PropTypes.bool.isRequired,
+  initializeAnecdotes: PropTypes.func.isRequired,
+  setInitLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {

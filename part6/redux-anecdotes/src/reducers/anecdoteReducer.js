@@ -6,7 +6,7 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case "INIT_ANECDOTES":
-      return action.data;
+      return action.data || state;
     case "NEW_ANECDOTE":
       return state.concat(action.data);
     case "VOTE":

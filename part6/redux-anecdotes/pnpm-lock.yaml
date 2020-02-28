@@ -1,6 +1,7 @@
 dependencies:
   axios: 0.19.2
   json-server: 0.16.1
+  prop-types: 15.7.2
   react: 16.13.0
   react-dom: 16.13.0_react@16.13.0
   react-redux: 7.2.0_89edbdcf35ebf07960559427ad340367
@@ -12242,6 +12243,7 @@ specifiers:
   eslint-plugin-prettier: ^3.1.2
   json-server: ^0.16.1
   prettier: ^1.19.1
+  prop-types: ^15.7.2
   react: ^16.12.0
   react-dom: ^16.12.0
   react-redux: ^7.2.0
