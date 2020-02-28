@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { getTrimmedStr, getCancelTokenSource } from "../helpers/helper";
+import { setAddLoading } from "../reducers/loadingReducer";
 import anecdotesService from "../services/anecdotes";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { queueNotification } from "../reducers/notificationReducer";
@@ -12,7 +13,8 @@ import {
   AnecdotesFormContainer,
 } from "./Styles";
 
-const AnecdoteForm = ({ dispatch }) => {
+const AnecdoteForm = (props) => {
+  const { dispatch } = props;
   const ref = useRef();
 
   useEffect(() => {
@@ -29,6 +31,7 @@ const AnecdoteForm = ({ dispatch }) => {
         return queueNotification(dispatch, message, "warning");
       }
       const source = getCancelTokenSource();
+      dispatch(setAddLoading(true));
       const newAnecdote = await anecdotesService.create(content, source.token);
       dispatch(createAnecdote(newAnecdote));
       ref.current.value = "";
@@ -37,6 +40,8 @@ const AnecdoteForm = ({ dispatch }) => {
       queueNotification(dispatch, message, "success");
     } catch (e) {
       console.error(e.message);
+    } finally {
+      dispatch(setAddLoading(false));
     }
   };
 

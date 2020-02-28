@@ -1,4 +1,5 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes, css } from "styled-components";
+import { Spinner2 } from "styled-icons/icomoon/";
 
 export const Wrapper = styled.div`
   min-height: 100vh;
@@ -34,6 +35,85 @@ export const NotificationContainer = styled(FixedContainer)`
   @media (min-width: 768px) {
     padding: 0 2rem;
   }
+`;
+
+export const Modal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.65);
+  z-index: 9999;
+`;
+
+export const ModalContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const fullSpin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const fillWidth = keyframes`
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+`;
+
+export const FetchSpinner = styled(Spinner2)`
+  color: ghostwhite;
+  width: 4rem;
+  height: 4rem;
+  animation: ${fullSpin} 0.5s linear infinite;
+
+  @media (min-width: 768px) {
+    width: 6rem;
+    height: 6rem;
+  }
+`;
+
+const fixedTopLeftMixin = css`
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+`;
+
+export const Meter = styled.div`
+  background-color: #272b2b;
+  height: 6px;
+
+  ${(props) => props.toTop && fixedTopLeftMixin}
+`;
+
+export const MeterBar = styled.span`
+  display: block;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    rgb(16, 148, 108) 37%,
+    rgba(14, 128, 93, 0.7) 69%
+  );
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: ${fillWidth} 1s ease-in-out infinite;
 `;
 
 export const Alert = styled.div`
