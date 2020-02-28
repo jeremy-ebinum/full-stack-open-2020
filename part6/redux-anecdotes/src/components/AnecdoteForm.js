@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
-import { getTrimmedStr } from "../helpers/helper";
+import { getTrimmedStr, getCancelTokenSource } from "../helpers/helper";
+import anecdotesService from "../services/anecdotes";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { queueNotification } from "../reducers/notificationReducer";
 import {
@@ -11,16 +12,37 @@ import {
   AnecdotesFormContainer,
 } from "./Styles";
 
-const AnecdoteForm = (props) => {
+const AnecdoteForm = ({ dispatch }) => {
   const ref = useRef();
 
   useEffect(() => {
     ref.current.focus();
   }, []);
 
+  const addAnecdote = async (event) => {
+    event.preventDefault();
+    const content = ref.current.value;
+    let message;
+    try {
+      if (content.length < 2) {
+        message = "Content is too short";
+        return queueNotification(dispatch, message, "warning");
+      }
+      const source = getCancelTokenSource();
+      const newAnecdote = await anecdotesService.create(content, source.token);
+      dispatch(createAnecdote(newAnecdote));
+      ref.current.value = "";
+      const contentToShow = getTrimmedStr(content);
+      message = `You added "${contentToShow}"`;
+      queueNotification(dispatch, message, "success");
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
   return (
     <AnecdotesFormContainer column>
-      <Form onSubmit={props.newAnecdote}>
+      <Form onSubmit={addAnecdote}>
         <FormRow>
           <AnecdoteInput
             ref={ref}
@@ -36,25 +58,4 @@ const AnecdoteForm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const newAnecdote = (event) => {
-    event.preventDefault();
-    const content = event.target.anecdote.value;
-    let message;
-
-    if (content.length < 2) {
-      message = "Content is too short";
-      return queueNotification(dispatch, message, "warning");
-    }
-
-    dispatch(createAnecdote(content));
-    event.target.anecdote.value = "";
-    const contentToShow = getTrimmedStr(content);
-    message = `You added "${contentToShow}"`;
-    queueNotification(dispatch, message, "success");
-  };
-
-  return { newAnecdote };
-};
-
-export default connect(null, mapDispatchToProps)(AnecdoteForm);
+export default connect()(AnecdoteForm);

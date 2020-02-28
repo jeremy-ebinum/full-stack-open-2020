@@ -2,6 +2,19 @@ import deepFreeze from "deep-freeze";
 import { uid } from "react-uid";
 import anecdoteReducer, { initialState } from "./anecdoteReducer";
 
+const anecdotes = [
+  {
+    content: "If it hurts, do it more often",
+    id: "47145",
+    votes: 0,
+  },
+  {
+    content: "Adding manpower to a late software project makes it later!",
+    id: "21149",
+    votes: 0,
+  },
+];
+
 describe("anecdoteReducer()", () => {
   test("returns it's initial state when initialized with an undefined state", () => {
     const action = {
@@ -12,19 +25,16 @@ describe("anecdoteReducer()", () => {
     expect(newState).toEqual(initialState);
   });
 
-  test("VOTE purely increments votes of the given anecdote", () => {
-    const action = {
-      type: "VOTE",
-      id: initialState[0].id,
-    };
+  test("INIT_ANECDOTES replaces state with action payload", () => {
     const state = initialState;
-
+    const action = {
+      type: "INIT_ANECDOTES",
+      data: anecdotes,
+    };
     deepFreeze(state);
+
     const newState = anecdoteReducer(state, action);
-    expect(newState).toContainEqual({
-      ...initialState[0],
-      votes: initialState[0].votes + 1,
-    });
+    expect(newState).toEqual(anecdotes);
   });
 
   test("NEW_ANECDOTE purely adds a new anecdote", () => {
@@ -39,5 +49,21 @@ describe("anecdoteReducer()", () => {
     deepFreeze(state);
     const newState = anecdoteReducer(state, action);
     expect(newState).toContainEqual(newAnecdote);
+  });
+
+  test("VOTE purely increments votes of the given anecdote", () => {
+    const state = anecdotes;
+
+    const action = {
+      type: "VOTE",
+      id: state[0].id,
+    };
+
+    deepFreeze(state);
+    const newState = anecdoteReducer(state, action);
+    expect(newState).toContainEqual({
+      ...anecdotes[0],
+      votes: anecdotes[0].votes + 1,
+    });
   });
 });
