@@ -1,18 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { voteFor } from "../reducers/anecdoteReducer";
+import { voteForAnecdote } from "../reducers/anecdoteReducer";
 import {
   Card,
   Container,
   PrimaryButton,
   Txt,
   AnecdotesListContainer,
-} from "./Styles";
+} from "./StyledComponents";
 
-const AnecdoteList = ({ anecdotesToShow, voteFor }) => {
+const AnecdoteList = ({ anecdotesToShow, voteForAnecdote }) => {
   const vote = (id) => {
-    voteFor(id);
+    voteForAnecdote(id);
   };
 
   return (
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
 
 AnecdoteList.propTypes = {
   anecdotesToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
-  voteFor: PropTypes.func.isRequired,
+  voteForAnecdote: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { voteFor })(AnecdoteList);
+export default connect(mapStateToProps, { voteForAnecdote })(AnecdoteList);

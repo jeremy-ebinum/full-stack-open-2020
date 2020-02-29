@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { NotificationContainer, Alert } from "./Styles";
+import { NotificationContainer, Alert } from "./StyledComponents";
 
 const Notification = ({ notificationsToShow }) => {
   return (

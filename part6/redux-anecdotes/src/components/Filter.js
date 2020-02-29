@@ -8,7 +8,7 @@ import {
   FilterLabel,
   FilterContainer,
   ClearFliterButton,
-} from "./Styles";
+} from "./StyledComponents";
 
 const Filter = ({ setFilter, clearFilter }) => {
   const seed = useUIDSeed();

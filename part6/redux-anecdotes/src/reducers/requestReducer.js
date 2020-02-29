@@ -5,7 +5,7 @@ const requestStates = { isLoading: false, isCancelled: false, isError: false };
 const loading = { isLoading: true, isCancelled: false, isError: false };
 const success = { isLoading: false, isCancelled: false, isError: false };
 const cancelled = { isLoading: false, isCancelled: true, isError: false };
-const failure = { isLoading: false, isCancelled: false, isError: false };
+const failure = { isLoading: false, isCancelled: false, isError: true };
 
 export const newStates = { loading, success, cancelled, failure };
 
@@ -14,11 +14,11 @@ export const initialState = {
     ...requestStates,
     source: getCancelTokenSource(),
   },
-  newAnecdote: {
+  createAnecdote: {
     ...requestStates,
     source: getCancelTokenSource(),
   },
-  voteAnecdote: {
+  voteForAnecdote: {
     ...requestStates,
     source: getCancelTokenSource(),
   },
@@ -53,6 +53,15 @@ const requestReducer = (state = initialState, action) => {
   }
 };
 
+/**
+ * Sets the state of an api request
+ *
+ * @param {string} request - initAnecdotes | createAnecdote | voteForAnecdote
+ * @param {*} state - LOADING | SUCCESS | CANCELLED | FAILURE
+ * @throws Will throw error if request or state isn't one of the specified
+ *
+ * @return {function} thunk
+ */
 export const setRequestState = (request, state) => {
   if (!requestNames.includes(request)) throw new Error("Invalid Request Name");
   const validStates = /LOADING|SUCCESS|CANCELLED|FAILURE/i;

@@ -1,10 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Meter, MeterBar } from "./Styles";
+import { Meter, MeterBar } from "./StyledComponents";
 
-const ProgressBar = (props) => {
-  const { isLoading } = props;
-
+const ProgressBar = ({ isLoading }) => {
   return (
     <>
       {isLoading && (
@@ -27,5 +26,7 @@ const mapStateToProps = (state) => {
 
   return { isLoading };
 };
+
+ProgressBar.propTypes = { isLoading: PropTypes.bool.isRequired };
 
 export default connect(mapStateToProps)(ProgressBar);

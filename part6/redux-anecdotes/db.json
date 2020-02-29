@@ -42,7 +42,7 @@
     },
     {
       "content": "A user interface is like a joke, if you have to explain it, it's not that good.",
-      "votes": 12,
+      "votes": 14,
       "id": "QQ71_SQ"
     },
     {
@@ -52,13 +52,18 @@
     },
     {
       "content": "A good programmer is someone who always looks both ways before crossing a one-way street",
-      "votes": 4,
+      "votes": 7,
       "id": "v-_8Cq_"
     },
     {
       "content": "There are two ways to write error-free programs; only the third one works.",
       "votes": 1,
       "id": "d6ffJxD"
+    },
+    {
+      "content": "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.",
+      "votes": 0,
+      "id": "VPlCaj6"
     }
   ]
 }

@@ -1,11 +1,11 @@
 import { getTrimmedStr } from "../helpers/helper";
 import anecdotesService from "../services/anecdotes";
 import { setRequestState } from "./requestReducer";
-import { queueNotification } from "./notificationReducer";
+import { displayNotification } from "./notificationReducer";
 
 export const initialState = [];
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case "INIT_ANECDOTES":
       return action.data || state;
@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export const initializeAnecdotes = () => {
+export const initAnecdotes = () => {
   return async (dispatch) => {
     try {
       dispatch(setRequestState("initAnecdotes", "LOADING"));
@@ -35,41 +35,41 @@ export const initializeAnecdotes = () => {
 
 export const createAnecdote = (content) => {
   if (content.length < 8) {
-    return queueNotification("Content is too short", 3000, "warning");
+    return displayNotification("Content is too short", 3000, "warning");
   }
   return async (dispatch) => {
     try {
-      dispatch(setRequestState("newAnecdote", "LOADING"));
+      dispatch(setRequestState("createAnecdote", "LOADING"));
       const newAnecdote = await anecdotesService.create(content);
       dispatch({ type: "NEW_ANECDOTE", data: newAnecdote });
-      dispatch(setRequestState("newAnecdote", "SUCCESS"));
+      dispatch(setRequestState("createAnecdote", "SUCCESS"));
       const message = `You added "${getTrimmedStr(content)}"`;
-      dispatch(queueNotification(message, 5000, "success"));
+      dispatch(displayNotification(message, 5000, "success"));
     } catch (error) {
-      dispatch(setRequestState("newAnecdote", "FAILURE"));
+      dispatch(setRequestState("createAnecdote", "FAILURE"));
     }
   };
 };
 
-export const voteFor = (id) => {
+export const voteForAnecdote = (id) => {
   return async (dispatch, getState) => {
     try {
-      dispatch(setRequestState("voteAnecdote", "LOADING"));
+      dispatch(setRequestState("voteForAnecdote", "LOADING"));
       const anecdoteToChange = getState().anecdotes.find((a) => a.id === id);
       const votedAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1,
       };
       const updatedAnecdote = await anecdotesService.update(id, votedAnecdote);
-      dispatch(setRequestState("voteAnecdote", "SUCCESS"));
+      dispatch(setRequestState("voteForAnecdote", "SUCCESS"));
       dispatch({ type: "UPDATE_ANECDOTE", data: updatedAnecdote });
       const contentToShow = getTrimmedStr(updatedAnecdote.content);
       const message = `You voted for "${contentToShow}"`;
-      dispatch(queueNotification(message, 2000, "info"));
+      dispatch(displayNotification(message, 2000, "info"));
     } catch (e) {
-      dispatch(setRequestState("voteAnecdote", "FAILURE"));
+      dispatch(setRequestState("voteForAnecdote", "FAILURE"));
     }
   };
 };
 
-export default reducer;
+export default anecdoteReducer;

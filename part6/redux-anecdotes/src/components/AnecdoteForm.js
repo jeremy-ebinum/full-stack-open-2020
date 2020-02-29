@@ -8,11 +8,10 @@ import {
   FormRow,
   AnecdoteInput,
   AnecdotesFormContainer,
-} from "./Styles";
+} from "./StyledComponents";
 
 const AnecdoteForm = ({ createAnecdote }) => {
   const anecdoteInputRef = useRef();
-
   useEffect(() => {
     anecdoteInputRef.current.focus();
 

@@ -28,7 +28,15 @@ export const removeNotification = (id) => {
   };
 };
 
-export const queueNotification = (message, timeout, level = "") => {
+/**
+ *  Queues a new notification to be removed after the specified timeout
+ * @param {string} message
+ * @param {number} timeout
+ * @param {string=} level - success | info | warning
+ *
+ * @return {function} thunk
+ */
+export const displayNotification = (message, timeout, level = "") => {
   return (dispatch) => {
     const action = newNotification(message, level);
     const id = action.data.id;

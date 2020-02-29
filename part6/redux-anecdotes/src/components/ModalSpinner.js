@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "./Modal";
-import { FetchSpinner } from "./Styles";
+import { FetchSpinner } from "./StyledComponents";
 
 const ModalSpinner = () => {
   return (
