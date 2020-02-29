@@ -10,6 +10,6 @@ Each of the following folders contain the final solutions to their respective ex
 
 ### [redux-anecdotes](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part6/redux-anecdotes)
 
-- Exercise 6.3 - 6.8 — [Description](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises)
-- Exercise 6.9 - 6.15 — [Description](https://fullstackopen.com/en/part6/many_reducers_connect#exercises)
-- Exercise 6.16 - 6.21 — [Description](https://fullstackopen.com/en/part6/communicating_with_server_in_a_redux_application#exercises)
+- Exercises 6.3 - 6.8 — [Description](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises)
+- Exercises 6.9 - 6.15 — [Description](https://fullstackopen.com/en/part6/many_reducers_connect#exercises)
+- Exercises 6.16 - 6.21 — [Description](https://fullstackopen.com/en/part6/communicating_with_server_in_a_redux_application#exercises)
