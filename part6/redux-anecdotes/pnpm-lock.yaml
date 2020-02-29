@@ -8,6 +8,8 @@ dependencies:
   react-scripts: 3.4.0
   react-uid: 2.2.0_react@16.13.0
   redux: 4.0.5
+  redux-devtools-extension: 2.13.8_redux@4.0.5
+  redux-thunk: 2.3.0
   styled-components: 5.0.1_d35884ee1c3afc8413cfc45d78861198
   styled-icons: 9.5.0_74b2a5912e98e95158fa635b03601efa
 devDependencies:
@@ -9891,6 +9893,18 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-nRCcW9Sj7NuZwa2XvH9co8NPeXUBhZP7CRKJtU+cS6PW9FpCIFoI5ib0NT1ZrbNuPoRy0ylyCaUL8Gih4LSyFg==
+  /redux-devtools-extension/2.13.8_redux@4.0.5:
+    dependencies:
+      redux: 4.0.5
+    dev: false
+    peerDependencies:
+      redux: ^3.1.0 || ^4.0.0
+    resolution:
+      integrity: sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
+  /redux-thunk/2.3.0:
+    dev: false
+    resolution:
+      integrity: sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
   /redux/4.0.5:
     dependencies:
       loose-envify: 1.4.0
@@ -12250,5 +12264,7 @@ specifiers:
   react-scripts: 3.4.0
   react-uid: ^2.2.0
   redux: ^4.0.5
+  redux-devtools-extension: ^2.13.8
+  redux-thunk: ^2.3.0
   styled-components: ^5.0.1
   styled-icons: ^9.5.0

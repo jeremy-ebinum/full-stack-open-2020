@@ -28,15 +28,17 @@ export const removeNotification = (id) => {
   };
 };
 
-export const queueNotification = (dispatch, message, level) => {
-  const action = newNotification(message, level);
-  const id = action.data.id;
+export const queueNotification = (message, timeout, level = "") => {
+  return (dispatch) => {
+    const action = newNotification(message, level);
+    const id = action.data.id;
 
-  dispatch(action);
+    dispatch(action);
 
-  setTimeout(() => {
-    dispatch(removeNotification(id));
-  }, 5000);
+    setTimeout(() => {
+      dispatch(removeNotification(id));
+    }, timeout);
+  };
 };
 
 export default notificationReducer;

@@ -10,16 +10,16 @@ import {
   ClearFliterButton,
 } from "./Styles";
 
-const Filter = ({ dispatch }) => {
+const Filter = ({ setFilter, clearFilter }) => {
   const seed = useUIDSeed();
   const filterInputRef = useRef();
 
   const handleChange = (event) => {
-    dispatch(setFilter(event.target.value));
+    setFilter(event.target.value);
   };
 
   const clear = () => {
-    dispatch(clearFilter());
+    clearFilter();
     filterInputRef.current.value = "";
   };
 
@@ -38,7 +38,8 @@ const Filter = ({ dispatch }) => {
 };
 
 Filter.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  clearFilter: PropTypes.func.isRequired,
 };
 
-export default connect()(Filter);
+export default connect(null, { setFilter, clearFilter })(Filter);

@@ -31,11 +31,12 @@ const notificationsToShow = (notifications) => {
   }
 };
 
+const mapStateToProps = (state) => {
+  return { notificationsToShow: notificationsToShow(state.notifications) };
+};
+
 Notification.propTypes = {
   notificationsToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return { notificationsToShow: notificationsToShow(state.notifications) };
-};
 export default connect(mapStateToProps)(Notification);

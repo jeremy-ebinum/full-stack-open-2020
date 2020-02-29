@@ -17,22 +17,13 @@ const ProgressBar = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const reduceToUpdateLoadingStates = (acc, loading) => {
-    if (loading[0] === "isInitLoading") {
-      return acc;
-    }
+  const loadingStates = Object.entries(state.requests).map((entry) => {
+    return { ...entry[1], requestName: entry[0] };
+  });
 
-    const loadingState = { [`${loading[0]}`]: loading[1] };
-
-    return acc.concat(loadingState);
-  };
-
-  const loadingStates = Object.entries(state.loading).reduce(
-    reduceToUpdateLoadingStates,
-    []
-  );
-
-  const isLoading = loadingStates.some((loading) => Object.values(loading)[0]);
+  const isLoading = loadingStates.some((l) => {
+    return l.requestName !== "initAnecdotes" && l.isLoading;
+  });
 
   return { isLoading };
 };

@@ -12,11 +12,15 @@ const filterReducer = (state = initialState, action) => {
 };
 
 export const setFilter = (filter) => {
-  return { type: "SET_FILTER", filter };
+  return (dispatch) => {
+    dispatch({ type: "SET_FILTER", filter });
+  };
 };
 
 export const clearFilter = () => {
-  return { type: "CLEAR_FILTER" };
+  return (dispatch) => {
+    dispatch({ type: "CLEAR_FILTER" });
+  };
 };
 
 export default filterReducer;

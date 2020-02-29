@@ -12,13 +12,12 @@ import {
   AnecdotesListContainer,
 } from "./Styles";
 
-const AnecdoteList = ({ anecdotesToShow, dispatch }) => {
+const AnecdoteList = ({ anecdotesToShow, voteFor, queueNotification }) => {
   const vote = (id) => {
+    voteFor(id);
     const content = anecdotesToShow.find((a) => a.id === id).content;
-    dispatch(voteFor(id));
-    const contentToShow = getTrimmedStr(content);
-    const message = `You voted for "${contentToShow}"`;
-    queueNotification(dispatch, message, "info");
+    const message = `You voted for "${getTrimmedStr(content)}"`;
+    queueNotification(message, 2000, "info");
   };
 
   return (
@@ -46,7 +45,7 @@ const AnecdoteList = ({ anecdotesToShow, dispatch }) => {
 
 const mapStateToProps = (state) => {
   const { anecdotes, filter } = state;
-  const anecdotesByVotesDesc = anecdotes.sort((a, b) => b.votes - a.votes);
+  const anecdotesByVotesDesc = [...anecdotes].sort((a, b) => b.votes - a.votes);
   const anecdotesToShow = anecdotesByVotesDesc.filter((a) => {
     if (filter === "") return true;
     return a.content.toLowerCase().includes(filter.toLowerCase());
@@ -57,7 +56,9 @@ const mapStateToProps = (state) => {
 
 AnecdoteList.propTypes = {
   anecdotesToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  voteFor: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(AnecdoteList);
+export default connect(mapStateToProps, { voteFor, queueNotification })(
+  AnecdoteList
+);

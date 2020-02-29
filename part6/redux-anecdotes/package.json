@@ -12,6 +12,8 @@
     "react-scripts": "3.4.0",
     "react-uid": "^2.2.0",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
     "styled-icons": "^9.5.0"
   },
