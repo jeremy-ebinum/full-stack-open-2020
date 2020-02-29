@@ -18,7 +18,7 @@
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
       "id": "36975",
-      "votes": 3
+      "votes": 4
     },
     {
       "content": "Premature optimization is the root of all evil.",
@@ -28,7 +28,7 @@
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "98312",
-      "votes": 0
+      "votes": 1
     },
     {
       "content": "Everything is easy unless you need to do it yourself",
@@ -47,12 +47,12 @@
     },
     {
       "content": "It's not a bug, it's an undocumented feature\n",
-      "votes": 0,
+      "votes": 1,
       "id": "9Me65Qy"
     },
     {
       "content": "A good programmer is someone who always looks both ways before crossing a one-way street",
-      "votes": 7,
+      "votes": 9,
       "id": "v-_8Cq_"
     },
     {
@@ -64,6 +64,21 @@
       "content": "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.",
       "votes": 0,
       "id": "VPlCaj6"
+    },
+    {
+      "content": "Deleted code is debugged code.",
+      "votes": 2,
+      "id": "oUpqKNe"
+    },
+    {
+      "content": "In order to understand recursion, one must first understand recursion",
+      "votes": 1,
+      "id": "IzGXOXC"
+    },
+    {
+      "content": "Software undergoes beta testing shortly before it’s released. Beta is Latin for “still doesn’t work.",
+      "votes": 7,
+      "id": "SVLOixz"
     }
   ]
 }

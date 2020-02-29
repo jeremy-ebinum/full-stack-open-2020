@@ -23,7 +23,7 @@ const AnecdoteList = ({ anecdotesToShow, voteForAnecdote }) => {
             <Txt>{anecdote.content}</Txt>
           </Container>
           <Container align="center" margin="0.25rem 0">
-            <Txt>Has {anecdote.votes} votes</Txt>
+            <Txt weight={700}>Has {anecdote.votes} votes</Txt>
             <PrimaryButton
               type="button"
               margin="0.5rem"

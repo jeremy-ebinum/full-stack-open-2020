@@ -1,11 +1,18 @@
 import styled, { createGlobalStyle, keyframes, css } from "styled-components";
 import { Spinner2 } from "styled-icons/icomoon/";
+import FlexoW01RegularWoff from "../fonts/FlexoW01Regular.woff";
+import FlexoW01RegularWoff2 from "../fonts/FlexoW01Regular.woff2";
 
+// CONTAINERS
 export const Wrapper = styled.div`
   min-height: 100vh;
   width: 100%;
   padding: 1.5rem 1rem;
   background-color: #272b2b;
+
+  @media (min-width: 640px) {
+    padding: 1.5rem;
+  }
 
   @media (min-width: 768px) {
     padding: 2rem;
@@ -56,6 +63,26 @@ export const ModalContent = styled.div`
   align-items: center;
 `;
 
+export const Card = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background-color: #f9f9f9;
+
+  @media (min-width: 768px) {
+    margin: 0.5rem 1rem 0.5rem 0;
+    flex: 1 0 calc(50% - 1rem);
+  }
+
+  @media (min-width: 1280px) {
+    margin: 0.75rem;
+    flex: 0 0 calc(45% - 1.5rem);
+  }
+`;
+
+// ANIMATIONS
 const fullSpin = keyframes`
   from {
     transform: rotate(0deg);
@@ -95,6 +122,7 @@ const fixedTopLeftMixin = css`
   left: 0;
 `;
 
+// PROGRESS BAR
 export const Meter = styled.div`
   background-color: #272b2b;
   height: 6px;
@@ -116,12 +144,13 @@ export const MeterBar = styled.span`
   animation: ${fillWidth} 1s ease-in-out infinite;
 `;
 
+// NOTIFICATION
 export const Alert = styled.div`
   width: 100%;
   margin: auto;
   font-family: monospace;
-  background: ghostwhite;
-  color: #131515;
+  background: rgba(19, 21, 21, 0.75);
+  color: ghostwhite;
   font-weight: 700;
   text-align: center;
   padding: 0.4rem 0.3rem;
@@ -154,20 +183,7 @@ export const Alert = styled.div`
   }
 `;
 
-export const AnecdotesListContainer = styled(Container)`
-  @media (min-width: 768px) {
-    justify-content: center;
-    flex-direction: row;
-  }
-`;
-
-export const AnecdotesFormContainer = styled(Container)`
-  margin-bottom: 1rem;
-  @media (min-width: 768px) {
-    margin-bottom: 2rem;
-  }
-`;
-
+// FORMS
 export const Form = styled.form`
   width: 100%;
 
@@ -186,6 +202,15 @@ export const FormRow = styled(Container)`
   }
 `;
 
+export const Input = styled.input`
+  width: 100%;
+  padding: 0.35rem 0.75rem;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+`;
+
+// TEXT
 export const Heading = styled.h1`
   font-size: 1.5rem;
   color: #f9f9f9;
@@ -195,9 +220,6 @@ export const Heading = styled.h1`
     text-align: center;
     font-size: 1.75rem;
     margin-bottom: 0.75rem;
-    ${AnecdotesListContainer} & {
-      width: 100%;
-    }
   }
 
   @media (min-width: 1280px) {
@@ -219,32 +241,19 @@ export const MainHeading = styled(Heading)`
   }
 `;
 
-export const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background-color: #f9f9f9;
-
-  @media (min-width: 768px) {
-    margin: 0.5rem 1rem 0.5rem 0;
-    flex: 1 0 calc(50% - 1rem);
-  }
-
-  @media (min-width: 1280px) {
-    margin: 0.75rem;
-    flex: 0 0 calc(45% - 1.5rem);
-  }
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  padding: 0.35rem 0.75rem;
+export const Txt = styled.span`
+  color: ${(props) => props.color || "#131515"};
+  font-family: "Flexo W01";
   font-size: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: ${(props) => props.weight || 400};
+  line-height: 1.4;
+
+  @media (min-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
+// BUTTONS
 export const Button = styled.button`
   display: inline-block;
   border: 1px solid transparent;
@@ -299,6 +308,53 @@ export const WarningButton = styled(Button)`
   }
 `;
 
+// ANECDOTE FORM
+export const AnecdotesFormContainer = styled(Container)`
+  margin-bottom: 1rem;
+  @media (min-width: 768px) {
+    margin-bottom: 2rem;
+  }
+`;
+
+export const AnecdoteInput = styled(Input)`
+  font-family: "Flexo W01";
+  height: 80px;
+
+  @media (min-width: 640px) {
+    height: 100px;
+  }
+
+  @media (min-width: 768px) {
+    height: 100px;
+    font-size: 1.2rem;
+    max-width: 768px;
+  }
+`;
+
+export const CreateAnecdoteButton = styled(SuccessButton)`
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.4rem 1rem;
+  font-size: 1.2rem;
+
+  @media (min-width: 768px) {
+    border-radius: 4px;
+    width: 100%;
+    max-width: 768px;
+    padding: 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+`;
+
+// ANECDOTE LIST
+export const AnecdotesListContainer = styled(Container)`
+  @media (min-width: 768px) {
+    justify-content: center;
+    flex-direction: row;
+  }
+`;
+
+// FILTER
 export const FilterContainer = styled(Container)`
   flex-direction: column;
   margin-bottom: 1rem;
@@ -325,6 +381,7 @@ export const FilterInput = styled(Input)`
   max-width: 320px;
   border-color: transparent;
   border-radius: 20px;
+  font-family: "Flexo W01";
   font-size: 1rem;
   margin: 0.5rem 0;
 
@@ -337,47 +394,13 @@ export const FilterInput = styled(Input)`
 `;
 
 export const ClearFliterButton = styled(WarningButton)`
+  font-family: "Flexo W01";
   font-size: 0.8rem;
+  font-weight: bold;
   border-radius: 10px;
   width: auto;
   text-transform: uppercase;
   margin-top: 0.25rem;
-`;
-
-export const AnecdoteInput = styled(Input)`
-  height: 80px;
-
-  @media (min-width: 768px) {
-    height: 100px;
-    font-size: 1.2rem;
-    max-width: 768px;
-  }
-`;
-
-export const CreateAnecdoteButton = styled(SuccessButton)`
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0.4rem 1rem;
-  font-size: 1.2rem;
-
-  @media (min-width: 768px) {
-    border-radius: 4px;
-    width: 100%;
-    max-width: 768px;
-    padding: 0.5rem 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-`;
-
-export const Txt = styled.span`
-  color: ${(props) => props.color || "#131515"};
-  font-size: 1rem;
-  font-weight: ${(props) => props.weight || 500};
-  line-height: 1.4;
-
-  @media (min-width: 480px) {
-    font-size: 1.1rem;
-  }
 `;
 
 export const GlobalStyles = createGlobalStyle`
@@ -385,6 +408,14 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+  }
+
+  @font-face {
+    font-family: "Flexo W01";
+    src: url(${FlexoW01RegularWoff2}) format('woff2'),
+    url(${FlexoW01RegularWoff}) format('woff');
+    font-weight: 400;
+    font-style: normal;
   }
 
   body {
