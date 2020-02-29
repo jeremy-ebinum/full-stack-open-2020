@@ -2,6 +2,13 @@
 
 This repository contains exercise solutions to the 2019 edition of the Full Stack Open course from the University of Helsinki.
 
+## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
+
+- [unicafe-redux](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part6/unicafe-redux) - rewrites the core of the unicafe exercise from part 1 using Redux state management
+- [redux-anecdotes](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part6/redux-anecdotes) - rebuilds the anecdotes exercise from part 1 using Redux state management and adds REST operations with json-server and redux-thunk
+
+[View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part6/)
+
 ## Part 5 - [Testing React apps, custom hooks](https://fullstackopen.com/en/part5)
 
 - [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part5/bloglist-frontend) - is a frontend written with React and tested with Jest for the [Part 4 Backend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part4/bloglist-backend)
