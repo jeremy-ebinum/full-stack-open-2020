@@ -18,6 +18,10 @@ export const initialState = {
     ...requestStates,
     source: getCancelTokenSource(),
   },
+  voteAnecdote: {
+    ...requestStates,
+    source: getCancelTokenSource(),
+  },
 };
 
 const requestNames = Object.keys(initialState);

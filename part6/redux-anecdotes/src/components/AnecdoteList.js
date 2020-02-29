@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getTrimmedStr } from "../helpers/helper";
-import { queueNotification } from "../reducers/notificationReducer";
 import { voteFor } from "../reducers/anecdoteReducer";
 import {
   Card,
@@ -12,12 +10,9 @@ import {
   AnecdotesListContainer,
 } from "./Styles";
 
-const AnecdoteList = ({ anecdotesToShow, voteFor, queueNotification }) => {
+const AnecdoteList = ({ anecdotesToShow, voteFor }) => {
   const vote = (id) => {
     voteFor(id);
-    const content = anecdotesToShow.find((a) => a.id === id).content;
-    const message = `You voted for "${getTrimmedStr(content)}"`;
-    queueNotification(message, 2000, "info");
   };
 
   return (
@@ -59,6 +54,4 @@ AnecdoteList.propTypes = {
   voteFor: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { voteFor, queueNotification })(
-  AnecdoteList
-);
+export default connect(mapStateToProps, { voteFor })(AnecdoteList);

@@ -11,15 +11,9 @@ const reducer = (state = initialState, action) => {
       return action.data || state;
     case "NEW_ANECDOTE":
       return state.concat(action.data);
-    case "VOTE":
-      const id = action.id;
-      const anecdoteToChange = state.find((a) => a.id === id);
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: anecdoteToChange.votes + 1,
-      };
-
-      return state.map((a) => (a.id === id ? changedAnecdote : a));
+    case "UPDATE_ANECDOTE":
+      const id = action.data.id;
+      return state.map((a) => (a.id === id ? action.data : a));
     default:
       return state;
   }
@@ -58,8 +52,23 @@ export const createAnecdote = (content) => {
 };
 
 export const voteFor = (id) => {
-  return (dispatch) => {
-    dispatch({ type: "VOTE", id });
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setRequestState("voteAnecdote", "LOADING"));
+      const anecdoteToChange = getState().anecdotes.find((a) => a.id === id);
+      const votedAnecdote = {
+        ...anecdoteToChange,
+        votes: anecdoteToChange.votes + 1,
+      };
+      const updatedAnecdote = await anecdotesService.update(id, votedAnecdote);
+      dispatch(setRequestState("voteAnecdote", "SUCCESS"));
+      dispatch({ type: "UPDATE_ANECDOTE", data: updatedAnecdote });
+      const contentToShow = getTrimmedStr(updatedAnecdote.content);
+      const message = `You voted for "${contentToShow}"`;
+      dispatch(queueNotification(message, 2000, "info"));
+    } catch (e) {
+      dispatch(setRequestState("voteAnecdote", "FAILURE"));
+    }
   };
 };
 

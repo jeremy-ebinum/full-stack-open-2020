@@ -51,12 +51,14 @@ describe("anecdoteReducer()", () => {
     expect(newState).toContainEqual(newAnecdote);
   });
 
-  test("VOTE purely increments votes of the given anecdote", () => {
+  test("UPDATE_ANECDOTE updates the state of the given anecdote", () => {
     const state = anecdotes;
 
+    const changedAnecdote = { ...anecdotes[0], votes: anecdotes[0].votes + 1 };
+
     const action = {
-      type: "VOTE",
-      id: state[0].id,
+      type: "UPDATE_ANECDOTE",
+      data: changedAnecdote,
     };
 
     deepFreeze(state);
