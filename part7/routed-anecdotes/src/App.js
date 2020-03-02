@@ -83,12 +83,13 @@ const About = () => (
 const Footer = () => (
   <div>
     Anecdote app for{" "}
-    <a href="https://courses.helsinki.fi/fi/tkt21009">
-      Full Stack -sovelluskehitys
+    <a href="https://fullstackopen.com/en/#course-contents">
+      Full Stack Open 2019
     </a>
-    . See{" "}
-    <a href="https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js
+    <br />
+    See{" "}
+    <a href="https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/routed-anecdotes/src/App.js">
+      this link
     </a>{" "}
     for the source code.
   </div>
@@ -207,9 +208,17 @@ const App = () => {
           <Route
             exact
             path="/anecdotes/:id"
-            render={({ match }) => (
-              <Anecdote anecdote={anecdoteById(match.params.id)} vote={vote} />
-            )}
+            render={({ match }) => {
+              const anecdote = anecdoteById(match.params.id);
+              return anecdote ? (
+                <Anecdote
+                  anecdote={anecdoteById(match.params.id)}
+                  vote={vote}
+                />
+              ) : (
+                <p>Anecdote Not Found</p>
+              );
+            }}
           ></Route>
           <Route
             exact
