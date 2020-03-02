@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  withRouter,
+} from "react-router-dom";
 
 const Menu = () => {
   const padding = {
@@ -89,7 +94,7 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = (props) => {
+let CreateNew = (props) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
@@ -102,6 +107,7 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    props.history.push("/");
   };
 
   return (
@@ -138,6 +144,8 @@ const CreateNew = (props) => {
   );
 };
 
+CreateNew = withRouter(CreateNew);
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -161,6 +169,14 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
+    const contentToShow =
+      anecdote.content.length > 45
+        ? anecdote.content.slice(0, 44) + "..."
+        : anecdote.content;
+    setNotification(`Added "${contentToShow}"`);
+    setTimeout(() => {
+      setNotification("");
+    }, 10000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -182,6 +198,7 @@ const App = () => {
         <>
           <h1>Software anecdotes</h1>
           <Menu />
+          <div>{notification}</div>
           <Route
             exact
             path="/"
