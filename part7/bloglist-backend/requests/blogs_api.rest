@@ -1,0 +1,56 @@
+# VARIABLES
+@baseUrl = http://localhost:3003
+@contentType = application/json;charset=utf-8
+@BlogId = {{getBlogs.response.body.$[-1:].id}}
+@token = {{loginUser.response.body.token}}
+
+
+### Get Users Collection
+# @name getUsers
+GET {{baseUrl}}/api/users HTTP/1.1
+
+
+### Create Valid User
+# @name createUser
+POST {{baseUrl}}/api/users HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "username": "username",
+    "name": "Uchiha Madara",
+    "password": "password"
+}
+
+### Login Valid User
+# @name loginUser
+POST {{baseUrl}}/api/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "username": "username",
+    "password": "password"
+}
+
+### Get Blogs Collection:
+# @name getBlogs
+GET {{baseUrl}}/api/blogs HTTP/1.1
+
+### Get Specific Blog
+GET {{baseUrl}}/api/blogs/{{BlogId}} HTTP/1.1
+
+### Delete Specific Blog
+DELETE {{baseUrl}}/api/blogs/{{BlogId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Create Valid Blog
+# @name createBlog
+POST {{baseUrl}}/api/blogs HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Type wars",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    "likes": 2
+}
