@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import {
   render,
   within,
@@ -12,6 +13,7 @@ import { prettyDOM } from "@testing-library/dom";
 import testHelper from "./helpers/testHelper";
 import _times from "lodash/times";
 import nock from "nock";
+import store from "./store";
 import App, { testIDs as appTestIDs } from "./App";
 import { testIDs as loginTestIDs } from "./components/Login";
 import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
@@ -31,14 +33,22 @@ describe("<App />", () => {
     });
 
     test("blogs are not rendered", async () => {
-      const { container, queryByTestId } = render(<App />);
+      const { container, queryByTestId } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
       expect(queryByTestId(appTestIDs.blogs)).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent(blogs[0].title);
       expect(container).not.toHaveTextContent(blogs[0].author);
     });
 
     test("login form is rendered", async () => {
-      const { findByRole, getByText } = render(<App />);
+      const { findByRole, getByText } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
       const loginForm = await findByRole("form");
       const loginBtn = getByText(/login|sign in/i, {
         selector: "*[type='submit']",
@@ -48,7 +58,11 @@ describe("<App />", () => {
     });
 
     test("clicking the password icon toggles password masking", async () => {
-      const component = render(<App />);
+      const component = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
       await component.findByRole("form");
       const passwordInput = component.getByLabelText("password");
       const toggleBtn = component.getByTestId(loginTestIDs.toggleShowPassword);
@@ -72,7 +86,11 @@ describe("<App />", () => {
         .get(testHelper.blogsPath)
         .reply(200, testHelper.blogs);
 
-      const { findByText, getByTestId } = render(<App />);
+      const { findByText, getByTestId } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
       const loginBtn = await findByText(/login|sign in/i, {
         selector: "*[type='submit']",
       });
@@ -108,7 +126,11 @@ describe("<App />", () => {
         .get(testHelper.blogsPath)
         .reply(200, testHelper.blogs);
 
-      const { getByText, getByTestId } = render(<App />);
+      const { getByText, getByTestId } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
 
       await waitForElementToBeRemoved(() =>
         getByTestId(navbarTestIDs.spinnerIcon)
@@ -131,7 +153,11 @@ describe("<App />", () => {
         .get(testHelper.blogsPath)
         .reply(200, testHelper.blogs);
 
-      const { findByText, getByTestId, queryByText } = render(<App />);
+      const { findByText, getByTestId, queryByText } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
 
       const logoutBtn = await findByText(/logout|sign out/i, {
         selector: "button",
@@ -155,7 +181,9 @@ describe("<App />", () => {
         .reply(200, testHelper.blogs);
 
       const { getByTestId, getByText, getByRole, getByLabelText } = render(
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       );
 
       await waitForElementToBeRemoved(() =>
@@ -200,7 +228,11 @@ describe("<App />", () => {
           return newBlog;
         });
 
-      const { getByTestId, getByText, getByLabelText } = render(<App />);
+      const { getByTestId, getByText, getByLabelText } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
 
       await waitForElementToBeRemoved(() =>
         getByTestId(navbarTestIDs.spinnerIcon)
@@ -256,7 +288,11 @@ describe("<App />", () => {
           return likedBlog;
         });
 
-      const { getByTestId } = render(<App />);
+      const { getByTestId } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
 
       await waitForElementToBeRemoved(() =>
         getByTestId(navbarTestIDs.spinnerIcon)
@@ -290,7 +326,11 @@ describe("<App />", () => {
         .delete(memberRegex)
         .reply(204);
 
-      const { getByTestId } = render(<App />);
+      const { getByTestId } = render(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
 
       await waitForElementToBeRemoved(() =>
         getByTestId(navbarTestIDs.spinnerIcon)

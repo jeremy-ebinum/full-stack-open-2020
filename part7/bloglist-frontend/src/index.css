@@ -116,6 +116,16 @@ body {
 }
 
 /* Alert Components will be created dynamically with JavaScript */
+.c-alerts-container.inLogin {
+  width: var(--login-w);
+}
+
+.c-alert-container.inBlog {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0.25rem auto;
+}
+
 .c-alert {
   background: #000;
   color: #fff;
@@ -125,16 +135,7 @@ body {
   padding: var(--alert-padding);
   margin-top: 0.5rem;
   font-size: var(--alert-font-size);
-}
-
-.c-alert.c-alert--inLogin {
-  width: var(--login-w);
-}
-
-.c-alert.c-alert--inBlog {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0.25rem auto;
+  width: 100%;
 }
 
 .c-alert.c-alert--error {

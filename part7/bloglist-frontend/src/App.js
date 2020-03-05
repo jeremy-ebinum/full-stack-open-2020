@@ -1,14 +1,22 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useUIDSeed } from "react-uid";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from "react";
+import { connect } from "react-redux";
 import { getTestIDs } from "./helpers/testHelper";
+import { getTrimmedStr } from "./utils";
 import { useField } from "./hooks";
 import UserContext from "./UserContext";
+import { displayNotification } from "./reducers/notificationReducer";
 import loginService from "./services/login";
 import blogsService from "./services/blogs";
 import Toggleable from "./components/Toggleable";
 import ToTopScroller from "./components/ToTopScroller";
 import NavBar from "./components/NavBar";
-import AlertList from "./components/AlertList";
+import NotificationList from "./components/NotificationList";
 import Login from "./components/Login";
 import ModalSpinner from "./components/ModalSpinner";
 import BlogForm from "./components/BlogForm";
@@ -16,8 +24,7 @@ import BlogList from "./components/BlogList";
 
 export const testIDs = getTestIDs();
 
-function App() {
-  const [alerts, setAlerts] = useState([]);
+function App({ displayNotification }) {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, resetUsername] = useField({ placeholder: "Enter Username" });
@@ -32,34 +39,6 @@ function App() {
 
   const blogFormRef = useRef();
   const toTopScrollerRef = useRef();
-  const uidSeed = useUIDSeed();
-
-  /**
-   * Add new alerts to the alerts state
-   *
-   * @param {Object[]} newAlerts - An array of alerts to be transformed
-   * @param {string} newAlerts[].type - "info" or "error" or "success"
-   * @param {string} newAlerts[].message - The alert message
-   */
-  const queueAlerts = useCallback(
-    (newAlerts) => {
-      // Remove the current alert being queued
-      const timeoutFunc = (id) => {
-        setAlerts((currentAlerts) => currentAlerts.filter((a) => a.id !== id));
-      };
-
-      const alertsWithTimeout = newAlerts.map((a) => {
-        return {
-          ...a,
-          id: `alert-${a.type}-${uidSeed(a)}`,
-          timeoutFunc,
-        };
-      });
-
-      setAlerts((prevAlerts) => prevAlerts.concat(...alertsWithTimeout));
-    },
-    [uidSeed]
-  );
 
   // Get persisted logged in user from localStorage
   useEffect(() => {
@@ -97,12 +76,12 @@ function App() {
   }, [user]);
 
   if (fetchError) {
-    queueAlerts([{ type: "error", message: fetchError.message }]);
+    displayNotification(fetchError.message, "error");
     setFetchError(null);
   }
 
   // Handle DOM updates depending on if the login or blogs page is shown
-  useEffect(() => {
+  useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
 
     const handleScroll = () => {
@@ -110,7 +89,7 @@ function App() {
       const pageHeight = document.documentElement.offsetHeight;
       const percentScrollTop = Math.round((scrollTop / pageHeight) * 100);
 
-      if (!user) return;
+      if (!user || !toTopScrollerRef.current) return;
 
       if (percentScrollTop > 10) {
         toTopScrollerRef.current.show();
@@ -144,30 +123,24 @@ function App() {
       const statusCode = error.response.status;
 
       if (!statusCode) {
-        return queueAlerts([
-          { type: "error", message: "Oops! something went wrong" },
-        ]);
+        return displayNotification("Oops! something went wrong", "error");
       }
 
       if (statusCode === 404) {
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
-        return queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+        return displayNotification("Blog does not exist", "error");
       }
 
       if (statusCode >= 400 && statusCode < 500) {
         const errorMessages = error.response.data.messages;
-        const errorAlerts = errorMessages.map((m) => ({
-          type: "error",
-          message: m,
-        }));
-        return queueAlerts(errorAlerts);
+        return errorMessages.forEach((m) => {
+          displayNotification(m, "error");
+        });
       }
 
-      return queueAlerts([
-        { type: "error", message: "Oops! something went wrong" },
-      ]);
+      return displayNotification("Oops! something went wrong", "error");
     },
-    [queueAlerts]
+    [displayNotification]
   );
 
   const login = useCallback(
@@ -184,9 +157,7 @@ function App() {
         blogsService.setToken(authUser.token);
         setUser(authUser);
         localStorage.setItem("loggedInBloglistUser", JSON.stringify(authUser));
-        queueAlerts([
-          { type: "info", message: `Logged in as ${authUser.username}` },
-        ]);
+        displayNotification(`Logged in as ${authUser.username}`, "info");
       } catch (error) {
         handleApiErrors(error);
       } finally {
@@ -198,7 +169,7 @@ function App() {
     [
       username.value,
       password.value,
-      queueAlerts,
+      displayNotification,
       handleApiErrors,
       resetUsername,
       resetPassword,
@@ -216,8 +187,8 @@ function App() {
     localStorage.removeItem("loggedInBloglistUser");
     setUser(null);
     resetBlogForm();
-    queueAlerts([{ type: "info", message: "Logged out" }]);
-  }, [queueAlerts, resetBlogForm]);
+    displayNotification("Logged out", "info");
+  }, [displayNotification, resetBlogForm]);
 
   const addBlog = useCallback(
     async (event) => {
@@ -234,16 +205,10 @@ function App() {
         blogFormRef.current.toggleVisibility();
         setBlogs((prevBlogs) => prevBlogs.concat(returnedBlog));
         resetBlogForm();
-        const { title } = returnedBlog;
-        const titleToShow =
-          title.length > 45 ? `${title.slice(0, 44)}… ` : title;
-        queueAlerts([
-          {
-            type: "success",
-            message: `Added ${titleToShow} by ${returnedBlog.author ||
-              "unknown author"}`,
-          },
-        ]);
+        const titleToShow = getTrimmedStr(returnedBlog.title);
+        const message = `Added ${titleToShow} by ${returnedBlog.author ||
+          "unknown author"}`;
+        displayNotification(message, "success", 5000);
       } catch (error) {
         handleApiErrors(error);
       } finally {
@@ -255,7 +220,7 @@ function App() {
       author.value,
       url.value,
       resetBlogForm,
-      queueAlerts,
+      displayNotification,
       handleApiErrors,
     ]
   );
@@ -265,7 +230,7 @@ function App() {
       const blogToLike = blogs.find((blog) => blog.id === id);
 
       if (!blogToLike) {
-        queueAlerts([{ type: "error", message: "Blog does not exist" }]);
+        displayNotification("Blog does not exist", "error");
       } else {
         const updatedBlog = {
           ...blogToLike,
@@ -285,12 +250,12 @@ function App() {
         }
       }
     },
-    [blogs, handleApiErrors, queueAlerts]
+    [blogs, displayNotification, handleApiErrors]
   );
 
   const deleteBlog = useCallback(
     async (event, id, title) => {
-      const titleToShow = title.length > 45 ? `${title.slice(0, 44)}… ` : title;
+      const titleToShow = getTrimmedStr(title);
       const willDelete = window.confirm(`Delete ${titleToShow}?`);
 
       if (!willDelete) return;
@@ -299,16 +264,14 @@ function App() {
       try {
         await blogsService.remove(id);
         setBlogs(blogs.filter((blog) => blog.id !== id));
-        queueAlerts([
-          { type: "info", message: `Deleted Blog: ${titleToShow}` },
-        ]);
+        displayNotification(`Deleted Blog: ${titleToShow}`, "info");
       } catch (error) {
         handleApiErrors(error, id);
       } finally {
         setIsLoading(false);
       }
     },
-    [blogs, handleApiErrors, queueAlerts]
+    [blogs, displayNotification, handleApiErrors]
   );
 
   const ShowBlogFormBtn = () => (
@@ -360,7 +323,7 @@ function App() {
     <div className="o-wrapper js-wrapper">
       {!user && (
         <div className="o-container js-container">
-          <AlertList contextClass="c-alert--inLogin" alerts={alerts} />
+          <NotificationList contextClass="inLogin" />
 
           <Login username={username} password={password} handleSubmit={login} />
 
@@ -377,7 +340,7 @@ function App() {
               isLoading={isLoading}
             />
             <div className="c-blogs" data-testid={testIDs.blogs}>
-              <AlertList contextClass="c-alert--inBlog" alerts={alerts} />
+              <NotificationList contextClass="inBlog" />
               {blogForm()}
               <BlogList
                 blogs={blogsSortedByLikesDesc}
@@ -395,4 +358,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, { displayNotification })(App);
