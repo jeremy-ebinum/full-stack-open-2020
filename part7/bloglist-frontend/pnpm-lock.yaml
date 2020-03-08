@@ -15,15 +15,16 @@ dependencies:
   react-uid: 2.2.0_react@16.12.0
   redux: 4.0.5
   redux-devtools-extension: 2.13.8_redux@4.0.5
+  redux-mock-store: 1.5.4
   redux-thunk: 2.3.0
 devDependencies:
   '@types/jest': 25.1.3
   '@welldone-software/why-did-you-render': 4.0.4_react@16.12.0
+  axios-mock-adapter: 1.17.0_axios@0.19.2
   deep-freeze: 0.0.1
   eslint-config-prettier: 6.10.0
   eslint-plugin-jest: 23.7.0
   eslint-plugin-prettier: 3.1.2_prettier@1.19.1
-  nock: 12.0.1
   prettier: 1.19.1
 lockfileVersion: 5.1
 packages:
@@ -2236,10 +2237,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-wMHVg2EOHaMRxbzgFJ9gtjOOCrI80OHLG14rxi28XwOW8ux6IiEbRCGGGqCtdAIg4FQCbW20k9RsT4y3gJlFug==
+  /axios-mock-adapter/1.17.0_axios@0.19.2:
+    dependencies:
+      axios: 0.19.2
+      deep-equal: 1.1.1
+    dev: true
+    peerDependencies:
+      axios: '>= 0.9.0'
+    resolution:
+      integrity: sha512-q3efmwJUOO4g+wsLNSk9Ps1UlJoF3fQ3FSEe4uEEhkRtu7SoiAVPj8R3Hc/WP55MBTVFzaDP9QkdJhdVhP8A1Q==
   /axios/0.19.2:
     dependencies:
       follow-redirects: 1.5.10
-    dev: false
     resolution:
       integrity: sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
   /axobject-query/2.1.2:
@@ -3573,7 +3582,6 @@ packages:
   /debug/3.1.0:
     dependencies:
       ms: 2.0.0
-    dev: false
     resolution:
       integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   /debug/3.2.6:
@@ -3607,7 +3615,6 @@ packages:
       object-is: 1.0.2
       object-keys: 1.1.1
       regexp.prototype.flags: 1.3.0
-    dev: false
     resolution:
       integrity: sha512-yd9c5AdiqVcR+JjcwUQb9DkhJc8ngNr0MahEBGvDiJw8puWab2yZlh+nkasOnZP+EGTAP6rRp2JzJhJZzvNF8g==
   /deep-freeze/0.0.1:
@@ -3630,7 +3637,6 @@ packages:
   /define-properties/1.1.3:
     dependencies:
       object-keys: 1.1.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -3970,7 +3976,6 @@ packages:
       object.assign: 4.1.0
       string.prototype.trimleft: 2.1.1
       string.prototype.trimright: 2.1.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -3980,7 +3985,6 @@ packages:
       is-callable: 1.1.5
       is-date-object: 1.0.2
       is-symbol: 1.0.3
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -4730,7 +4734,6 @@ packages:
   /follow-redirects/1.5.10:
     dependencies:
       debug: 3.1.0
-    dev: false
     engines:
       node: '>=4.0'
     resolution:
@@ -4885,7 +4888,6 @@ packages:
     resolution:
       integrity: sha512-R4wDiBwZ0KzpgOWetKDug1FZcYhqYnUYKtfZYt4mD5SBz76q0KR4Q9o7GIPamsVPGmW3EYPPJ0dOOjvx32ldZA==
   /function-bind/1.1.1:
-    dev: false
     resolution:
       integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
   /functional-red-black-tree/1.0.1:
@@ -5085,7 +5087,6 @@ packages:
     resolution:
       integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
   /has-symbols/1.0.1:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -5128,7 +5129,6 @@ packages:
   /has/1.0.3:
     dependencies:
       function-bind: 1.1.1
-    dev: false
     engines:
       node: '>= 0.4.0'
     resolution:
@@ -5557,7 +5557,6 @@ packages:
     resolution:
       integrity: sha512-m5hnHTkcVsPfqx3AKlyttIPb7J+XykHvJP2B9bZDjlhLIoEq4XoK64Vg7boZlVWYK6LUY94dYPEE7Lh0ZkZKcQ==
   /is-arguments/1.0.4:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -5591,7 +5590,6 @@ packages:
     resolution:
       integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
   /is-callable/1.1.5:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -5631,7 +5629,6 @@ packages:
     resolution:
       integrity: sha512-jbRXy1FmtAoCjQkVmIVYwuuqDFUbaOeDjmed1tOGPrsMhtJA4rD9tkgA0F1qJ3gRFRXcHYVkdeaP50Q5rE/jLQ==
   /is-date-object/1.0.2:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -5797,7 +5794,6 @@ packages:
   /is-regex/1.0.5:
     dependencies:
       has: 1.0.3
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -5841,7 +5837,6 @@ packages:
   /is-symbol/1.0.3:
     dependencies:
       has-symbols: 1.0.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -6505,6 +6500,7 @@ packages:
     resolution:
       integrity: sha1-mnWdOcXy/1A/1TAGRu1EX4jE+a8=
   /json-stringify-safe/5.0.1:
+    dev: false
     resolution:
       integrity: sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
   /json3/3.3.3:
@@ -6737,6 +6733,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
+  /lodash.isplainobject/4.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-fFJqUtibRcRcxpC4gWO+BJf1UMs=
   /lodash.memoize/4.1.2:
     dev: false
     resolution:
@@ -7091,13 +7091,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
-  /mkdirp/1.0.3:
-    dev: true
-    engines:
-      node: '>=10'
-    hasBin: true
-    resolution:
-      integrity: sha512-6uCP4Qc0sWsgMLy1EOqqS/3rjDHOEnsStVr/4vtAIK2Y5i2kA7lFFejYrpIyiN9w0pYf4ckeCYT9f1r1P9KX5g==
   /move-concurrently/1.0.1:
     dependencies:
       aproba: 1.2.0
@@ -7110,7 +7103,6 @@ packages:
     resolution:
       integrity: sha1-viwAX9oy4LKa8fBdfEszIUxwH5I=
   /ms/2.0.0:
-    dev: false
     resolution:
       integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
   /ms/2.1.1:
@@ -7187,18 +7179,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
-  /nock/12.0.1:
-    dependencies:
-      debug: 4.1.1
-      json-stringify-safe: 5.0.1
-      lodash: 4.17.15
-      mkdirp: 1.0.3
-      propagate: 2.0.1
-    dev: true
-    engines:
-      node: '>= 10.13'
-    resolution:
-      integrity: sha512-f5u5k7O5D2YXH2WEFQVLLPa36D5C0dxU9Lrg6KOuaFCMDt7yd1W4S3hbZClCMczxc4EZ0k1bEhPeMWSewrxYNw==
   /node-forge/0.9.0:
     dev: false
     engines:
@@ -7359,17 +7339,14 @@ packages:
     resolution:
       integrity: sha512-b+2AKjAf6uQlxxv8ChHdM+VT4eeX+ZSwv+pk2xIXZWbo+yxn4/En1iC+GHe/OFYa9on0AhFF2PvuAcFHoiiHaA==
   /object-inspect/1.7.0:
-    dev: false
     resolution:
       integrity: sha512-a7pEHdh1xKIAgTySUGgLMx/xwDZskN1Ud6egYYN3EdRW4ZMPNEDUTF+hwy2LUC+Bl+SyLXANnwz/jyh/qutKUw==
   /object-is/1.0.2:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
       integrity: sha512-Epah+btZd5wrrfjkJZq1AOB9O6OxUQto45hzFd7lXGrpHPGE0W1k+426yrZV+k6NJOzLNNW/nVsmZdIWsAqoOQ==
   /object-keys/1.1.1:
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -7394,7 +7371,6 @@ packages:
       function-bind: 1.1.1
       has-symbols: 1.0.1
       object-keys: 1.1.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -8772,12 +8748,6 @@ packages:
       react-is: 16.12.0
     resolution:
       integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
-  /propagate/2.0.1:
-    dev: true
-    engines:
-      node: '>= 8'
-    resolution:
-      integrity: sha512-vGrhOavPSTz4QVNuBNdcNXePNdNMaO1xj9yBeH1ScQPjk/rhg9sSlCXPhMkFuaNNW/syTvYqsnbIJxMBfRbbag==
   /proxy-addr/2.0.5:
     dependencies:
       forwarded: 0.1.2
@@ -9209,6 +9179,12 @@ packages:
       redux: ^3.1.0 || ^4.0.0
     resolution:
       integrity: sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
+  /redux-mock-store/1.5.4:
+    dependencies:
+      lodash.isplainobject: 4.0.6
+    dev: false
+    resolution:
+      integrity: sha512-xmcA0O/tjCLXhh9Fuiq6pMrJCwFRaouA8436zcikdIpYWWCjU76CRk+i2bHx8EeiSiMGnB85/lZdU3wIJVXHTA==
   /redux-thunk/2.3.0:
     dev: false
     resolution:
@@ -9263,7 +9239,6 @@ packages:
     dependencies:
       define-properties: 1.1.3
       es-abstract: 1.17.4
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -10170,7 +10145,6 @@ packages:
     dependencies:
       define-properties: 1.1.3
       function-bind: 1.1.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -10179,7 +10153,6 @@ packages:
     dependencies:
       define-properties: 1.1.3
       function-bind: 1.1.1
-    dev: false
     engines:
       node: '>= 0.4'
     resolution:
@@ -11360,12 +11333,12 @@ specifiers:
   '@types/jest': ^25.1.3
   '@welldone-software/why-did-you-render': ^4.0.4
   axios: ^0.19.2
+  axios-mock-adapter: ^1.17.0
   deep-freeze: ^0.0.1
   eslint-config-prettier: ^6.10.0
   eslint-plugin-jest: ^23.7.0
   eslint-plugin-prettier: ^3.1.2
   lodash: ^4.17.15
-  nock: ^12.0.1
   prettier: ^1.19.1
   prop-types: ^15.7.2
   react: ^16.12.0
@@ -11375,4 +11348,5 @@ specifiers:
   react-uid: ^2.2.0
   redux: ^4.0.5
   redux-devtools-extension: ^2.13.8
+  redux-mock-store: ^1.5.4
   redux-thunk: ^2.3.0

@@ -1,10 +1,4 @@
 import axios from "axios";
-import testHelper from "../helpers/testHelper";
-
-if (process.env.NODE_ENV === "test") {
-  axios.defaults.adapter = require("axios/lib/adapters/http");
-  axios.defaults.baseURL = testHelper.host;
-}
 
 const baseUrl = "/api/blogs";
 
@@ -25,8 +19,8 @@ const create = async (newBlog) => {
   return response.data;
 };
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl);
+const getAll = async (cancelToken) => {
+  const response = await axios.get(baseUrl, { cancelToken });
 
   return response.data;
 };

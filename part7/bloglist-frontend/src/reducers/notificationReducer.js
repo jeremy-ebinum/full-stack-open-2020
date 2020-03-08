@@ -1,4 +1,5 @@
 import { uid } from "react-uid";
+import { logger } from "../utils";
 
 export const initialState = [];
 
@@ -50,6 +51,24 @@ export const displayNotification = (
     setTimeout(() => {
       dispatch(removeNotification(id));
     }, timeout);
+  };
+};
+
+export const displayApiErrorNotifications = (error) => {
+  return (dispatch) => {
+    const statusCode = error.response.status;
+
+    if (statusCode === 404) {
+      dispatch(displayNotification("Blog does not exist", "error"));
+    } else if (statusCode >= 400 && statusCode < 500) {
+      const errorMessages = error.response.data.messages;
+      errorMessages.forEach((m) => {
+        dispatch(displayNotification(m, "error"));
+      });
+    } else {
+      logger.error(error);
+      dispatch(displayNotification("Oops! something went wrong", "error"));
+    }
   };
 };
 

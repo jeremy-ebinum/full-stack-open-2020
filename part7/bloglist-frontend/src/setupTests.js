@@ -7,6 +7,7 @@ import "@testing-library/jest-dom/extend-expect";
 // Mocks
 // jest.mock("./services/blogs");
 // jest.mock("./services/login");
+// jest.mock("axios");
 
 // localStorage
 let savedItems = {};

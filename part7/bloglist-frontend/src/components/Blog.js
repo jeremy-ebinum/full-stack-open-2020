@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { likeBlog, deleteBlog } from "../reducers/blogReducer";
 import { getTestIDs } from "../helpers/testHelper";
 import UserContext from "../UserContext";
 
 export const testIDs = getTestIDs();
 
-const Blog = ({ blog, handleLike, handleDelete }) => {
+const Blog = ({ blog, likeBlog, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const user = useContext(UserContext);
 
@@ -19,13 +21,22 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
     const isDeleteButton = event.target.classList.contains("js-deleteButton");
 
     if (isBlogLink || isLikeButton || isDeleteButton) return;
-    setShowDetails(!showDetails);
+    setShowDetails((prevState) => !prevState);
   };
 
   const focusBlog = (event) => {
     if (event.keyCode === 13 || event.keyCode === 32) {
+      event.preventDefault();
       event.target.click();
     }
+  };
+
+  const like = () => {
+    likeBlog(blog.id);
+  };
+
+  const remove = () => {
+    deleteBlog(blog.id);
   };
 
   const displayBlog = () => {
@@ -68,7 +79,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           <div className="c-blog__like-button">
             <button
               type="button"
-              onClick={(event) => handleLike(event, blog.id)}
+              onClick={like}
               className="c-btn c-btn--info js-likeButton"
             >
               Like
@@ -86,7 +97,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           <div className="c-blog__delete-button">
             <button
               type="button"
-              onClick={(event) => handleDelete(event, blog.id, blog.title)}
+              onClick={remove}
               className="c-btn c-btn--danger js-deleteButton"
             >
               Delete
@@ -102,8 +113,8 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       role="button"
       aria-expanded={showDetails ? "true" : "false"}
       tabIndex={0}
-      onKeyDown={(event) => focusBlog(event)}
-      onClick={(event) => toggleShowDetails(event)}
+      onKeyDown={focusBlog}
+      onClick={toggleShowDetails}
       className="c-blog js-blog"
       data-testid={testIDs[`blog_${blog.id}`]}
     >
@@ -116,8 +127,8 @@ Blog.propTypes = {
   blog: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
   ).isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  handleLike: PropTypes.func.isRequired,
+  likeBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
 };
 
-export default Blog;
+export default connect(null, { likeBlog, deleteBlog })(Blog);

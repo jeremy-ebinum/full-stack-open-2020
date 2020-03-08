@@ -1,17 +1,41 @@
-import React, { useState, useImperativeHandle } from "react";
+import React, { useState, useCallback, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 
+let ShowBlogFormBtn = ({ handleClick }) => (
+  <>
+    <button
+      type="button"
+      className="c-btn c-btn--success"
+      onClick={handleClick}
+    >
+      + Blog
+    </button>
+  </>
+);
+
+ShowBlogFormBtn = React.memo(ShowBlogFormBtn);
+
+let HideBlogFormBtn = ({ handleClick }) => (
+  <>
+    <button type="button" className="c-btn" onClick={handleClick}>
+      Cancel
+    </button>
+  </>
+);
+
+HideBlogFormBtn = React.memo(HideBlogFormBtn);
+
 const Toggleable = React.forwardRef(
-  ({ cb, contextClass, buttons, testid, children }, ref) => {
+  ({ cb, context, testid, children }, ref) => {
     const [visible, setVisible] = useState(false);
 
     const hideWhenVisible = { display: visible ? "none" : "" };
     const showWhenVisible = { display: visible ? "" : "none" };
 
-    const toggleVisibility = () => {
+    const toggleVisibility = useCallback(() => {
       if (visible) cb();
-      setVisible(!visible);
-    };
+      setVisible((prevState) => !prevState);
+    }, [visible, cb]);
 
     useImperativeHandle(ref, () => {
       return {
@@ -23,19 +47,21 @@ const Toggleable = React.forwardRef(
       <div className="c-toggleable">
         <div
           style={hideWhenVisible}
-          className={`c-toggleable__show c-toggleable__show--${contextClass}`}
+          className={`c-toggleable__show c-toggleable__show--${context}`}
         >
-          {buttons.show}
+          {context === "inBlogForm" && (
+            <ShowBlogFormBtn handleClick={toggleVisibility} />
+          )}
         </div>
         <div
           style={showWhenVisible}
           className="c-toggleable__content"
           data-testid={testid}
         >
-          <div
-            className={`c-toggleable__hide c-toggleable__hide--${contextClass}`}
-          >
-            {buttons.hide}
+          <div className={`c-toggleable__hide c-toggleable__hide--${context}`}>
+            {context === "inBlogForm" && (
+              <HideBlogFormBtn handleClick={toggleVisibility} />
+            )}
           </div>
           {children}
         </div>
@@ -45,14 +71,14 @@ const Toggleable = React.forwardRef(
 );
 
 Toggleable.propTypes = {
-  cb: PropTypes.func.isRequired,
-  contextClass: PropTypes.string.isRequired,
-  buttons: PropTypes.objectOf(PropTypes.element).isRequired,
+  cb: PropTypes.func,
+  context: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   testid: PropTypes.string,
 };
 
 Toggleable.defaultProps = {
+  cb: null,
   testid: null,
 };
 

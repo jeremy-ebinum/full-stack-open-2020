@@ -1,16 +1,23 @@
 import React from "react";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
 import { render, fireEvent, cleanup } from "@testing-library/react";
 import UserContext from "../UserContext";
 import Blog from "./Blog";
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
 
 describe("<Blog />", () => {
   let user;
   let userRegExp;
   let blog;
-  let handleLike;
-  let handleDelete;
+  let store;
 
   beforeEach(() => {
+    store = mockStore();
+
     user = { username: "username", name: "John Doe" };
 
     blog = {
@@ -22,8 +29,6 @@ describe("<Blog />", () => {
     };
 
     userRegExp = new RegExp(`You|${blog.user.name}|${blog.user.username}`);
-    handleLike = jest.fn();
-    handleDelete = jest.fn();
   });
 
   afterEach(() => {
@@ -32,13 +37,11 @@ describe("<Blog />", () => {
 
   test("displays only title and author initially", () => {
     const component = render(
-      <UserContext.Provider value={user}>
-        <Blog
-          blog={blog}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-        ></Blog>
-      </UserContext.Provider>
+      <Provider store={store}>
+        <UserContext.Provider value={user}>
+          <Blog blog={blog}></Blog>
+        </UserContext.Provider>
+      </Provider>
     );
 
     expect(component.container).toHaveTextContent(blog.title);
@@ -50,13 +53,11 @@ describe("<Blog />", () => {
 
   test("displays full details when clicked", () => {
     const component = render(
-      <UserContext.Provider value={user}>
-        <Blog
-          blog={blog}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-        ></Blog>
-      </UserContext.Provider>
+      <Provider store={store}>
+        <UserContext.Provider value={user}>
+          <Blog blog={blog}></Blog>
+        </UserContext.Provider>
+      </Provider>
     );
 
     const { getByRole } = component;

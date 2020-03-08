@@ -23,6 +23,8 @@ const host = "http://localhost";
 const blogsPath = "/api/blogs";
 const loginPath = "/api/login";
 
+export const routes = { host, blogsPath, loginPath };
+
 const blogs = [
   {
     title: "React patterns",
@@ -117,9 +119,6 @@ const validNewBlog = {
 };
 
 export default {
-  host,
-  blogsPath,
-  loginPath,
   blogs,
   validLoggedInUser,
   validLoggedInUserId,

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import axios from "axios";
 
 export const getTrimmedStr = (str) => {
@@ -9,4 +10,16 @@ export const getCancelTokenSource = () => {
   const source = CancelToken.source();
 
   return source;
+};
+
+export const logger = {
+  info: function(...params) {
+    if (process.env.NODE_ENV !== "test") {
+      console.log(...params);
+    }
+  },
+
+  error: function(...params) {
+    console.error(...params);
+  },
 };

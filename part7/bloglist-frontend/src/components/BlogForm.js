@@ -1,64 +1,97 @@
-import React from "react";
+import React, { useCallback, useRef } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useUIDSeed } from "react-uid";
+import { createBlog } from "../reducers/blogReducer";
+import { getTestIDs } from "../helpers/testHelper";
+import Toggleable from "./Toggleable";
 
-const BlogForm = ({ title, author, url, handleSubmit }) => {
+export const testIDs = getTestIDs();
+
+const BlogForm = ({ createBlog }) => {
   const uidSeed = useUIDSeed();
+  const fieldClassName = "c-row__input c-row__input--inBlog";
+  const blogFormRef = useRef();
+  const titleRef = useRef();
+  const authorRef = useRef();
+  const urlRef = useRef();
+
+  const resetBlogForm = useCallback(() => {
+    titleRef.current.value = "";
+    authorRef.current.value = "";
+    urlRef.current.value = "";
+  }, []);
+
+  const addBlog = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      const newBlog = {
+        title: titleRef.current.value,
+        author: authorRef.current.value,
+        url: urlRef.current.value,
+      };
+
+      const cb = blogFormRef.current.toggleVisibility;
+
+      createBlog(newBlog, cb);
+    },
+    [createBlog]
+  );
 
   return (
-    <form className="c-blog-form" onSubmit={handleSubmit}>
-      <h2 className="c-blog-form__heading">Add New Blog</h2>
-      <div className="c-row c-row--inBlog">
-        <label htmlFor={uidSeed("title")} className="c-row__label">
-          Title
-        </label>
-        <input {...title} id={uidSeed("title")} />
-      </div>
-      <div className="c-row c-row--inBlog">
-        <label htmlFor={uidSeed("author")} className="c-row__label">
-          Author
-        </label>
-        <input {...author} id={uidSeed("author")} />
-      </div>
-      <div className="c-row c-row--inBlog">
-        <label htmlFor={uidSeed("url")} className="c-row__label">
-          URL
-        </label>
-        <input {...url} id={uidSeed("url")} />
-      </div>
+    <Toggleable
+      ref={blogFormRef}
+      context="inBlogForm"
+      cb={resetBlogForm}
+      testid={testIDs.toggleableBlogForm}
+    >
+      <form className="c-blog-form" onSubmit={addBlog}>
+        <h2 className="c-blog-form__heading">Add New Blog</h2>
+        <div className="c-row c-row--inBlog">
+          <label htmlFor={uidSeed("title")} className="c-row__label">
+            Title
+          </label>
+          <input
+            ref={titleRef}
+            className={`${fieldClassName}`}
+            id={uidSeed("title")}
+          />
+        </div>
+        <div className="c-row c-row--inBlog">
+          <label htmlFor={uidSeed("author")} className="c-row__label">
+            Author
+          </label>
+          <input
+            ref={authorRef}
+            id={uidSeed("author")}
+            className={`${fieldClassName}`}
+          />
+        </div>
+        <div className="c-row c-row--inBlog">
+          <label htmlFor={uidSeed("url")} className="c-row__label">
+            URL
+          </label>
+          <input
+            ref={urlRef}
+            id={uidSeed("url")}
+            className={`${fieldClassName}`}
+            type="url"
+          />
+        </div>
 
-      <div className="c-blog-form__submit">
-        <button type="submit" className="c-btn c-btn--success">
-          Create
-        </button>
-      </div>
-    </form>
+        <div className="c-blog-form__submit">
+          <button type="submit" className="c-btn c-btn--success">
+            Create
+          </button>
+        </div>
+      </form>
+    </Toggleable>
   );
 };
 
 BlogForm.propTypes = {
-  title: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  author: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  url: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  createBlog: PropTypes.func.isRequired,
 };
 
-const shouldNotUpdate = (prevProps, nextProps) => {
-  const sameTitle = prevProps.title.value === nextProps.title.value;
-  const sameAuthor = prevProps.author.value === nextProps.author.value;
-  const sameUrl = prevProps.url.value === nextProps.url.value;
-
-  if (sameTitle && sameAuthor && sameUrl) {
-    return true;
-  }
-
-  return false;
-};
-
-export default React.memo(BlogForm, shouldNotUpdate);
+export default connect(null, { createBlog })(BlogForm);
