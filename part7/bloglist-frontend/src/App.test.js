@@ -1,5 +1,8 @@
 import React from "react";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import { reducers } from "./store";
 import {
   render as rtlRender,
   within,
@@ -11,7 +14,6 @@ import {
 } from "@testing-library/react";
 import testHelper, { routes } from "./helpers/testHelper";
 import _times from "lodash/times";
-import store from "./store";
 import App, { testIDs as appTestIDs } from "./App";
 import { testIDs as loginTestIDs } from "./components/Login";
 import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
@@ -57,9 +59,11 @@ beforeAll(() => {
   password = "password";
 });
 
-const render = (ui: any, initialStore = store, options = {}) => {
-  const Providers = ({ children }: any) => (
-    <Provider store={initialStore}>{children}</Provider>
+const render = (ui, options = {}) => {
+  const store = createStore(reducers, applyMiddleware(thunk));
+
+  const Providers = ({ children }) => (
+    <Provider store={store}>{children}</Provider>
   );
 
   return rtlRender(ui, { wrapper: Providers, ...options });
@@ -169,7 +173,7 @@ describe("<App />", () => {
 
     beforeEach(() => {
       const user = validLoggedInUser;
-      localStorage.setItem("loggedInBloglistUser", JSON.stringify(user));
+      localStorage.setItem("authBloglistUser", JSON.stringify(user));
       jest.useFakeTimers();
     });
 
@@ -220,7 +224,7 @@ describe("<App />", () => {
 
       fireEvent.click(logoutBtn);
 
-      expect(localStorage.getItem("loggedInBloglistUser")).toBe(null);
+      expect(localStorage.getItem("authBloglistUser")).toBe(null);
 
       const loginForm = await findByRole("form");
       const loginBtn = await findByText(/login|sign in/i, {

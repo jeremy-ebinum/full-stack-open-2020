@@ -1,17 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { likeBlog, deleteBlog } from "../reducers/blogReducer";
 import { getTestIDs } from "../helpers/testHelper";
-import UserContext from "../UserContext";
 
 export const testIDs = getTestIDs();
 
-const Blog = ({ blog, likeBlog, deleteBlog }) => {
+const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
-  const user = useContext(UserContext);
 
   const belongsToUser = blog.user.username === user.username;
 
@@ -131,4 +129,10 @@ Blog.propTypes = {
   deleteBlog: PropTypes.func.isRequired,
 };
 
-export default connect(null, { likeBlog, deleteBlog })(Blog);
+const mapStateToProps = (state) => {
+  const { user } = state.auth;
+
+  return { user };
+};
+
+export default connect(mapStateToProps, { likeBlog, deleteBlog })(Blog);

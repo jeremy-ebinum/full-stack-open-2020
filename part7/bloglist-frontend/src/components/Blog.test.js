@@ -1,10 +1,10 @@
 import React from "react";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import configureStore from "redux-mock-store";
 import { render, fireEvent, cleanup } from "@testing-library/react";
-import UserContext from "../UserContext";
 import Blog from "./Blog";
+import testHelper from "../helpers/testHelper";
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -16,7 +16,9 @@ describe("<Blog />", () => {
   let store;
 
   beforeEach(() => {
-    store = mockStore();
+    store = mockStore({
+      auth: { user: testHelper.validLoggedInUser, isAuthenticated: true },
+    });
 
     user = { username: "username", name: "John Doe" };
 
@@ -38,9 +40,7 @@ describe("<Blog />", () => {
   test("displays only title and author initially", () => {
     const component = render(
       <Provider store={store}>
-        <UserContext.Provider value={user}>
-          <Blog blog={blog}></Blog>
-        </UserContext.Provider>
+        <Blog blog={blog}></Blog>
       </Provider>
     );
 
@@ -54,9 +54,7 @@ describe("<Blog />", () => {
   test("displays full details when clicked", () => {
     const component = render(
       <Provider store={store}>
-        <UserContext.Provider value={user}>
-          <Blog blog={blog}></Blog>
-        </UserContext.Provider>
+        <Blog blog={blog}></Blog>
       </Provider>
     );
 

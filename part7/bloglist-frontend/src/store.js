@@ -5,13 +5,18 @@ import thunk from "redux-thunk";
 import notificationReducer from "./reducers/notificationReducer";
 import requestReducer from "./reducers/requestReducer";
 import blogReducer from "./reducers/blogReducer";
+import authReducer from "./reducers/authReducer";
 
-const reducer = combineReducers({
+export const reducers = combineReducers({
   notifications: notificationReducer,
   requests: requestReducer,
   blogs: blogReducer,
+  auth: authReducer,
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default store;

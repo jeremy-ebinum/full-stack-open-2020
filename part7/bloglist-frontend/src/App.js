@@ -1,47 +1,19 @@
-import React, {
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { getTestIDs } from "./helpers/testHelper";
-import { logger } from "./utils";
-import { useField } from "./hooks";
-import UserContext from "./UserContext";
-import { displayNotification } from "./reducers/notificationReducer";
 import { cancelRequest } from "./reducers/requestReducer";
 import { initBlogs } from "./reducers/blogReducer";
-import loginService from "./services/login";
-import blogsService from "./services/blogs";
 import ToTopScroller from "./components/ToTopScroller";
 import NavBar from "./components/NavBar";
 import NotificationList from "./components/NotificationList";
 import Login from "./components/Login";
-import ModalSpinner from "./components/ModalSpinner";
 import BlogForm from "./components/BlogForm";
 import BlogList from "./components/BlogList";
 
 export const testIDs = getTestIDs();
 
-const App = ({ displayNotification, initBlogs }) => {
-  const [user, setUser] = useState(null);
-  const [username, resetUsername] = useField({ placeholder: "Enter Username" });
-  const [password, resetPassword] = useField({ placeholder: "Enter Password" });
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-
+const App = ({ isAuth, initBlogs }) => {
   const toTopScrollerRef = useRef();
-
-  // Get persisted logged in user from localStorage
-  useEffect(() => {
-    const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
-    if (loggedInBloglistUser) {
-      const storedUser = JSON.parse(loggedInBloglistUser);
-      setUser(storedUser);
-      blogsService.setToken(storedUser.token);
-    }
-  }, []);
 
   // Fetch and Initialize blogs from backend
   useEffect(() => {
@@ -60,7 +32,7 @@ const App = ({ displayNotification, initBlogs }) => {
       const pageHeight = document.documentElement.offsetHeight;
       const percentScrollTop = Math.round((scrollTop / pageHeight) * 100);
 
-      if (!user || !toTopScrollerRef.current) return;
+      if (!isAuth || !toTopScrollerRef.current) return;
 
       if (percentScrollTop > 10) {
         toTopScrollerRef.current.show();
@@ -69,75 +41,31 @@ const App = ({ displayNotification, initBlogs }) => {
       }
     };
 
-    if (user) {
+    if (isAuth) {
       rootStyle.setProperty("--body-bg-color", "var(--light-color)");
       window.addEventListener("scroll", handleScroll);
     } else {
       rootStyle.setProperty("--body-bg-color", "var(--primary-color-faded)");
     }
-  }, [user]);
-
-  const login = useCallback(
-    async (event) => {
-      event.preventDefault();
-      setIsLoggingIn(true);
-
-      try {
-        const authUser = await loginService.login({
-          username: username.value,
-          password: password.value,
-        });
-
-        blogsService.setToken(authUser.token);
-        setUser(authUser);
-        localStorage.setItem("loggedInBloglistUser", JSON.stringify(authUser));
-        displayNotification(`Logged in as ${authUser.username}`, "info");
-      } catch (error) {
-        logger.error(error);
-      } finally {
-        resetUsername();
-        resetPassword();
-        setIsLoggingIn(false);
-      }
-    },
-    [
-      username.value,
-      password.value,
-      displayNotification,
-      resetUsername,
-      resetPassword,
-    ]
-  );
-
-  const logout = useCallback(() => {
-    blogsService.setToken(null);
-    localStorage.removeItem("loggedInBloglistUser");
-    setUser(null);
-    displayNotification("Logged out", "info");
-  }, [displayNotification]);
+  }, [isAuth]);
 
   return (
     <div className="o-wrapper js-wrapper">
-      {!user && (
+      {!isAuth && (
         <div className="o-container js-container">
           <NotificationList contextClass="inLogin" />
-
-          <Login username={username} password={password} handleSubmit={login} />
-
-          {isLoggingIn && <ModalSpinner />}
+          <Login />
         </div>
       )}
 
-      {user && (
+      {isAuth && (
         <div className="o-container js-container">
-          <UserContext.Provider value={user}>
-            <NavBar handleLogout={logout} />
-            <div className="c-blogs" data-testid={testIDs.blogs}>
-              <NotificationList contextClass="inBlog" />
-              <BlogForm />
-              <BlogList />
-            </div>
-          </UserContext.Provider>
+          <NavBar />
+          <div className="c-blogs" data-testid={testIDs.blogs}>
+            <NotificationList contextClass="inBlog" />
+            <BlogForm />
+            <BlogList />
+          </div>
 
           <ToTopScroller ref={toTopScrollerRef} />
         </div>
@@ -146,6 +74,10 @@ const App = ({ displayNotification, initBlogs }) => {
   );
 };
 
-const mapDispatchToProps = { displayNotification, initBlogs };
+const mapStateToProps = (state) => {
+  const isAuth = state.auth.isAuth;
 
-export default connect(null, mapDispatchToProps)(App);
+  return { isAuth };
+};
+
+export default connect(mapStateToProps, { initBlogs })(App);

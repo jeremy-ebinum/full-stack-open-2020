@@ -1,15 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import { connect } from "react-redux";
+import { logout } from "../reducers/authReducer";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { getTestIDs } from "../helpers/testHelper";
-import UserContext from "../UserContext";
 
 export const testIDs = getTestIDs();
 
-const NavBar = ({ isLoading, handleLogout }) => {
-  const user = useContext(UserContext);
+const NavBar = ({ auth, isLoading, logout }) => {
+  let userGreeting;
+
+  if (auth.isAuth) {
+    userGreeting = auth.user.name || auth.user.username;
+  } else {
+    userGreeting = "";
+  }
 
   return (
     <div className="c-navbar">
@@ -18,7 +24,7 @@ const NavBar = ({ isLoading, handleLogout }) => {
         <div className="c-navbar__actions">
           <div className="c-navbar__userinfo">
             <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
-            {user.name}
+            {userGreeting}
             {isLoading && (
               <>
                 <FontAwesomeIcon
@@ -33,7 +39,7 @@ const NavBar = ({ isLoading, handleLogout }) => {
           <div className="c-navbar__logout">
             <button
               type="button"
-              onClick={handleLogout}
+              onClick={logout}
               className="c-btn c-btn--light-outline"
             >
               Logout
@@ -47,17 +53,19 @@ const NavBar = ({ isLoading, handleLogout }) => {
 
 NavBar.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  handleLogout: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => {
-  const loadingStates = Object.entries(state.requests).map((entry) => {
+const mapStateToProps = (state) => {
+  const { auth, requests } = state;
+
+  const loadingStates = Object.entries(requests).map((entry) => {
     return { ...entry[1], requestName: entry[0] };
   });
 
   const isLoading = loadingStates.some((l) => l.isLoading);
 
-  return { isLoading, handleLogout: ownProps.handleLogout };
+  return { auth, isLoading };
 };
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps, { logout })(NavBar);

@@ -22,6 +22,9 @@ export const initialState = {
   deleteBlog: {
     ...requestStates,
   },
+  login: {
+    ...requestStates,
+  },
 };
 
 const requestNames = Object.keys(initialState);
@@ -51,7 +54,7 @@ const requestReducer = (state = initialState, action) => {
 /**
  * Sets the state of an api request using it's name as key
  *
- * @param {string} name - initBlogs | createBlog | likeBlog | deleteBlog
+ * @param {string} name - initBlogs | createBlog | likeBlog | deleteBlog | login
  * @param {string} state - LOADING | SUCCESS | FAILURE
  * @throws Will throw error if `name` or `state` isn't one of the specified
  *
