@@ -1,8 +1,7 @@
 import React from "react";
-import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import { reducers } from "./store";
+import { ConnectedRouter } from "connected-react-router";
+import configureStore, { history } from "./configureStore";
 import {
   render as rtlRender,
   within,
@@ -14,7 +13,8 @@ import {
 } from "@testing-library/react";
 import testHelper, { routes } from "./helpers/testHelper";
 import _times from "lodash/times";
-import App, { testIDs as appTestIDs } from "./App";
+import App from "./App";
+import { testIDs as homeTestIDs } from "./components/Home";
 import { testIDs as loginTestIDs } from "./components/Login";
 import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
 import { testIDs as navbarTestIDs } from "./components/NavBar";
@@ -59,11 +59,13 @@ beforeAll(() => {
   password = "password";
 });
 
-const render = (ui, options = {}) => {
-  const store = createStore(reducers, applyMiddleware(thunk));
+const render = (ui, preloadedState = {}, options = {}) => {
+  const store = configureStore(preloadedState);
 
   const Providers = ({ children }) => (
-    <Provider store={store}>{children}</Provider>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>{children}</ConnectedRouter>
+    </Provider>
   );
 
   return rtlRender(ui, { wrapper: Providers, ...options });
@@ -89,7 +91,7 @@ describe("<App />", () => {
       mockAxios.onGet(blogsPath).reply(200, blogs);
       const { container, queryByTestId } = render(<App />);
 
-      expect(queryByTestId(appTestIDs.blogs)).not.toBeInTheDocument();
+      expect(queryByTestId(homeTestIDs.blogs)).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent(blogs[0].title);
       expect(container).not.toHaveTextContent(blogs[0].author);
     });

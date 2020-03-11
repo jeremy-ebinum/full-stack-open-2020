@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import loginService from "../services/login";
 import blogsService from "../services/blogs";
 import {
@@ -39,6 +40,7 @@ export const login = (user) => {
       dispatch({ type: "SET_USER", user: authUser });
       localStorage.setItem("authBloglistUser", JSON.stringify(authUser));
       const loginMessage = `Logged in as ${authUser.username}`;
+      dispatch(push("/"));
       dispatch(displayNotification(loginMessage, "info"));
     } catch (e) {
       if (e.response) {
@@ -56,6 +58,7 @@ export const logout = () => {
     blogsService.setToken(null);
     localStorage.removeItem("authBloglistUser");
     dispatch({ type: "CLEAR_USER" });
+    dispatch(push("/login"));
     dispatch(displayNotification("Logged out", "info"));
   };
 };

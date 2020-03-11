@@ -122,11 +122,14 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
 };
 
 Blog.propTypes = {
-  blog: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
-  ).isRequired,
+  blog: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.any),
   likeBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
+};
+
+Blog.defaultProps = {
+  user: null,
 };
 
 const mapStateToProps = (state) => {

@@ -1,0 +1,34 @@
+import React, { useLayoutEffect } from "react";
+import NavBar from "./NavBar";
+import NotificationList from "./NotificationList";
+import BlogForm from "./BlogForm";
+import BlogList from "./BlogList";
+import ToTopScroller from "./ToTopScroller";
+import { getTestIDs } from "../helpers/testHelper";
+
+export const testIDs = getTestIDs();
+
+const Home = () => {
+  useLayoutEffect(() => {
+    const rootStyle = document.documentElement.style;
+
+    rootStyle.setProperty("--body-bg-color", "var(--light-color)");
+  }, []);
+
+  return (
+    <div className="o-wrapper js-wrapper">
+      <div className="o-container js-container">
+        <NavBar />
+        <div className="c-blogs" data-testid={testIDs.blogs}>
+          <NotificationList contextClass="inBlog" />
+          <BlogForm />
+          <BlogList />
+        </div>
+
+        <ToTopScroller />
+      </div>
+    </div>
+  );
+};
+
+export default Home;
