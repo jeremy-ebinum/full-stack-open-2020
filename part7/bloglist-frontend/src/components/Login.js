@@ -10,7 +10,7 @@ import { getTestIDs } from "../helpers/testHelper";
 
 export const testIDs = getTestIDs();
 
-const Login = ({ login, isLoggingIn }) => {
+const Login = ({ login, isLoggingIn, redirectPath }) => {
   const [showPassword, setShowPassword] = useState(false);
   const passwordInputType = showPassword ? "text" : "password";
   const passwordTogglerIcon = showPassword ? faEyeSlash : faEye;
@@ -35,12 +35,12 @@ const Login = ({ login, isLoggingIn }) => {
         password: passwordRef.current.value,
       };
 
-      login(user);
+      login(user, redirectPath);
 
       usernameRef.current.value = "";
       passwordRef.current.value = "";
     },
-    [login]
+    [login, redirectPath]
   );
 
   return (
@@ -101,8 +101,16 @@ Login.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const isLoggingIn = state.requests.login.isLoading;
+  const { state: locationState } = state.router.location;
+  let redirectPath;
 
-  return { isLoggingIn };
+  if (locationState && locationState.from) {
+    redirectPath = locationState.from.pathname;
+  } else {
+    redirectPath = "/";
+  }
+
+  return { isLoggingIn, redirectPath };
 };
 
 export default connect(mapStateToProps, { login })(Login);

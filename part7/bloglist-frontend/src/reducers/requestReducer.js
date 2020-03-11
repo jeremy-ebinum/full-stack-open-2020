@@ -13,6 +13,10 @@ export const initialState = {
     ...requestStates,
     source: getCancelTokenSource(),
   },
+  initUsers: {
+    ...requestStates,
+    source: getCancelTokenSource(),
+  },
   createBlog: {
     ...requestStates,
   },
@@ -27,7 +31,17 @@ export const initialState = {
   },
 };
 
-const requestNames = Object.keys(initialState);
+const requests = Object.keys(initialState);
+const cancellableRequests = Object.entries(initialState).reduce(
+  (acc, [k, v]) => {
+    if (v.hasOwnProperty("source")) {
+      return acc.concat([k]);
+    }
+
+    return acc;
+  },
+  []
+);
 
 const requestReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -54,14 +68,15 @@ const requestReducer = (state = initialState, action) => {
 /**
  * Sets the state of an api request using it's name as key
  *
- * @param {string} name - initBlogs | createBlog | likeBlog | deleteBlog | login
+ * @param {string} name - initBlogs | initUsers | createBlog | likeBlog |
+ * deleteBlog | login
  * @param {string} state - LOADING | SUCCESS | FAILURE
  * @throws Will throw error if `name` or `state` isn't one of the specified
  *
  * @return {function} thunk
  */
 export const setRequestState = (name, state) => {
-  if (!requestNames.includes(name)) throw new Error("Invalid Request Name");
+  if (!requests.includes(name)) throw new Error("Invalid Request Name");
   const validStates = /LOADING|SUCCESS|FAILURE/i;
   if (!validStates.test(state)) throw new Error("Invalid Request State");
 
@@ -73,13 +88,15 @@ export const setRequestState = (name, state) => {
 /**
  * Cancels a request in progress using it's name as key
  *
- * @param {string} name - initBlogs
+ * @param {string} name - initBlogs | initUsers
  * @throws Will throw error if `name` isn't one of the specified
  *
  * @return {function} thunk
  */
 export const cancelRequest = (name) => {
-  if (!requestNames.includes(name)) throw new Error("Invalid Request Name");
+  if (!cancellableRequests.includes(name))
+    throw new Error("Invalid Request Name");
+
   return async (dispatch, getState) => {
     const request = getState().requests[name];
     if (request.isLoading) {

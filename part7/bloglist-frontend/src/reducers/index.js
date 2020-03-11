@@ -5,6 +5,7 @@ import notificationReducer from "./notificationReducer";
 import requestReducer from "./requestReducer";
 import blogReducer from "./blogReducer";
 import authReducer from "./authReducer";
+import userReducer from "./userReducer";
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -12,6 +13,7 @@ const createRootReducer = (history) =>
     notifications: notificationReducer,
     requests: requestReducer,
     blogs: blogReducer,
+    users: userReducer,
     auth: authReducer,
   });
 

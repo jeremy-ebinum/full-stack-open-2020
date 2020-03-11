@@ -1,40 +1,48 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
 import { connect } from "react-redux";
 import { cancelRequest } from "./reducers/requestReducer";
 import { initBlogs } from "./reducers/blogReducer";
+import { initUsers } from "./reducers/userReducer";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Users from "./components/Users";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 
-const App = ({ initBlogs }) => {
+const App = ({ initBlogs, initUsers, history }) => {
   useEffect(() => {
     initBlogs();
+    initUsers();
     return () => {
       cancelRequest("initBlogs");
+      cancelRequest("initUsers");
     };
-  }, [initBlogs]);
+  }, [initBlogs, initUsers]);
 
   return (
-    <Router>
+    <ConnectedRouter history={history}>
       <Switch>
-        <PrivateRoute component={Home} path="/" exact />
-        <PublicRoute component={Login} restricted={true} />
+        <PrivateRoute path="/" exact component={Home} />
+        <PublicRoute restricted={true} path="/login" component={Login} />
+        <PrivateRoute path="/users" exact component={Users} />
       </Switch>
-    </Router>
+    </ConnectedRouter>
   );
 };
 
-const mapStateToProps = (state) => {
-  const isAuth = state.auth.isAuth;
+const mapStateToProps = (state, ownProps) => {
+  const { history } = ownProps;
 
-  return { isAuth };
+  return { history };
 };
 
 App.propTypes = {
   initBlogs: PropTypes.func.isRequired,
+  initUsers: PropTypes.func.isRequired,
+  history: PropTypes.object,
 };
 
-export default connect(mapStateToProps, { initBlogs })(App);
+export default connect(mapStateToProps, { initBlogs, initUsers })(App);

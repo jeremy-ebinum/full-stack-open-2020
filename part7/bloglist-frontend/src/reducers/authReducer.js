@@ -30,8 +30,8 @@ const authReducer = (state = generateInitialState(), action) => {
   }
 };
 
-export const login = (user) => {
-  return async (dispatch) => {
+export const login = (user, redirectPath) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setRequestState("login", "LOADING"));
       const authUser = await loginService.login(user);
@@ -40,7 +40,7 @@ export const login = (user) => {
       dispatch({ type: "SET_USER", user: authUser });
       localStorage.setItem("authBloglistUser", JSON.stringify(authUser));
       const loginMessage = `Logged in as ${authUser.username}`;
-      dispatch(push("/"));
+      dispatch(push(redirectPath));
       dispatch(displayNotification(loginMessage, "info"));
     } catch (e) {
       if (e.response) {

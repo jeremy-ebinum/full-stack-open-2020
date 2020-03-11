@@ -99,20 +99,87 @@ body {
   display: none;
 }
 
+.u-stretched-link::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: auto;
+  content: "";
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.u-visually-hidden {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+  width: 1px !important;
+}
+
 /* COMPONENTS
 *******************************************************************************/
+.c-table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
-.c-to-top {
+.c-table__heading {
+  padding: 0.75rem 0.5rem;
+  background-color: var(--success-color-accent);
+  font-family: "Roboto";
+  font-weight: 400;
+  color: var(--light-color);
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.c-table__data-row {
+  position: relative;
+  cursor: pointer;
+  color: var(--dark-color);
+}
+
+.c-table__data-row:hover {
+  background: linear-gradient(
+    45deg,
+    var(--primary-color),
+    var(--info-color-accent),
+    var(--info-color)
+  );
+  color: var(--light-color);
+}
+
+.c-table__data-link {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.c-table__data-link:hover {
+  color: var(--light-color);
+}
+
+.c-table__data {
   font-family: "Dosis";
-  font-weight: 500;
-  font-size: 0.8rem;
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  width: 80px;
-  height: 30px;
-  margin-left: -40px;
-  z-index: 3;
+  font-weight: 300;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.c-table__data.hasIcon {
+  vertical-align: middle;
+}
+
+.c-table__data-icon {
+  color: var(--info-color-accent);
 }
 
 /* Alert Components will be created dynamically with JavaScript */
@@ -180,6 +247,19 @@ body {
 
 .c-spinner.c-spinner--inModal {
   font-size: var(--modal-spinner-size);
+}
+
+.c-to-top {
+  font-family: "Dosis";
+  font-weight: 500;
+  font-size: 0.8rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  width: 80px;
+  height: 30px;
+  margin-left: -40px;
+  z-index: 3;
 }
 
 /* Button Component */
@@ -492,6 +572,28 @@ body {
   margin-left: calc(1rem + 80px + 1rem);
 }
 
+/* Users Page */
+.c-users {
+  width: 100%;
+  max-width: var(--max-page-w);
+  background-color: var(--light-color);
+  font-family: "Roboto";
+  padding: 1rem;
+}
+
+.c-users__heading {
+  font-family: "Dosis";
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-accent);
+  text-shadow: 1px 2px 2px var(--primary-color-faded);
+}
+
+.c-users__data {
+  margin-top: 1rem;
+}
+
 /* Blogs Page */
 .c-blogs {
   width: 100%;
@@ -670,6 +772,14 @@ body {
     margin-top: 2rem;
   }
 
+  .c-users__heading {
+    margin-top: 0.5rem;
+  }
+
+  .c-users__data {
+    margin-top: 1.5rem;
+  }
+
   .c-row__input.c-row__input--inBlog {
     width: 85%;
     max-width: 520px;
@@ -692,6 +802,15 @@ body {
     --login-w: 500px;
     --navbar-padding: 1.5rem;
     --navbar-brand-font-size: 1.7rem;
+  }
+
+  .c-table__heading {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+  .c-table__data {
+    font-size: 1.1rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .c-to-top {
@@ -778,6 +897,15 @@ body {
     width: 65%;
   }
 
+  .c-users {
+    padding: 1.5rem;
+  }
+
+  .c-users__heading {
+    font-size: 1.7rem;
+    margin-bottom: 0.75rem;
+  }
+
   .c-blogs__list {
     padding: 0 1.5rem;
     margin-top: 2rem;
@@ -820,6 +948,20 @@ body {
     --navbar-brand-font-size: 1.8rem;
   }
 
+  .c-table {
+    max-width: 960px;
+  }
+
+  .c-table__heading {
+    padding: 1rem 0.75rem;
+    font-weight: 700;
+  }
+
+  .c-table__data {
+    font-weight: 500;
+    padding: 0.75rem;
+  }
+
   .c-blogs {
     padding: 1rem;
   }
@@ -838,6 +980,18 @@ body {
     width: 70%;
     max-width: 540px;
     height: 40px;
+  }
+
+  .c-users {
+    padding: 2rem;
+  }
+
+  .c-users__heading {
+    font-size: 1.9rem;
+  }
+
+  .c-users__data {
+    margin-top: 2rem;
   }
 
   .c-blogs__list {

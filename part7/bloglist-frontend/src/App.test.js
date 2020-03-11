@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { ConnectedRouter } from "connected-react-router";
-import configureStore, { history } from "./configureStore";
+import { createMemoryHistory } from "history";
+import configureStore from "./configureStore";
 import {
   render as rtlRender,
   within,
@@ -24,10 +24,9 @@ const axios = require("axios");
 const AxiosMockAdapter = require("axios-mock-adapter");
 
 let blogs;
+let users;
 let validNewBlog;
 let addedBlog;
-let blogsPath;
-let loginPath;
 let validLoggedInUser;
 let validLoggedInUserId;
 let username;
@@ -39,6 +38,7 @@ beforeAll(() => {
 
   validLoggedInUser = testHelper.validLoggedInUser;
   blogs = testHelper.blogs;
+  users = testHelper.users;
   validNewBlog = testHelper.validNewBlog;
   validLoggedInUserId = testHelper.validLoggedInUserId;
 
@@ -53,22 +53,22 @@ beforeAll(() => {
     id: blogId,
   };
 
-  blogsPath = routes.blogsPath;
-  loginPath = routes.loginPath;
   username = "username";
   password = "password";
 });
 
-const render = (ui, preloadedState = {}, options = {}) => {
+const renderApp = (route = "/", preloadedState = {}, options = {}) => {
   const store = configureStore(preloadedState);
+  const history = createMemoryHistory({ initialEntries: [route] });
 
   const Providers = ({ children }) => (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>{children}</ConnectedRouter>
-    </Provider>
+    <Provider store={store}>{children}</Provider>
   );
 
-  return rtlRender(ui, { wrapper: Providers, ...options });
+  return rtlRender(<App history={history} />, {
+    wrapper: Providers,
+    ...options,
+  });
 };
 
 describe("<App />", () => {
@@ -88,8 +88,13 @@ describe("<App />", () => {
     });
 
     test("blogs are not rendered", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
-      const { container, queryByTestId } = render(<App />);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
+
+      const { container, queryByTestId } = renderApp();
 
       expect(queryByTestId(homeTestIDs.blogs)).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent(blogs[0].title);
@@ -97,8 +102,12 @@ describe("<App />", () => {
     });
 
     test("login form is rendered", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
-      const { findByRole, getByText } = render(<App />);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
+      const { findByRole, getByText } = renderApp();
       const loginForm = await findByRole("form");
       const loginBtn = getByText(/login|sign in/i, {
         selector: "*[type='submit']",
@@ -108,8 +117,12 @@ describe("<App />", () => {
     });
 
     test("clicking the password icon toggles password masking", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
-      const { findByRole, getByLabelText, getByTestId } = render(<App />);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
+      const { findByRole, getByLabelText, getByTestId } = renderApp();
       await findByRole("form");
       const passwordInput = getByLabelText("password");
       const toggleBtn = getByTestId(loginTestIDs.toggleShowPassword);
@@ -125,14 +138,19 @@ describe("<App />", () => {
 
     test("a valid user can be logged in", async () => {
       mockAxios
-        .onGet(blogsPath)
+        .onGet(routes.blogsPath)
         .reply(200, blogs)
-        .onPost(loginPath)
+        .onGet(routes.usersPath)
+        .reply(200, users)
+        .onPost(routes.loginPath)
         .reply(200, validLoggedInUser);
 
-      const { getByText, getByLabelText, getByTestId, findByText } = render(
-        <App />
-      );
+      const {
+        getByText,
+        getByLabelText,
+        getByTestId,
+        findByText,
+      } = renderApp();
 
       const loginBtn = await getByText(/login|sign(.*)?/i, {
         selector: "*[type='submit']",
@@ -189,8 +207,13 @@ describe("<App />", () => {
     });
 
     test("blogs are fetched from backend and rendered", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
-      const { getByText, findByTestId } = render(<App />);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
+
+      const { getByText, findByTestId } = renderApp();
 
       const navbarSpinner = await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
@@ -209,9 +232,13 @@ describe("<App />", () => {
     });
 
     test("clicking the logout button logs out the user", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
 
-      const { findByText, findByRole, findByTestId } = render(<App />);
+      const { findByText, findByRole, findByTestId } = renderApp();
 
       const navbarSpinner = await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
@@ -238,9 +265,13 @@ describe("<App />", () => {
     });
 
     test("a form for new blogs can be toggled with buttons", async () => {
-      mockAxios.onGet(blogsPath).reply(200, blogs);
+      mockAxios
+        .onGet(routes.blogsPath)
+        .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users);
 
-      const { getByText, getByRole, getByLabelText } = render(<App />);
+      const { getByText, getByRole, getByLabelText } = renderApp();
 
       const showBlogFormBtn = getByText(/blog/i, { selector: "button" });
 
@@ -257,14 +288,19 @@ describe("<App />", () => {
 
     test("new blogs can be added", async () => {
       mockAxios
-        .onGet(blogsPath)
+        .onGet(routes.blogsPath)
         .reply(200, blogs)
-        .onPost(blogsPath)
+        .onGet(routes.usersPath)
+        .reply(200, users)
+        .onPost(routes.blogsPath)
         .reply(201, addedBlog);
 
-      const { getByText, getByLabelText, findByText, findByTestId } = render(
-        <App />
-      );
+      const {
+        getByText,
+        getByLabelText,
+        findByText,
+        findByTestId,
+      } = renderApp();
 
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
@@ -305,10 +341,12 @@ describe("<App />", () => {
     });
 
     test("liking a blog increases it's displayed likes", async () => {
-      const likeBlogPath = `${blogsPath}/${blogs[0].id}`;
+      const likeBlogPath = `${routes.blogsPath}/${blogs[0].id}`;
       mockAxios
-        .onGet(blogsPath)
+        .onGet(routes.blogsPath)
         .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users)
         .onPut(likeBlogPath)
         .reply((config) => {
           const likedBlog = JSON.parse(config.data);
@@ -317,7 +355,7 @@ describe("<App />", () => {
           return [200, data];
         });
 
-      const { findByTestId } = render(<App />);
+      const { findByTestId } = renderApp();
 
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
@@ -342,15 +380,17 @@ describe("<App />", () => {
     });
 
     test("deleting a blog removes it from the page", async () => {
-      const deleteBlogPath = `${blogsPath}/${blogs[0].id}`;
+      const deleteBlogPath = `${routes.blogsPath}/${blogs[0].id}`;
 
       mockAxios
-        .onGet(blogsPath)
+        .onGet(routes.blogsPath)
         .reply(200, blogs)
+        .onGet(routes.usersPath)
+        .reply(200, users)
         .onDelete(deleteBlogPath)
         .reply(204);
 
-      const { findByTestId } = render(<App />);
+      const { findByTestId } = renderApp();
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
 

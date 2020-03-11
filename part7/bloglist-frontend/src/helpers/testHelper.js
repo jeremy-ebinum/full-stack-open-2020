@@ -22,8 +22,9 @@ export const getTestIDs = () => {
 const host = "http://localhost";
 const blogsPath = "/api/blogs";
 const loginPath = "/api/login";
+const usersPath = "/api/users";
 
-export const routes = { host, blogsPath, loginPath };
+export const routes = { host, blogsPath, usersPath, loginPath };
 
 const blogs = [
   {
@@ -103,6 +104,62 @@ const blogs = [
   },
 ];
 
+const users = [
+  {
+    blogs: [
+      {
+        title: "React patterns",
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        id: "5e47e615dd1df91260420dc6",
+      },
+      {
+        title: "Go To Statement Considered Harmful",
+        author: "Edsger W. Dijkstra",
+        url:
+          "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+        id: "5e47e65fdd1df91260420dc7",
+      },
+    ],
+    username: "username",
+    name: "Uchiha Madara",
+    id: "5e47e5bddd1df91260420dc3",
+  },
+  {
+    blogs: [
+      {
+        title: "First class tests",
+        author: "Robert C. Martin",
+        url:
+          "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+        id: "5e47e6a8dd1df91260420dc9",
+      },
+    ],
+    username: "username2",
+    name: "Uchiha Itachi",
+    id: "5e47e5d1dd1df91260420dc4",
+  },
+  {
+    blogs: [
+      {
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+        id: "5e47e6dbdd1df91260420dcb",
+      },
+      {
+        title: "JavaScript Function Memoization",
+        author: "Jonathan Lehman",
+        url: "http://inlehmansterms.net/2015/03/01/javascript-memoization/",
+        id: "5e4c3014bc2fd03bf4e5b926",
+      },
+    ],
+    username: "username3",
+    name: "Uchiha Obito",
+    id: "5e47e5dedd1df91260420dc5",
+  },
+];
+
 const validLoggedInUser = {
   token:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI1ZTQ3ZTViZGRkMWRmOTEyNjA0MjBkYzMiLCJpYXQiOjE1ODIzOTcwNzZ9.r81M5sJz6xjW3GpTOjfysJDvFelra_oFdDuqKrZ4zxw",
@@ -120,6 +177,7 @@ const validNewBlog = {
 
 export default {
   blogs,
+  users,
   validLoggedInUser,
   validLoggedInUserId,
   validNewBlog,
