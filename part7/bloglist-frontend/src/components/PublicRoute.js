@@ -2,18 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
-const PublicRoute = ({ component: Component, isAuth, restricted, ...rest }) => {
+const PublicRoute = ({ isAuth, restricted, ...routeProps }) => {
   return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuth && restricted ? (
-          <Redirect to="/" exact />
-        ) : (
-          <Component {...props} />
-        )
-      }
-    />
+    <>
+      {isAuth && restricted ? <Redirect to="/" /> : <Route {...routeProps} />}
+    </>
   );
 };
 

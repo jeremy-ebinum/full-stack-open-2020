@@ -17,8 +17,8 @@ const Home = () => {
 
   return (
     <div className="o-wrapper js-wrapper">
+      <NavBar />
       <div className="o-container js-container">
-        <NavBar />
         <div className="c-blogs" data-testid={testIDs.blogs}>
           <NotificationList contextClass="inBlog" />
           <BlogForm />

@@ -88,7 +88,7 @@ body {
 /* UTILITIES
 *******************************************************************************/
 .u-lead {
-  font-family: "Roboto";
+  font-family: "Dosis";
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 1.4;
@@ -247,6 +247,23 @@ body {
 
 .c-spinner.c-spinner--inModal {
   font-size: var(--modal-spinner-size);
+}
+
+.c-notfound {
+  width: 100%;
+  max-width: var(--max-page-w);
+  background-color: var(--light-color);
+  font-family: "Roboto";
+  padding: 1rem;
+  border-bottom: 2px solid var(--danger-color-accent);
+}
+
+.c-notfound__heading {
+  font-family: "Dosis";
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--danger-color);
 }
 
 .c-to-top {
@@ -594,6 +611,35 @@ body {
   margin-top: 1rem;
 }
 
+/* User Page */
+.c-user {
+  width: 100%;
+  max-width: var(--max-page-w);
+  background-color: var(--light-color);
+  font-family: "Roboto";
+  padding: 1rem;
+}
+
+.c-user__heading {
+  font-family: "Dosis";
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-faded);
+}
+
+.c-user__blogs {
+  margin-top: 1rem;
+}
+
+.c-user__blogs-heading {
+  font-family: "Dosis";
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--success-color);
+}
+
 /* Blogs Page */
 .c-blogs {
   width: 100%;
@@ -653,6 +699,20 @@ body {
   border-radius: 2px;
   width: fit-content;
   cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.c-blog.asLink {
+  position: relative;
+  background-color: hsla(210, 13%, 95%, 75%);
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.c-blog.asLink:hover {
+  background-color: var(--info-color-accent);
+  color: var(--light-color);
+  text-decoration: underline;
 }
 
 .c-blog__title {
@@ -759,6 +819,7 @@ body {
 
   .c-blog-form {
     margin-top: 1.5rem;
+    padding: 0 1.5rem;
   }
 
   .c-toggleable__show.c-toggleable__show--inBlogForm {
@@ -770,6 +831,11 @@ body {
 
   .c-blogs__list {
     margin-top: 2rem;
+    padding: 0 1.5rem;
+  }
+
+  .c-users {
+    padding: 1rem 1.5rem;
   }
 
   .c-users__heading {
@@ -778,6 +844,26 @@ body {
 
   .c-users__data {
     margin-top: 1.5rem;
+  }
+
+  .c-user {
+    padding: 1rem 1.5rem;
+  }
+
+  .c-user__heading {
+    margin-top: 0.5rem;
+  }
+
+  .c-user__blogs {
+    margin-top: 1rem;
+  }
+
+  .c-notfound {
+    padding: 1rem 1.5rem;
+  }
+
+  .c-notfound__heading {
+    margin-top: 0.5rem;
   }
 
   .c-row__input.c-row__input--inBlog {
@@ -906,6 +992,32 @@ body {
     margin-bottom: 0.75rem;
   }
 
+  .c-user__heading {
+    font-size: 1.7rem;
+  }
+
+  .c-user__blogs {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .c-user__blogs-heading {
+    font-size: 1.5rem;
+    width: 100%;
+  }
+
+  .c-notfound {
+    padding: 1.5rem;
+  }
+
+  .c-notfound__heading {
+    font-size: 1.7rem;
+  }
+
+  .u-lead {
+    font-size: 1.3rem;
+  }
+
   .c-blogs__list {
     padding: 0 1.5rem;
     margin-top: 2rem;
@@ -920,6 +1032,11 @@ body {
     padding: 0.5rem;
     font-size: 1.1rem;
     border-radius: 4px;
+  }
+
+  .c-blog.asLink {
+    margin: 0.5rem 1.5rem 0.5rem 0;
+    flex: 1 0 45%;
   }
 
   .c-blog__link {
@@ -983,7 +1100,7 @@ body {
   }
 
   .c-users {
-    padding: 2rem;
+    padding: 2.5rem;
   }
 
   .c-users__heading {
@@ -992,6 +1109,30 @@ body {
 
   .c-users__data {
     margin-top: 2rem;
+  }
+
+  .c-user {
+    padding: 2.5rem;
+  }
+
+  .c-user__heading {
+    font-size: 1.9rem;
+  }
+
+  .c-user__blogs {
+    margin-top: 1.5rem;
+  }
+
+  .c-notfound {
+    padding: 2.5rem;
+  }
+
+  .c-notfound__heading {
+    font-size: 1.9rem;
+  }
+
+  .u-lead {
+    font-size: 1.4rem;
   }
 
   .c-blogs__list {
@@ -1006,6 +1147,11 @@ body {
   .c-blog {
     font-size: 1.2rem;
     margin: 0.75rem 0;
+  }
+
+  .c-blog.asLink {
+    margin: 0.5rem 1.5rem 0.5rem 0;
+    flex: 1 0 30%;
   }
 
   .c-blog__likes {
