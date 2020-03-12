@@ -6,16 +6,27 @@ const loading = { isLoading: true, isError: false };
 const success = { isLoading: false, isError: false };
 const failure = { isLoading: false, isError: true };
 
-export const newStates = { loading, success, failure };
+const initSuccess = { ...success, hasRun: true };
+const initFailure = { ...failure, hasRun: true };
+
+export const newStates = {
+  loading,
+  success,
+  failure,
+  initSuccess,
+  initFailure,
+};
 
 export const initialState = {
   initBlogs: {
     ...requestStates,
     source: getCancelTokenSource(),
+    hasRun: false,
   },
   initUsers: {
     ...requestStates,
     source: getCancelTokenSource(),
+    hasRun: false,
   },
   createBlog: {
     ...requestStates,
@@ -32,16 +43,13 @@ export const initialState = {
 };
 
 const requests = Object.keys(initialState);
-const cancellableRequests = Object.entries(initialState).reduce(
-  (acc, [k, v]) => {
-    if (v.hasOwnProperty("source")) {
-      return acc.concat([k]);
-    }
+const initRequests = Object.entries(initialState).reduce((acc, [k, v]) => {
+  if (v.hasOwnProperty("source")) {
+    return acc.concat([k]);
+  }
 
-    return acc;
-  },
-  []
-);
+  return acc;
+}, []);
 
 const requestReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -50,16 +58,43 @@ const requestReducer = (state = initialState, action) => {
         ...state,
         [action.request]: { ...state[action.request], ...loading },
       };
+
     case "SUCCESS":
+      const isInitSuccess = initRequests.includes(action.request);
+
+      if (isInitSuccess) {
+        return {
+          ...state,
+          [action.request]: {
+            ...state[action.request],
+            ...initSuccess,
+          },
+        };
+      }
+
       return {
         ...state,
         [action.request]: { ...state[action.request], ...success },
       };
+
     case "FAILURE":
+      const isInitFailure = initRequests.includes(action.request);
+
+      if (isInitFailure) {
+        return {
+          ...state,
+          [action.request]: {
+            ...state[action.request],
+            ...initFailure,
+          },
+        };
+      }
+
       return {
         ...state,
         [action.request]: { ...state[action.request], ...failure },
       };
+
     default:
       return state;
   }
@@ -94,8 +129,7 @@ export const setRequestState = (name, state) => {
  * @return {function} thunk
  */
 export const cancelRequest = (name) => {
-  if (!cancellableRequests.includes(name))
-    throw new Error("Invalid Request Name");
+  if (!initRequests.includes(name)) throw new Error("Invalid Request Name");
 
   return async (dispatch, getState) => {
     const request = getState().requests[name];

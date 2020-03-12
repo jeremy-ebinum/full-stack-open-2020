@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import NavBar from "./NavBar";
 
-const Users = ({ users }) => {
+const Users = ({ users, hasLoaded }) => {
   useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
 
@@ -19,6 +19,7 @@ const Users = ({ users }) => {
       <div className="o-container js-container">
         <div className="c-users">
           <h2 className="c-users__heading">Users</h2>
+          {hasLoaded && !users.length && <p>There are no Users to display</p>}
           {users.length > 0 && (
             <div className="c-users__data">
               <table className="c-table">
@@ -66,11 +67,14 @@ const mapStateToProps = (state, ownProps) => {
     };
   });
 
-  return { users };
+  const hasLoaded = state.requests.initUsers.hasRun;
+
+  return { users, hasLoaded };
 };
 
 Users.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasLoaded: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Users);

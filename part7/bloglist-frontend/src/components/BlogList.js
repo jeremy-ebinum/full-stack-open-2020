@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Blog from "./Blog";
 
-const BlogList = ({ isLoading, blogsToShow }) => {
+const BlogList = ({ hasLoaded, blogsToShow }) => {
   return (
     <div className="c-blogs__list">
       <h2 className="c-blogs__heading">Blogs</h2>
 
-      {!isLoading && !blogsToShow.length && (
+      {hasLoaded && !blogsToShow.length && (
         <p className="u-lead">No Blogs have been added yet</p>
       )}
 
@@ -20,7 +20,7 @@ const BlogList = ({ isLoading, blogsToShow }) => {
 };
 
 BlogList.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  hasLoaded: PropTypes.bool.isRequired,
   blogsToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
@@ -31,16 +31,16 @@ const mapStateToProps = (state) => {
     return nextBlog.likes - currBlog.likes;
   });
 
-  const isLoading = state.requests.initBlogs.isLoading;
+  const hasLoaded = state.requests.initBlogs.hasRun;
 
   return {
-    isLoading,
+    hasLoaded,
     blogsToShow: blogsSortedByLikesDesc,
   };
 };
 
 const areStatePropsEqual = (next, prev) => {
-  const sameLoading = prev.isLoading === next.isLoading;
+  const sameLoading = prev.hasLoaded === next.hasLoaded;
 
   const sameBlogsLength = prev.blogsToShow.length === next.blogsToShow.length;
 
