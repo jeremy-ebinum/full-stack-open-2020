@@ -19,7 +19,7 @@ module.exports.connect = async () => {
     logger.info("Connection Closed");
   });
 
-  mongoose.connection.on("error", error => {
+  mongoose.connection.on("error", (error) => {
     logger.error(`ERROR: ${error}`);
   });
 
@@ -32,6 +32,6 @@ module.exports.connect = async () => {
 
   return mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   });
 };

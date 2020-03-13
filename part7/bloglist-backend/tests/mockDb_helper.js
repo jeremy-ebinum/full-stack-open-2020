@@ -11,7 +11,7 @@ module.exports.connect = async () => {
 
   const mongooseOpts = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   };
 
   mongoose.set("useCreateIndex", true);
@@ -35,7 +35,7 @@ module.exports.closeDatabase = async () => {
 module.exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
 
-  Object.keys(collections).forEach(async key => {
+  Object.keys(collections).forEach(async (key) => {
     const collection = collections[key];
     await collection.deleteMany();
   });

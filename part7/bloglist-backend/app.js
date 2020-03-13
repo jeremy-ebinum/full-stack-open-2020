@@ -10,7 +10,7 @@ const blogsRouter = require("./controllers/blogs");
 
 const app = express();
 
-db.connect().catch(err => {
+db.connect().catch((err) => {
   logger.error(err);
 });
 

@@ -8,9 +8,9 @@ blogsRouter.get("/", async (req, res, next) => {
   try {
     const blogs = await Blog.find({}).populate("user", {
       username: 1,
-      name: 1
+      name: 1,
     });
-    res.json(blogs.map(blog => blog.toJSON()));
+    res.json(blogs.map((blog) => blog.toJSON()));
   } catch (e) {
     next(e);
   }
@@ -37,7 +37,7 @@ blogsRouter.post("/", async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     if (!token || !decodedToken.id) {
       throw new ErrorHelper(401, "Authentication Error", [
-        "Invalid or missing authentication token"
+        "Invalid or missing authentication token",
       ]);
     }
 
@@ -48,7 +48,7 @@ blogsRouter.post("/", async (req, res, next) => {
       author: body.author || "",
       url: body.url,
       likes: body.likes || 0,
-      user: user._id
+      user: user._id,
     });
 
     const savedBlog = await blog.save();
@@ -70,7 +70,7 @@ blogsRouter.delete("/:id", async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     if (!token || !decodedToken.id) {
       throw new ErrorHelper(401, "Authentication Error", [
-        "Invalid or missing authentication token"
+        "Invalid or missing authentication token",
       ]);
     }
 
@@ -83,7 +83,7 @@ blogsRouter.delete("/:id", async (req, res, next) => {
       return res.status(204).end();
     }
     throw new ErrorHelper(403, "Forbidden", [
-      "User is not permitted to modify this resource"
+      "User is not permitted to modify this resource",
     ]);
   } catch (e) {
     return next(e);
@@ -97,7 +97,7 @@ blogsRouter.put("/:id", async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     if (!token || !decodedToken.id) {
       throw new ErrorHelper(401, "Authentication Error", [
-        "Invalid or missing authentication token"
+        "Invalid or missing authentication token",
       ]);
     }
 
