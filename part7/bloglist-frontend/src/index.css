@@ -444,9 +444,13 @@ body {
   height: 35px;
 }
 
+.c-row__input.asTextarea {
+  padding: 0.5rem 0.75rem;
+  height: 75px;
+}
+
 /* Input Addon */
 .c-input-addon {
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   position: absolute;
@@ -822,6 +826,46 @@ body {
   z-index: 1;
 }
 
+/* Comments */
+.c-comments {
+  margin-top: 1.5rem;
+}
+
+.c-comments__heading {
+  font-family: "Dosis";
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-accent);
+}
+
+.c-comments__submit {
+  width: 90%;
+  height: 25px;
+  margin-top: -0.5rem;
+}
+
+.c-comments__list {
+  margin-top: 1rem;
+}
+
+.c-comments__comment {
+  font-family: "Dosis";
+  font-weight: 300;
+  color: var(--primary-color-faded);
+  margin-bottom: 0.5rem;
+}
+
+.c-comments__comment::before {
+  content: '"';
+  margin-right: 0.15rem;
+}
+
+.c-comments__comment::after {
+  content: '"';
+  margin-left: 0.15rem;
+}
+
 /* MEDIA QUERIES
 *******************************************************************************/
 @media (min-width: 360px) {
@@ -953,6 +997,16 @@ body {
     height: 34px;
   }
 
+  .c-comments__submit {
+    width: 85%;
+    max-width: 520px;
+    height: 30px;
+  }
+
+  .c-row__input.asTextarea {
+    height: 100px;
+  }
+
   .c-blog-link {
     padding: 0.5rem;
     font-size: 1rem;
@@ -1073,6 +1127,11 @@ body {
     width: 65%;
   }
 
+  .c-row__input.asTextarea {
+    padding: 0.75rem;
+    height: 120px;
+  }
+
   .c-users {
     padding: 1.75rem;
   }
@@ -1172,6 +1231,15 @@ body {
     font-size: 1.1rem;
     width: 74px;
   }
+
+  .c-comments {
+    margin-top: 2rem;
+  }
+
+  .c-comments__comment {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1244,6 +1312,19 @@ body {
     height: 40px;
   }
 
+  .c-comments__submit {
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 75%;
+    max-width: 540px;
+    height: 35px;
+  }
+
+  .c-row__input.asTextarea {
+    padding: 0.5rem 0.75rem;
+    height: 150px;
+  }
+
   .c-users {
     padding: 2.5rem;
   }
@@ -1294,5 +1375,9 @@ body {
     margin: 0.75rem 0;
     margin: 0.5rem 1.5rem 0.5rem 0;
     flex: 1 0 30%;
+  }
+
+  .c-comments {
+    margin-top: 2.5rem;
   }
 }

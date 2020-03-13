@@ -39,4 +39,17 @@ const remove = async (id) => {
   return response.data;
 };
 
-export default { setToken, create, getAll, update, remove };
+const comment = async (id, comment) => {
+  const config = {
+    headers: { Authorization: token, "Content-Type": "text/plain" },
+  };
+  const response = await axios.post(
+    `${baseUrl}/${id}/comments`,
+    comment,
+    config
+  );
+
+  return response.data;
+};
+
+export default { setToken, create, getAll, update, remove, comment };

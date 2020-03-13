@@ -28,6 +28,7 @@ export const routes = { host, blogsPath, usersPath, loginPath };
 
 const blogs = [
   {
+    comments: ["Nice Blog"],
     title: "React patterns",
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
@@ -40,6 +41,7 @@ const blogs = [
     id: "5e47e615dd1df91260420dc6",
   },
   {
+    comments: [],
     title: "Go To Statement Considered Harmful",
     author: "Edsger W. Dijkstra",
     url:
@@ -53,6 +55,7 @@ const blogs = [
     id: "5e47e65fdd1df91260420dc7",
   },
   {
+    comments: [],
     title: "Canonical string reduction",
     author: "Edsger W. Dijkstra",
     url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
@@ -65,6 +68,7 @@ const blogs = [
     id: "5e47e681dd1df91260420dc8",
   },
   {
+    comments: [],
     title: "First class tests",
     author: "Robert C. Martin",
     url:
@@ -78,6 +82,7 @@ const blogs = [
     id: "5e47e6a8dd1df91260420dc9",
   },
   {
+    comments: [],
     title: "TDD harms architecture",
     author: "Robert C. Martin",
     url:
@@ -91,6 +96,7 @@ const blogs = [
     id: "5e47e6badd1df91260420dca",
   },
   {
+    comments: [],
     title: "Type wars",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
@@ -108,12 +114,14 @@ const users = [
   {
     blogs: [
       {
+        comments: [],
         title: "React patterns",
         author: "Michael Chan",
         url: "https://reactpatterns.com/",
         id: "5e47e615dd1df91260420dc6",
       },
       {
+        comments: [],
         title: "Go To Statement Considered Harmful",
         author: "Edsger W. Dijkstra",
         url:
@@ -128,6 +136,7 @@ const users = [
   {
     blogs: [
       {
+        comments: [],
         title: "First class tests",
         author: "Robert C. Martin",
         url:
@@ -142,12 +151,14 @@ const users = [
   {
     blogs: [
       {
+        comments: [],
         title: "Type wars",
         author: "Robert C. Martin",
         url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
         id: "5e47e6dbdd1df91260420dcb",
       },
       {
+        comments: [],
         title: "JavaScript Function Memoization",
         author: "Jonathan Lehman",
         url: "http://inlehmansterms.net/2015/03/01/javascript-memoization/",

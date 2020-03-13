@@ -7,6 +7,7 @@ import { likeBlog, deleteBlog } from "../reducers/blogReducer";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";
 import NotFound from "./NotFound";
+import Comments from "./Comments";
 
 const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
   useLayoutEffect(() => {
@@ -23,74 +24,72 @@ const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
     deleteBlog(blog.id);
   };
 
-  const displayBlog = () => {
-    return (
-      <>
-        <h2 className="c-blog__heading">
-          <span className="c-blog__title">{blog.title}</span>
-          <span className="c-blog__author">
-            {" — "}
-            {blog.author}
-          </span>
-        </h2>
-
-        <div className="c-blog__details">
-          <a
-            className="c-blog__url"
-            href={blog.url}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Visit Blog
-          </a>
-
-          <div className="c-blog__likes">
-            <span className="c-blog__likes-txt">
-              {blog.likes}
-              {blog.likes !== 1 ? " Likes" : " Like"}
-            </span>
-            <div className="c-blog__like-button">
-              <button
-                type="button"
-                onClick={like}
-                className="c-btn c-btn--info"
-              >
-                Like
-              </button>
-            </div>
-          </div>
-
-          <div className="c-blog__userinfo">
-            <span className="c-blog__user">
-              Added by
-              <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
-              {belongsToUser ? "You" : blog.user.name}
-            </span>
-
-            {belongsToUser && (
-              <div className="c-blog__delete-button">
-                <button
-                  type="button"
-                  onClick={remove}
-                  className="c-btn c-btn--danger"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </>
-    );
-  };
-
   return (
     <div className="o-wrapper js-wrapper">
       <NavBar />
       <div className="o-container js-container">
         <NotificationList />
         {hasLoaded && !blog && <NotFound />}
-        {blog && <div className="c-blog">{displayBlog()}</div>}
+        {blog && (
+          <div className="c-blog">
+            <h2 className="c-blog__heading">
+              <span className="c-blog__title">{blog.title}</span>
+              <span className="c-blog__author">
+                {" — "}
+                {blog.author}
+              </span>
+            </h2>
+
+            <div className="c-blog__details">
+              <a
+                className="c-blog__url"
+                href={blog.url}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Visit Blog
+              </a>
+
+              <div className="c-blog__likes">
+                <span className="c-blog__likes-txt">
+                  {blog.likes}
+                  {blog.likes !== 1 ? " Likes" : " Like"}
+                </span>
+                <div className="c-blog__like-button">
+                  <button
+                    type="button"
+                    onClick={like}
+                    className="c-btn c-btn--info"
+                  >
+                    Like
+                  </button>
+                </div>
+              </div>
+
+              <div className="c-blog__userinfo">
+                <span className="c-blog__user">
+                  Added by
+                  <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
+                  {belongsToUser ? "You" : blog.user.name}
+                </span>
+
+                {belongsToUser && (
+                  <div className="c-blog__delete-button">
+                    <button
+                      type="button"
+                      onClick={remove}
+                      className="c-btn c-btn--danger"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <Comments id={blog.id} />
+          </div>
+        )}
       </div>
     </div>
   );

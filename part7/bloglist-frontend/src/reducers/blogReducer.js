@@ -25,6 +25,12 @@ const blogReducer = (state = initialState, action) => {
       return state.map((blog) => (blog.id === action.id ? likedBlog : blog));
     case "DELETE_BLOG":
       return state.filter((blog) => blog.id !== action.id);
+    case "UPDATE_BLOG_COMMENTS":
+      const blogToComment = state.find((blog) => blog.id === action.id);
+      const commentedBlog = { ...blogToComment, comments: action.comments };
+      return state.map((blog) =>
+        blog.id === action.id ? commentedBlog : blog
+      );
     default:
       return state;
   }
@@ -126,6 +132,25 @@ export const deleteBlog = (id) => {
     } catch (e) {
       if (e.response) {
         dispatch(setRequestState("deleteBlog", "FAILURE"));
+        dispatch(displayApiErrorNotifications(e));
+      } else {
+        logger.error(e);
+      }
+    }
+  };
+};
+
+export const commentBlog = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setRequestState("commentBlog", "LOADING"));
+      const commentedBlog = await blogsService.comment(id, comment);
+      const { comments } = commentedBlog;
+      dispatch({ type: "UPDATE_BLOG_COMMENTS", id, comments });
+      dispatch(setRequestState("commentBlog", "SUCCESS"));
+    } catch (e) {
+      if (e.response) {
+        dispatch(setRequestState("commentBlog", "FAILURE"));
         dispatch(displayApiErrorNotifications(e));
       } else {
         logger.error(e);
