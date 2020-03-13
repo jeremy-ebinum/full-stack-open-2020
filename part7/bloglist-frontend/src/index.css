@@ -535,7 +535,23 @@ body {
   font-weight: 700;
   font-size: var(--navbar-brand-font-size);
   text-transform: uppercase;
-  margin-bottom: 0.25rem;
+}
+
+.c-navbar__routes {
+  display: flex;
+  margin: 0.25rem 0;
+}
+
+.c-navbar__link {
+  color: var(--light-color);
+  font-family: "Dosis";
+  font-weight: 500;
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+.c-navbar__link:hover {
+  text-decoration: underline;
 }
 
 .c-navbar__actions {
@@ -838,7 +854,16 @@ body {
 
   .c-navbar__content {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .c-navbar__actions {
+    margin-left: auto;
+  }
+
+  .c-navbar__routes {
+    margin-left: 1rem;
   }
 
   .c-blog-form {
@@ -966,6 +991,15 @@ body {
     margin-right: 1rem;
     font-size: 1.2rem;
   }
+
+  .c-navbar__routes {
+    margin-left: 1.5rem;
+  }
+
+  .c-navbar__link {
+    font-size: 1.3rem;
+  }
+
   .c-navbar__usericon {
     margin-right: 0.5rem;
   }

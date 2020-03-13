@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { logout } from "../reducers/authReducer";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,6 +22,14 @@ const NavBar = ({ auth, isLoading, logout }) => {
     <div className="c-navbar">
       <div className="c-navbar__content">
         <span className="c-navbar__brand">Blog List</span>
+        <div className="c-navbar__routes">
+          <Link to="/" className="c-navbar__link">
+            Blogs
+          </Link>
+          <Link to="/users" className="c-navbar__link">
+            Users
+          </Link>
+        </div>
         <div className="c-navbar__actions">
           <div className="c-navbar__userinfo">
             <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
