@@ -1,4 +1,5 @@
 import axios from "axios";
+import { push } from "connected-react-router";
 import blogsService from "../services/blogs";
 import {
   displayNotification,
@@ -121,6 +122,7 @@ export const deleteBlog = (id) => {
       dispatch(setRequestState("deleteBlog", "SUCCESS"));
       dispatch({ type: "DELETE_BLOG", id });
       dispatch(displayNotification(`Deleted Blog: "${titleToShow}"`, "info"));
+      dispatch(push("/"));
     } catch (e) {
       if (e.response) {
         dispatch(setRequestState("deleteBlog", "FAILURE"));

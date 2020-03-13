@@ -20,7 +20,7 @@ const Home = () => {
       <NavBar />
       <div className="o-container js-container">
         <div className="c-blogs" data-testid={testIDs.blogs}>
-          <NotificationList contextClass="inBlog" />
+          <NotificationList />
           <BlogForm />
           <BlogList />
         </div>

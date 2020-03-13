@@ -1,33 +1,19 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { likeBlog, deleteBlog } from "../reducers/blogReducer";
-import { getTestIDs } from "../helpers/testHelper";
+import NavBar from "./NavBar";
+import NotificationList from "./NotificationList";
+import NotFound from "./NotFound";
 
-export const testIDs = getTestIDs();
+const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
+  useLayoutEffect(() => {
+    const rootStyle = document.documentElement.style;
 
-const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
-  const [showDetails, setShowDetails] = useState(false);
-
-  const belongsToUser = blog.user.username === user.username;
-
-  const toggleShowDetails = (event) => {
-    const isBlogLink = event.target.classList.contains("js-blogLink");
-    const isLikeButton = event.target.classList.contains("js-likeButton");
-    const isDeleteButton = event.target.classList.contains("js-deleteButton");
-
-    if (isBlogLink || isLikeButton || isDeleteButton) return;
-    setShowDetails((prevState) => !prevState);
-  };
-
-  const focusBlog = (event) => {
-    if (event.keyCode === 13 || event.keyCode === 32) {
-      event.preventDefault();
-      event.target.click();
-    }
-  };
+    rootStyle.setProperty("--body-bg-color", "var(--light-color)");
+  }, []);
 
   const like = () => {
     likeBlog(blog.id);
@@ -38,104 +24,106 @@ const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
   };
 
   const displayBlog = () => {
-    if (!showDetails) {
-      return (
-        <>
+    return (
+      <>
+        <h2 className="c-blog__heading">
           <span className="c-blog__title">{blog.title}</span>
           <span className="c-blog__author">
             {" — "}
             {blog.author}
           </span>
-          <FontAwesomeIcon className="c-blog__expandicon" icon={faAngleDown} />
-        </>
-      );
-    }
+        </h2>
 
-    return (
-      <>
-        <span className="c-blog__title">{blog.title}</span>
+        <div className="c-blog__details">
+          <a
+            className="c-blog__url"
+            href={blog.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Visit Blog
+          </a>
 
-        <span className="c-blog__author">
-          {" — "}
-          {blog.author}
-        </span>
+          <div className="c-blog__likes">
+            <span className="c-blog__likes-txt">
+              {blog.likes}
+              {blog.likes !== 1 ? " Likes" : " Like"}
+            </span>
+            <div className="c-blog__like-button">
+              <button
+                type="button"
+                onClick={like}
+                className="c-btn c-btn--info"
+              >
+                Like
+              </button>
+            </div>
+          </div>
 
-        <a
-          className="c-blog__link js-blogLink"
-          href={blog.url}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          Visit Blog
-        </a>
+          <div className="c-blog__userinfo">
+            <span className="c-blog__user">
+              Added by
+              <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
+              {belongsToUser ? "You" : blog.user.name}
+            </span>
 
-        <div className="c-blog__likes">
-          <span className="c-blog__likes-txt">
-            {blog.likes}
-            {blog.likes !== 1 ? " Likes" : " Like"}
-          </span>
-          <div className="c-blog__like-button">
-            <button
-              type="button"
-              onClick={like}
-              className="c-btn c-btn--info js-likeButton"
-            >
-              Like
-            </button>
+            {belongsToUser && (
+              <div className="c-blog__delete-button">
+                <button
+                  type="button"
+                  onClick={remove}
+                  className="c-btn c-btn--danger"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        <span className="c-blog__user">
-          Added by:
-          <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
-          {belongsToUser ? "You" : blog.user.name}
-        </span>
-
-        {belongsToUser && (
-          <div className="c-blog__delete-button">
-            <button
-              type="button"
-              onClick={remove}
-              className="c-btn c-btn--danger js-deleteButton"
-            >
-              Delete
-            </button>
-          </div>
-        )}
       </>
     );
   };
 
   return (
-    <div
-      role="button"
-      aria-expanded={showDetails ? "true" : "false"}
-      tabIndex={0}
-      onKeyDown={focusBlog}
-      onClick={toggleShowDetails}
-      className="c-blog js-blog"
-      data-testid={testIDs[`blog_${blog.id}`]}
-    >
-      {displayBlog()}
+    <div className="o-wrapper js-wrapper">
+      <NavBar />
+      <div className="o-container js-container">
+        <NotificationList />
+        {hasLoaded && !blog && <NotFound />}
+        {blog && <div className="c-blog">{displayBlog()}</div>}
+      </div>
     </div>
   );
 };
 
 Blog.propTypes = {
-  blog: PropTypes.objectOf(PropTypes.any).isRequired,
-  user: PropTypes.objectOf(PropTypes.any),
+  blog: PropTypes.objectOf(PropTypes.any),
+  belongsToUser: PropTypes.bool.isRequired,
+  hasLoaded: PropTypes.bool.isRequired,
   likeBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
 };
 
 Blog.defaultProps = {
-  user: null,
+  blog: null,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const { user } = state.auth;
+  const { blogs, requests } = state;
 
-  return { user };
+  let belongsToUser = false;
+
+  const id = ownProps.match.params.id;
+  const blog = blogs.find((blog) => blog.id === id);
+
+  if (blog) {
+    belongsToUser = user.username === blog.user.username;
+  }
+
+  const hasLoaded = requests.initBlogs.hasRun;
+
+  return { hasLoaded, belongsToUser, blog };
 };
 
 export default connect(mapStateToProps, { likeBlog, deleteBlog })(Blog);

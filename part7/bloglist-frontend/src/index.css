@@ -95,8 +95,24 @@ body {
   letter-spacing: 1px;
 }
 
+.u-stretch {
+  width: 100%;
+}
+
 .u-hide {
   display: none;
+}
+
+.u-flex {
+  display: flex;
+}
+
+.u-flex.v-center {
+  align-items: center;
+}
+
+.u-flex.wrap {
+  flex-wrap: wrap;
 }
 
 .u-stretched-link::after {
@@ -183,14 +199,14 @@ body {
 }
 
 /* Alert Components will be created dynamically with JavaScript */
-.c-alerts-container.inLogin {
-  width: var(--login-w);
-}
-
-.c-alert-container.inBlog {
+.c-alerts-container {
   width: 90%;
   max-width: 1200px;
   margin: 0.25rem auto;
+}
+
+.c-alerts-container.inLogin {
+  width: var(--login-w);
 }
 
 .c-alert {
@@ -687,67 +703,72 @@ body {
   text-shadow: 1px 2px 2px var(--primary-color-faded);
 }
 
-/* Single Blog Entry */
-.c-blog {
-  background-color: hsl(210, 13%, 95%);
+/* Link to Blog */
+.c-blog-link {
   font-family: "Dosis";
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin: 0.5rem 0;
   padding: 0.25rem;
-  border-radius: 2px;
   width: fit-content;
-  cursor: pointer;
   transition: all 0.3s ease-in;
-}
-
-.c-blog.asLink {
+  border-radius: 2px;
   position: relative;
   background-color: hsla(210, 13%, 95%, 75%);
   color: var(--primary-color);
   text-decoration: none;
 }
 
-.c-blog.asLink:hover {
+.c-blog-link:hover {
   background-color: var(--info-color-accent);
   color: var(--light-color);
   text-decoration: underline;
 }
 
-.c-blog__title {
-  margin-right: 0.5rem;
+/* Blog Page */
+.c-blog {
+  width: 100%;
+  max-width: var(--max-page-w);
+  background-color: var(--light-color);
+  font-family: "Roboto";
+  padding: 1rem;
 }
 
-.c-blog__expandicon {
-  color: var(--muted-color);
+.c-blog__heading {
+  font-family: "Dosis";
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color-accent);
 }
 
 .c-blog__author {
-  margin-right: 0.5rem;
   font-weight: 300;
+  font-size: 0.9em;
 }
 
-.c-blog__link {
+.c-blog__url {
+  display: block;
   text-decoration: none;
   color: var(--primary-color);
-  margin-right: 0.5rem;
+  margin: 0.5rem 0;
 }
 
-.c-blog__link:hover {
+.c-blog__url:hover {
   text-decoration: underline;
 }
 
 .c-blog__likes {
-  margin: 0.35rem 0.5rem 0.35rem 0;
-  width: 100%;
+  margin-bottom: 0.5rem;
   display: flex;
-  /* margin-right: 0.5rem; */
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .c-blog__likes-txt {
   color: var(--info-color-accent);
+  margin-right: 0.5rem;
 }
 
 .c-blog__like-button {
@@ -755,15 +776,18 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 0.9em;
-  margin-left: 0.5rem;
   width: 40px;
   height: 20px;
   z-index: 1;
 }
 
+.c-blog__userinfo {
+  display: flex;
+  align-items: center;
+}
+
 .c-blog__user {
-  width: 100%;
-  margin: 0.25rem 0.5rem 0.25rem 0;
+  margin-right: 0.5rem;
 }
 
 .c-blog__usericon {
@@ -858,6 +882,38 @@ body {
     margin-top: 1rem;
   }
 
+  .c-blog {
+    padding: 1rem 1.5rem;
+  }
+
+  .c-blog__heading {
+    margin-bottom: 0.75rem;
+  }
+
+  .c-blog__url {
+    margin: 0.5rem 0 0.75rem 0;
+  }
+
+  .c-blog__likes {
+    margin-bottom: 0.75rem;
+  }
+
+  .c-blog__like-button {
+    font-size: 1em;
+    width: 50px;
+    height: 24px;
+  }
+
+  .c-blog__user {
+    margin-right: 0.5rem;
+  }
+
+  .c-blog__delete-button {
+    font-size: 1em;
+    width: 70px;
+    height: 24px;
+  }
+
   .c-notfound {
     padding: 1rem 1.5rem;
   }
@@ -872,7 +928,7 @@ body {
     height: 34px;
   }
 
-  .c-blog {
+  .c-blog-link {
     padding: 0.5rem;
     font-size: 1rem;
     border-radius: 4px;
@@ -937,7 +993,7 @@ body {
   }
 
   .c-blog-form {
-    padding: 0 1.5rem;
+    padding: 0 1.75rem;
     margin-top: 1.5rem;
   }
 
@@ -984,12 +1040,16 @@ body {
   }
 
   .c-users {
-    padding: 1.5rem;
+    padding: 1.75rem;
   }
 
   .c-users__heading {
     font-size: 1.7rem;
     margin-bottom: 0.75rem;
+  }
+
+  .c-user {
+    padding: 1.75rem;
   }
 
   .c-user__heading {
@@ -1007,7 +1067,7 @@ body {
   }
 
   .c-notfound {
-    padding: 1.5rem;
+    padding: 1.75rem;
   }
 
   .c-notfound__heading {
@@ -1019,43 +1079,64 @@ body {
   }
 
   .c-blogs__list {
-    padding: 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 1.75rem;
     margin-top: 2rem;
   }
 
   .c-blogs__heading {
+    width: 100%;
     font-size: 1.7rem;
     margin-bottom: 0.75rem;
   }
 
-  .c-blog {
+  .c-blog-link {
     padding: 0.5rem;
     font-size: 1.1rem;
     border-radius: 4px;
-  }
-
-  .c-blog.asLink {
     margin: 0.5rem 1.5rem 0.5rem 0;
     flex: 1 0 45%;
   }
 
-  .c-blog__link {
-    margin-right: 0.75rem;
+  .c-blog {
+    padding: 1.75rem;
   }
 
-  .c-blog-author {
-    margin-right: 0.75rem;
+  .c-blog__heading {
+    font-size: 1.7rem;
   }
 
-  .c-blog__like-button {
-    font-size: 1em;
-    width: 45px;
-    height: 24px;
+  .c-blog__details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    vertical-align: middle;
   }
+
+  .c-blog__url {
+    font-size: 1.1rem;
+  }
+
+  .c-blog__likes {
+    order: -1;
+    margin-right: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .c-blog__user {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+  }
+
+  .c-blog__userinfo {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
   .c-blog__delete-button {
-    font-size: 0.9em;
-    width: 70px;
-    height: 24px;
+    font-size: 1.1rem;
+    width: 74px;
   }
 }
 
@@ -1081,6 +1162,36 @@ body {
 
   .c-blogs {
     padding: 1rem;
+  }
+
+  .c-blog {
+    padding: 2.5rem;
+  }
+
+  .c-blog__heading {
+    font-size: 1.9rem;
+  }
+
+  .c-blog__url {
+    font-size: 1.2rem;
+  }
+
+  .c-blog__likes {
+    margin-right: 1.25rem;
+  }
+
+  .c-blog__user {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+  }
+
+  .c-blog__likes-txt {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+  }
+
+  .c-blog__usericon {
+    margin-right: 0.35rem;
   }
 
   .c-blog-form {
@@ -1144,20 +1255,10 @@ body {
     font-size: 1.9rem;
   }
 
-  .c-blog {
+  .c-blog-link {
     font-size: 1.2rem;
     margin: 0.75rem 0;
-  }
-
-  .c-blog.asLink {
     margin: 0.5rem 1.5rem 0.5rem 0;
     flex: 1 0 30%;
-  }
-
-  .c-blog__likes {
-    margin: 0.35rem 0.5rem 0.35rem 0;
-  }
-  .c-blog__user {
-    width: auto;
   }
 }

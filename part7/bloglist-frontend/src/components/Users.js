@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import NavBar from "./NavBar";
+import NotificationList from "./NotificationList";
 
 const Users = ({ users, hasLoaded }) => {
   useLayoutEffect(() => {
@@ -17,6 +18,7 @@ const Users = ({ users, hasLoaded }) => {
     <div className="o-wrapper js-wrapper">
       <NavBar />
       <div className="o-container js-container">
+        <NotificationList />
         <div className="c-users">
           <h2 className="c-users__heading">Users</h2>
           {hasLoaded && !users.length && <p>There are no Users to display</p>}

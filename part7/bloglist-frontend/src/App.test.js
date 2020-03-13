@@ -4,7 +4,6 @@ import { createMemoryHistory } from "history";
 import configureStore from "./configureStore";
 import {
   render as rtlRender,
-  within,
   fireEvent,
   cleanup,
   wait,
@@ -18,7 +17,6 @@ import { testIDs as homeTestIDs } from "./components/Home";
 import { testIDs as loginTestIDs } from "./components/Login";
 import { testIDs as modalSpinnerTestIDs } from "./components/ModalSpinner";
 import { testIDs as navbarTestIDs } from "./components/NavBar";
-import { testIDs as blogTestIDs } from "./components/Blog";
 
 const axios = require("axios");
 const AxiosMockAdapter = require("axios-mock-adapter");
@@ -355,26 +353,24 @@ describe("<App />", () => {
           return [200, data];
         });
 
-      const { findByTestId } = renderApp();
+      const route = `/blogs/${blogs[0].id}`;
+      const { getByText, findByText, findByTestId } = renderApp(route);
 
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
 
-      const blogToLike = await findByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
-      fireEvent.click(blogToLike);
+      await findByText(blogs[0].title);
 
-      const likeBtn = within(blogToLike).getByText(/like/i, {
-        selector: "button",
-      });
+      const likeBtn = getByText(/like/i, { selector: "button" });
 
       fireEvent.click(likeBtn);
 
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
+      await findByText(blogs[0].title);
 
-      const likedBlog = await findByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
       const likesRegex = new RegExp(`(\\d+)\\s*like(s)?`, "i");
-      const likesTxt = within(likedBlog).getByText(likesRegex);
+      const likesTxt = getByText(likesRegex);
       const moreLikes = new RegExp(`${blogs[0].likes + 1}\\s*like(s)?`, "i");
       expect(likesTxt).toHaveTextContent(moreLikes);
     });
@@ -390,17 +386,17 @@ describe("<App />", () => {
         .onDelete(deleteBlogPath)
         .reply(204);
 
-      const { findByTestId } = renderApp();
+      const route = `/blogs/${blogs[0].id}`;
+      const { getByText, queryByText, findByText, findByTestId } = renderApp(
+        route
+      );
+
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
 
-      const blogToDelete = await findByTestId(
-        blogTestIDs[`blog_${blogs[0].id}`]
-      );
+      await findByText(blogs[0].title);
 
-      fireEvent.click(blogToDelete);
-
-      const deleteBtn = within(blogToDelete).getByText(/delete|remove/i, {
+      const deleteBtn = getByText(/delete|remove/i, {
         selector: "button",
       });
 
@@ -408,8 +404,7 @@ describe("<App />", () => {
 
       await findByTestId(navbarTestIDs.spinnerIcon);
       jest.advanceTimersByTime(1000);
-
-      await wait(() => expect(blogToDelete).not.toBeInTheDocument());
+      await wait(() => expect(queryByText(blogs[0].title)).toBe(null));
     });
   });
 });

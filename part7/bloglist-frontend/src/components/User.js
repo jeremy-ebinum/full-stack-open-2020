@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import NavBar from "./NavBar";
+import NotificationList from "./NotificationList";
 import NotFound from "./NotFound";
 
 const User = ({ user, hasLoaded }) => {
@@ -18,6 +19,7 @@ const User = ({ user, hasLoaded }) => {
     <div className="o-wrapper js-wrapper">
       <NavBar />
       <div className="o-container js-container">
+        <NotificationList />
         {hasLoaded && !user && <NotFound />}
 
         {user && (
@@ -28,8 +30,12 @@ const User = ({ user, hasLoaded }) => {
             <div className="c-user__blogs">
               <h3 className="c-user__blogs-heading">Added Blogs</h3>
               {user.blogs.map((blog) => (
-                <Link key={blog.id} to={`#`} className="c-blog js-blog asLink">
-                  <span className="c-blog__title">{blog.title}</span>
+                <Link
+                  key={blog.id}
+                  to={`/blogs/${blog.id}`}
+                  className="c-blog-link"
+                >
+                  {blog.title}
                 </Link>
               ))}
             </div>

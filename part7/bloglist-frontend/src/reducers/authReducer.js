@@ -40,8 +40,8 @@ export const login = (user, redirectPath) => {
       dispatch({ type: "SET_USER", user: authUser });
       localStorage.setItem("authBloglistUser", JSON.stringify(authUser));
       const loginMessage = `Logged in as ${authUser.username}`;
-      dispatch(push(redirectPath));
       dispatch(displayNotification(loginMessage, "info"));
+      dispatch(push(redirectPath));
     } catch (e) {
       if (e.response) {
         dispatch(setRequestState("login", "FAILURE"));
@@ -58,8 +58,8 @@ export const logout = () => {
     blogsService.setToken(null);
     localStorage.removeItem("authBloglistUser");
     dispatch({ type: "CLEAR_USER" });
-    dispatch(push("/login"));
     dispatch(displayNotification("Logged out", "info"));
+    dispatch(push("/login"));
   };
 };
 

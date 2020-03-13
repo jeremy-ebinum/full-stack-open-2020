@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import Blog from "./Blog";
 
 const BlogList = ({ hasLoaded, blogsToShow }) => {
   return (
@@ -12,9 +12,11 @@ const BlogList = ({ hasLoaded, blogsToShow }) => {
         <p className="u-lead">No Blogs have been added yet</p>
       )}
 
-      {blogsToShow.map((blog) => {
-        return <Blog key={blog.id} blog={blog} />;
-      })}
+      {blogsToShow.map((blog) => (
+        <Link key={blog.id} to={`/blogs/${blog.id}`} className="c-blog-link">
+          {blog.title}
+        </Link>
+      ))}
     </div>
   );
 };

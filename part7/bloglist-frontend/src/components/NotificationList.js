@@ -4,8 +4,12 @@ import PropTypes from "prop-types";
 import Notification from "./Notification";
 
 const NotificationList = ({ notificationsToShow, contextClass }) => {
+  const className = contextClass
+    ? `c-alerts-container ${contextClass}`
+    : "c-alerts-container";
+
   return (
-    <div className={`c-alerts-container ${contextClass}`}>
+    <div className={className}>
       {notificationsToShow.map((notification) => (
         <Notification
           key={notification.id}
@@ -42,7 +46,11 @@ const mapStateToProps = (state, ownProps) => {
 
 NotificationList.propTypes = {
   notificationsToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
-  contextClass: PropTypes.string.isRequired,
+  contextClass: PropTypes.string,
+};
+
+NotificationList.defaultProps = {
+  contextClass: null,
 };
 
 export default connect(mapStateToProps)(NotificationList);

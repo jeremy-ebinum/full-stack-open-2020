@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Users from "./components/Users";
 import User from "./components/User";
+import Blog from "./components/Blog";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 
@@ -30,6 +31,8 @@ const App = ({ initBlogs, initUsers, history }) => {
         <PublicRoute restricted path="/login" component={Login} />
         <PrivateRoute path="/users" exact component={Users} />
         <PrivateRoute path="/users/:id" component={User} />
+        <PrivateRoute path="/blogs" exact component={Home} />
+        <PrivateRoute path="/blogs/:id" component={Blog} />
       </Switch>
     </ConnectedRouter>
   );
