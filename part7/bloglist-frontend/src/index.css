@@ -75,7 +75,7 @@ body {
   width: 100%;
 }
 
-.o-wrapper.o-container--hasModal {
+.o-wrapper.hasModal {
   position: relative;
 }
 
@@ -404,13 +404,13 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.c-row.c-row--inBlog {
+.c-row.inBlog {
   align-items: flex-start;
   margin-bottom: 1rem;
   width: 100%;
 }
 
-.c-row.c-row--hasAddon {
+.c-row.hasAddon {
   position: relative;
 }
 
@@ -439,7 +439,7 @@ body {
   box-shadow: 1px 2px 0 0 var(--primary-color-faded);
 }
 
-.c-row__input.c-row__input--inBlog {
+.c-row__input.inBlog {
   width: 90%;
   height: 35px;
 }
@@ -587,7 +587,7 @@ body {
   width: fit-content;
 }
 
-.c-toggleable__show.c-toggleable__show--inBlogForm {
+.c-toggleable__show.inBlogForm {
   margin: 1rem 0 0 1rem;
   font-family: "Roboto";
   font-weight: 400;
@@ -609,7 +609,7 @@ body {
   font-weight: 400;
 }
 
-.c-toggleable__hide.c-toggleable__hide--inBlogForm {
+.c-toggleable__hide.inBlogForm {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -839,7 +839,7 @@ body {
     width: 100px;
   }
 
-  .c-toggleable__hide.c-toggleable__hide--inBlogForm {
+  .c-toggleable__hide.inBlogForm {
     width: 100px;
     margin-left: calc(1rem + 100px + 1rem);
   }
@@ -871,7 +871,7 @@ body {
     padding: 0 1.5rem;
   }
 
-  .c-toggleable__show.c-toggleable__show--inBlogForm {
+  .c-toggleable__show.inBlogForm {
     margin: 1.5rem 0 -0.5rem 1rem;
     font-size: 1rem;
     width: 75px;
@@ -947,7 +947,7 @@ body {
     margin-top: 0.5rem;
   }
 
-  .c-row__input.c-row__input--inBlog {
+  .c-row__input.inBlog {
     width: 85%;
     max-width: 520px;
     height: 34px;
@@ -1036,7 +1036,7 @@ body {
     margin-bottom: 0.75rem;
   }
 
-  .c-row.c-row--inBlog {
+  .c-row.inBlog {
     flex-direction: row;
     align-items: center;
   }
@@ -1055,20 +1055,20 @@ body {
     margin-left: calc(50px + 0.75rem);
   }
 
-  .c-toggleable__show.c-toggleable__show--inBlogForm {
+  .c-toggleable__show.inBlogForm {
     margin: 2rem 0 -1rem 2rem;
     font-size: 1.1rem;
     width: 85px;
     height: 35px;
   }
 
-  .c-toggleable__hide.c-toggleable__hide--inBlogForm {
+  .c-toggleable__hide.inBlogForm {
     width: 120px;
     height: 40px;
     margin-left: calc(3.75rem + 170px);
   }
 
-  .c-row__input.c-row__input--inBlog {
+  .c-row__input.inBlog {
     flex: auto 1 0;
     width: 65%;
   }
@@ -1237,7 +1237,7 @@ body {
     font-size: 1.9rem;
   }
 
-  .c-row__input.c-row__input--inBlog {
+  .c-row__input.inBlog {
     flex: auto 1 0;
     width: 70%;
     max-width: 540px;

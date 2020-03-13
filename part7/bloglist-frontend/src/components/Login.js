@@ -59,7 +59,7 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
                 placeholder="Enter Username"
               />
             </div>
-            <div className="c-row c-row--hasAddon">
+            <div className="c-row hasAddon">
               <input
                 ref={passwordRef}
                 className="c-row__input"

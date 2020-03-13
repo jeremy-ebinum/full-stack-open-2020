@@ -6,10 +6,10 @@ const Modal = ({ testid, children }) => {
     const rootStyle = document.documentElement.style;
     const wrapper = document.querySelector(".js-wrapper");
     rootStyle.setProperty("--body-overflow", "hidden");
-    wrapper.classList.add("o-wrapper--hasModal");
+    wrapper.classList.add("hasModal");
     return () => {
       rootStyle.setProperty("--body-overflow", "auto");
-      wrapper.classList.remove("o-wrapper--hasModal");
+      wrapper.classList.remove("hasModal");
     };
   }, []);
 

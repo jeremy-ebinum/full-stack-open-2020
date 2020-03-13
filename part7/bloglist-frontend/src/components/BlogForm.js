@@ -10,7 +10,7 @@ export const testIDs = getTestIDs();
 
 const BlogForm = ({ createBlog }) => {
   const uidSeed = useUIDSeed();
-  const fieldClassName = "c-row__input c-row__input--inBlog";
+  const fieldClassName = "c-row__input inBlog";
   const blogFormRef = useRef();
   const titleRef = useRef();
   const authorRef = useRef();
@@ -48,7 +48,7 @@ const BlogForm = ({ createBlog }) => {
     >
       <form className="c-blog-form" onSubmit={addBlog}>
         <h2 className="c-blog-form__heading">Add New Blog</h2>
-        <div className="c-row c-row--inBlog">
+        <div className="c-row inBlog">
           <label htmlFor={uidSeed("title")} className="c-row__label">
             Title
           </label>
@@ -58,7 +58,7 @@ const BlogForm = ({ createBlog }) => {
             id={uidSeed("title")}
           />
         </div>
-        <div className="c-row c-row--inBlog">
+        <div className="c-row inBlog">
           <label htmlFor={uidSeed("author")} className="c-row__label">
             Author
           </label>
@@ -68,7 +68,7 @@ const BlogForm = ({ createBlog }) => {
             className={`${fieldClassName}`}
           />
         </div>
-        <div className="c-row c-row--inBlog">
+        <div className="c-row inBlog">
           <label htmlFor={uidSeed("url")} className="c-row__label">
             URL
           </label>

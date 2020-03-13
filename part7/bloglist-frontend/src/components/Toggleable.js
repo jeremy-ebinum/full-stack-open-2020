@@ -47,7 +47,7 @@ const Toggleable = React.forwardRef(
       <div className="c-toggleable">
         <div
           style={hideWhenVisible}
-          className={`c-toggleable__show c-toggleable__show--${context}`}
+          className={`c-toggleable__show ${context}`}
         >
           {context === "inBlogForm" && (
             <ShowBlogFormBtn handleClick={toggleVisibility} />
@@ -58,7 +58,7 @@ const Toggleable = React.forwardRef(
           className="c-toggleable__content"
           data-testid={testid}
         >
-          <div className={`c-toggleable__hide c-toggleable__hide--${context}`}>
+          <div className={`c-toggleable__hide ${context}`}>
             {context === "inBlogForm" && (
               <HideBlogFormBtn handleClick={toggleVisibility} />
             )}
