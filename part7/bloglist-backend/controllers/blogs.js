@@ -1,8 +1,11 @@
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 const blogsRouter = require("express").Router();
 const { ErrorHelper } = require("../utils/error_helper");
 const User = require("../models/user");
 const Blog = require("../models/blog");
+
+const textParser = bodyParser.text();
 
 blogsRouter.get("/", async (req, res, next) => {
   try {
@@ -29,9 +32,39 @@ blogsRouter.get("/:id", async (req, res, next) => {
   }
 });
 
+blogsRouter.post("/:id/comments", textParser, async (req, res, next) => {
+  const { body, token } = req;
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    if (!token || !decodedToken.id) {
+      throw new ErrorHelper(401, "Authentication Error", [
+        "Invalid or missing authentication token",
+      ]);
+    }
+
+    if (typeof body !== "string") {
+      throw new ErrorHelper(400, "Bad Request", ["Comment is not a string"]);
+    }
+
+    const blog = await Blog.findById(req.params.id);
+    if (blog) {
+      blog.comments = blog.comments.concat(body);
+      const savedBlog = await blog.save();
+      await savedBlog
+        .populate({ path: "user", select: ["name", "username"] })
+        .execPopulate();
+      res.status(200).json(savedBlog.toJSON());
+    } else {
+      res.status(404).end();
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
 blogsRouter.post("/", async (req, res, next) => {
-  const { body } = req;
-  const { token } = req;
+  const { body, token } = req;
 
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);

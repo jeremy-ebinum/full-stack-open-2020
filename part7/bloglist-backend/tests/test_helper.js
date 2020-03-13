@@ -145,6 +145,9 @@ const hashPasswordMixin = (users) => {
 
 const initialUsers = hashPasswordMixin(plainUsers);
 
+const validComment = "Nice Blog!";
+const invalidComment = { spam: "eggs" };
+
 module.exports = {
   initialBlogs,
   validBlog,
@@ -157,4 +160,6 @@ module.exports = {
   getUsersInDb,
   plainUsers,
   initialUsers,
+  validComment,
+  invalidComment,
 };

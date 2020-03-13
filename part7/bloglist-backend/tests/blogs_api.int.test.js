@@ -258,6 +258,46 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
   });
 });
 
+// TEST CREATING COMMENTS
+describe("Sending a comment: POST /api/blogs/id/comments", () => {
+  test("fails with status 401 if unauthenticated", async () => {
+    const blogsInDb = await helper.getBlogsInDb();
+    const blogToComment = blogsInDb[0];
+
+    await api
+      .post(`/api/blogs/${blogToComment.id}/comments`)
+      .send(helper.validComment)
+      .expect(401);
+  });
+
+  test("fails with status 400 if comment is invalid", async () => {
+    const blogsInDb = await helper.getBlogsInDb();
+    const blogToComment = blogsInDb[0];
+
+    await api
+      .post(`/api/blogs/${blogToComment.id}/comments`)
+      .set("Authorization", globals.token)
+      .send(helper.invalidComment)
+      .expect(400);
+  });
+
+  test("adds a new comment if valid", async () => {
+    const blogsAtStart = await helper.getBlogsInDb();
+    const { id } = blogsAtStart[0];
+
+    await api
+      .post(`/api/blogs/${id}/comments`)
+      .set("Authorization", globals.token)
+      .set("Content-Type", "text/plain")
+      .send(helper.validComment)
+      .expect(200);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    const commentedBlog = blogsAtEnd.find((blog) => blog.id === id);
+    expect(commentedBlog.comments).toContain(helper.validComment);
+  });
+});
+
 // TEST CREATING BLOGS
 describe("Sending a blog: POST /api/blogs", () => {
   test("fails with status 401 if unauthenticated", async () => {
