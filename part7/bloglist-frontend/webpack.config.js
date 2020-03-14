@@ -11,12 +11,12 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const config = (env, argv) => {
   const { mode } = argv;
 
-  const devMode = mode === "development";
-  const prodMode = mode === "production";
+  const isDevMode = mode === "development";
+  const isProdMode = mode === "production";
 
   let plugins = [
     new MiniCssExtractPlugin({
-      filename: prodMode
+      filename: isProdMode
         ? "[name]-styles.[contentHash:8].css"
         : "[name]-styles.css",
     }),
@@ -42,26 +42,35 @@ const config = (env, argv) => {
   }
 
   return {
-    entry: {
-      main: path.resolve(__dirname, "src/index.js"),
-    },
+    entry: [path.resolve(__dirname, "src/index.js")],
     output: {
       path: path.resolve(__dirname, "build"),
-      filename: devMode ? "[name].js" : "[name].[chunkHash:8].js",
+      filename: isDevMode ? "[name].js" : "[name].[chunkHash:8].js",
       publicPath: "/",
     },
+    resolve: {
+      alias: isDevMode
+        ? {
+            "react-dom": "@hot-loader/react-dom",
+          }
+        : {},
+    },
+    stats: isDevMode ? "minimal" : "normal",
     devServer: {
       contentBase: path.resolve(__dirname, "public"),
       contentBasePublicPath: "/",
+      clientLogLevel: "error",
       public: "localhost:3000",
       // inline: false,
       compress: true,
       host: "localhost",
       https: false,
       port: 3000,
+      liveReload: false,
       hot: true,
+      hotOnly: true,
       transportMode: "ws",
-      injectClient: false,
+      injectHot: true,
       open: true,
       proxy: {
         "/api": {
@@ -81,10 +90,10 @@ const config = (env, argv) => {
     },
     mode,
     plugins,
-    devtool: mode === "production" ? false : "eval-source-map",
+    devtool: isProdMode ? false : "eval-source-map",
     optimization: {
       nodeEnv: mode,
-      minimize: mode === "production",
+      minimize: isProdMode,
       minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
       runtimeChunk: "single",
       splitChunks: {
@@ -120,7 +129,13 @@ const config = (env, argv) => {
         },
         {
           test: /\.css$/,
-          loaders: [MiniCssExtractPlugin.loader, "css-loader"],
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: { hmr: isDevMode },
+            },
+            { loader: "css-loader" },
+          ],
         },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,

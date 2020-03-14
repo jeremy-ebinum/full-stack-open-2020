@@ -21,7 +21,9 @@ const Users = ({ users, hasLoaded }) => {
         <NotificationList />
         <div className="c-users">
           <h2 className="c-users__heading">Users</h2>
-          {hasLoaded && !users.length && <p>There are no Users to display</p>}
+          {hasLoaded && !users.length && (
+            <p className="u-lead">There are no Users to display</p>
+          )}
           {users.length > 0 && (
             <div className="c-users__data">
               <table className="c-table">

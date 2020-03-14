@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom";
+import { AppContainer } from "react-hot-loader";
 import configureStore, { history } from "./configureStore";
 import { Provider } from "react-redux";
 import App from "./App";
@@ -13,9 +14,21 @@ if (process.env.NODE_ENV === "development") {
 
 const store = configureStore();
 
-render(
-  <Provider store={store}>
-    <App history={history} />
-  </Provider>,
-  document.getElementById("root")
-);
+const render = () => {
+  ReactDOM.render(
+    <AppContainer>
+      <Provider store={store}>
+        <App history={history} />
+      </Provider>
+    </AppContainer>,
+    document.getElementById("root")
+  );
+};
+
+render();
+
+if (module.hot) {
+  module.hot.accept("./App", () => {
+    render();
+  });
+}

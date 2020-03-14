@@ -2,6 +2,7 @@ dependencies:
   '@fortawesome/fontawesome-svg-core': 1.2.27
   '@fortawesome/free-solid-svg-icons': 5.12.1
   '@fortawesome/react-fontawesome': 0.1.8_e05d73b74d08567b32d0e5d8282c02fd
+  '@hot-loader/react-dom': 16.13.0_react@16.13.0
   '@loadable/component': 5.12.0_react@16.13.0
   '@testing-library/jest-dom': 4.2.4
   '@testing-library/react': 9.4.1_react-dom@16.13.0+react@16.13.0
@@ -14,6 +15,7 @@ dependencies:
   prop-types: 15.7.2
   react: 16.13.0
   react-dom: 16.13.0_react@16.13.0
+  react-hot-loader: 4.12.20_react-dom@16.13.0+react@16.13.0
   react-redux: 7.2.0_89edbdcf35ebf07960559427ad340367
   react-router-dom: 5.1.2_react@16.13.0
   react-uid: 2.2.0_react@16.13.0
@@ -981,6 +983,18 @@ packages:
       react: 16.x
     resolution:
       integrity: sha512-I5h9YQg/ePA3Br9ISS18fcwOYmzQYDSM1ftH03/8nHkiqIVHtUyQBw482+60dnzvlr82gHt3mGm+nDUp159FCw==
+  /@hot-loader/react-dom/16.13.0_react@16.13.0:
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.7.2
+      react: 16.13.0
+      scheduler: 0.19.0
+    dev: false
+    peerDependencies:
+      react: ^16.0.0
+    resolution:
+      integrity: sha512-lJZrmkucz2MrQJTQtJobx5MICXcfQvKihszqv655p557HPi0hMOWxrNpiHv3DWD8ugNWjtWcVWqRnFvwsHq1mQ==
   /@jest/console/24.9.0:
     dependencies:
       '@jest/source-map': 24.9.0
@@ -3234,6 +3248,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==
+  /dom-walk/0.1.1:
+    dev: false
+    resolution:
+      integrity: sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
   /domain-browser/1.2.0:
     engines:
       node: '>=0.4'
@@ -3906,7 +3924,6 @@ packages:
     resolution:
       integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
   /fast-levenshtein/2.0.6:
-    dev: true
     resolution:
       integrity: sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
   /faye-websocket/0.10.0:
@@ -4275,6 +4292,13 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==
+  /global/4.4.0:
+    dependencies:
+      min-document: 2.19.0
+      process: 0.11.10
+    dev: false
+    resolution:
+      integrity: sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
   /globals/11.12.0:
     dev: true
     engines:
@@ -6070,6 +6094,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
+  /min-document/2.19.0:
+    dependencies:
+      dom-walk: 0.1.1
+    dev: false
+    resolution:
+      integrity: sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
   /min-indent/1.0.0:
     dev: false
     engines:
@@ -7492,9 +7522,34 @@ packages:
       react: ^16.0.0
     resolution:
       integrity: sha512-y09d2c4cG220DzdlFkPTnVvGTszVvNpC73v+AaLGLHbkpy3SSgvYq8x0rNwPJ/Rk/CicTNgk0hbHNw1gMEZAXg==
+  /react-hot-loader/4.12.20_react-dom@16.13.0+react@16.13.0:
+    dependencies:
+      fast-levenshtein: 2.0.6
+      global: 4.4.0
+      hoist-non-react-statics: 3.3.2
+      loader-utils: 1.4.0
+      prop-types: 15.7.2
+      react: 16.13.0
+      react-dom: 16.13.0_react@16.13.0
+      react-lifecycles-compat: 3.0.4
+      shallowequal: 1.1.0
+      source-map: 0.7.3
+    dev: false
+    engines:
+      node: '>= 6'
+    peerDependencies:
+      '@types/react': ^15.0.0 || ^16.0.0
+      react: ^15.0.0 || ^16.0.0
+      react-dom: ^15.0.0 || ^16.0.0
+    resolution:
+      integrity: sha512-lPlv1HVizi0lsi+UFACBJaydtRYILWkfHAC/lyCs6ZlAxlOZRQIfYHDqiGaRvL/GF7zyti+Qn9XpnDAUvdFA4A==
   /react-is/16.13.0:
     resolution:
       integrity: sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
+  /react-lifecycles-compat/3.0.4:
+    dev: false
+    resolution:
+      integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
   /react-redux/7.2.0_89edbdcf35ebf07960559427ad340367:
     dependencies:
       '@babel/runtime': 7.8.4
@@ -8159,6 +8214,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-QMEp5B7cftE7APOjk5Y6xgrbWu+WkLVQwk8JNjZ8nKRciZaByEW6MubieAiToS7+dwvrjGhH8jRXz3MVd0AYqQ==
+  /shallowequal/1.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
   /shebang-command/1.2.0:
     dependencies:
       shebang-regex: 1.0.0
@@ -8308,6 +8367,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+  /source-map/0.7.3:
+    dev: false
+    engines:
+      node: '>= 8'
+    resolution:
+      integrity: sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
   /spdx-correct/3.1.0:
     dependencies:
       spdx-expression-parse: 3.0.0
@@ -9539,6 +9604,7 @@ specifiers:
   '@fortawesome/fontawesome-svg-core': ^1.2.27
   '@fortawesome/free-solid-svg-icons': ^5.12.1
   '@fortawesome/react-fontawesome': ^0.1.8
+  '@hot-loader/react-dom': ^16.13.0
   '@loadable/component': ^5.12.0
   '@testing-library/jest-dom': ^4.2.4
   '@testing-library/react': ^9.4.0
@@ -9581,6 +9647,7 @@ specifiers:
   prop-types: ^15.7.2
   react: ^16.12.0
   react-dom: ^16.12.0
+  react-hot-loader: ^4.12.20
   react-redux: ^7.2.0
   react-router-dom: ^5.1.2
   react-uid: ^2.2.0
