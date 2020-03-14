@@ -20,7 +20,7 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
 
   useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
-
+    document.title = "Blog List | Login";
     rootStyle.setProperty("--body-bg-color", "var(--primary-color-faded)");
   }, []);
 

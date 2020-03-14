@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { likeBlog, deleteBlog } from "../reducers/blogReducer";
+import { getTrimmedStr } from "../utils";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";
 import NotFound from "./NotFound";
@@ -12,9 +13,16 @@ import Comments from "./Comments";
 const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
   useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
+    let blogName;
+
+    if (blog) {
+      blogName = getTrimmedStr(blog.title);
+    }
+
+    document.title = `Blog List | ${blogName}`;
 
     rootStyle.setProperty("--body-bg-color", "var(--light-color)");
-  }, []);
+  }, [blog]);
 
   const like = () => {
     likeBlog(blog.id);

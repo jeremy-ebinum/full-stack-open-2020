@@ -11,9 +11,16 @@ import NotFound from "./NotFound";
 const User = ({ user, hasLoaded }) => {
   useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
+    let profileName;
 
+    if (user) {
+      profileName = user.name || user.username;
+    } else {
+      profileName = "User";
+    }
+    document.title = `Blog List | ${profileName}`;
     rootStyle.setProperty("--body-bg-color", "var(--light-color)");
-  }, []);
+  }, [user]);
 
   return (
     <div className="o-wrapper js-wrapper">

@@ -1,17 +1,11 @@
 import React, { useLayoutEffect } from "react";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";
-import BlogForm from "./BlogForm";
-import BlogList from "./BlogList";
-import ToTopScroller from "./ToTopScroller";
-import { getTestIDs } from "../helpers/testHelper";
 
-export const testIDs = getTestIDs();
-
-const Home = () => {
+const NotFound = () => {
   useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
-    document.title = "Blog List | Home";
+    document.title = "Blog List | Not Found";
 
     rootStyle.setProperty("--body-bg-color", "var(--light-color)");
   }, []);
@@ -20,16 +14,16 @@ const Home = () => {
     <div className="o-wrapper js-wrapper">
       <NavBar />
       <div className="o-container js-container">
-        <div className="c-blogs" data-testid={testIDs.blogs}>
-          <NotificationList />
-          <BlogForm />
-          <BlogList />
+        <NotificationList />
+        <div className="c-notfound">
+          <h2 className="c-notfound__heading">Not Found</h2>
+          <p className="u-lead">
+            Sorry, The Page You Are Looking For Does Not Exist
+          </p>
         </div>
-
-        <ToTopScroller />
       </div>
     </div>
   );
 };
 
-export default Home;
+export default NotFound;

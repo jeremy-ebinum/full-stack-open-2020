@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { connect } from "react-redux";
 import { cancelRequest } from "./reducers/requestReducer";
@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import Users from "./components/Users";
 import User from "./components/User";
 import Blog from "./components/Blog";
+import NotFoundPage from "./components/NotFoundPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 
@@ -28,11 +29,13 @@ const App = ({ initBlogs, initUsers, history }) => {
     <ConnectedRouter history={history}>
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
-        <PublicRoute restricted path="/login" component={Login} />
+        <PublicRoute restricted path="/login" exact component={Login} />
         <PrivateRoute path="/users" exact component={Users} />
         <PrivateRoute path="/users/:id" component={User} />
-        <PrivateRoute path="/blogs" exact component={Home} />
         <PrivateRoute path="/blogs/:id" component={Blog} />
+        <Route>
+          <NotFoundPage />
+        </Route>
       </Switch>
     </ConnectedRouter>
   );
