@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 import configureStore, { history } from "./configureStore";
 import { Provider } from "react-redux";
 import App from "./App";
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "development") {
 
 const store = configureStore();
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <App history={history} />
   </Provider>,

@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { logout } from "../reducers/authReducer";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { getTestIDs } from "../helpers/testHelper";
 
 export const testIDs = getTestIDs();

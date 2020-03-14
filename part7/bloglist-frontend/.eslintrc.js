@@ -4,7 +4,11 @@ module.exports = {
     node: true,
     "jest/globals": true,
   },
-  extends: ["react-app", "plugin:prettier/recommended"],
+  extends: [
+    "react-app",
+    "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended",
+  ],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
@@ -12,7 +16,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  plugins: ["jest", "prettier"],
+  plugins: ["jest", "jsx-a11y", "prettier"],
   rules: {
     "prettier/prettier": [
       "error",

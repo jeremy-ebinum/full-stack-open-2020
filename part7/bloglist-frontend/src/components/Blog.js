@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { likeBlog, deleteBlog } from "../reducers/blogReducer";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";

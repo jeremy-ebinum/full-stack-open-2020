@@ -11,7 +11,7 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import testHelper, { routes } from "./helpers/testHelper";
-import _times from "lodash/times";
+import _times from "lodash.times";
 import App from "./App";
 import { testIDs as homeTestIDs } from "./components/Home";
 import { testIDs as loginTestIDs } from "./components/Login";
