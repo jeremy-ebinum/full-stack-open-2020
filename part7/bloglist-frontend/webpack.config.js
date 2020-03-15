@@ -13,6 +13,7 @@ const config = (env, argv) => {
 
   const isDevMode = mode === "development";
   const isProdMode = mode === "production";
+  const isTestEnv = env.NODE_ENV === "test";
 
   let plugins = [
     new MiniCssExtractPlugin({
@@ -92,7 +93,7 @@ const config = (env, argv) => {
     plugins,
     devtool: isProdMode ? false : "eval-source-map",
     optimization: {
-      nodeEnv: mode,
+      nodeEnv: isTestEnv ? "test" : mode,
       minimize: isProdMode,
       minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
       runtimeChunk: "single",

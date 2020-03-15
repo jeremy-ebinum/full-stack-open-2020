@@ -44,9 +44,13 @@ const BlogForm = ({ createBlog }) => {
       ref={blogFormRef}
       context="inBlogForm"
       cb={resetBlogForm}
-      testid={testIDs.toggleableBlogForm}
+      testid={testIDs.BlogForm_toggleable}
     >
-      <form className="c-blog-form" onSubmit={addBlog}>
+      <form
+        className="c-blog-form"
+        onSubmit={addBlog}
+        data-testid={testIDs.BlogForm_form}
+      >
         <h2 className="c-blog-form__heading">Add New Blog</h2>
         <div className="c-row inBlog">
           <label htmlFor={uidSeed("title")} className="c-row__label">
@@ -56,6 +60,7 @@ const BlogForm = ({ createBlog }) => {
             ref={titleRef}
             className={`${fieldClassName}`}
             id={uidSeed("title")}
+            data-testid={testIDs.BlogForm_title}
           />
         </div>
         <div className="c-row inBlog">
@@ -66,6 +71,7 @@ const BlogForm = ({ createBlog }) => {
             ref={authorRef}
             id={uidSeed("author")}
             className={`${fieldClassName}`}
+            data-testid={testIDs.BlogForm_author}
           />
         </div>
         <div className="c-row inBlog">
@@ -77,11 +83,16 @@ const BlogForm = ({ createBlog }) => {
             id={uidSeed("url")}
             className={`${fieldClassName}`}
             type="url"
+            data-testid={testIDs.BlogForm_url}
           />
         </div>
 
         <div className="c-blog-form__submit">
-          <button type="submit" className="c-btn c-btn--success">
+          <button
+            type="submit"
+            className="c-btn c-btn--success"
+            data-testid={testIDs.BlogForm_submitButton}
+          >
             Create
           </button>
         </div>

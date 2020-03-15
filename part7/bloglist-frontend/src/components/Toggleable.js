@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
+import { getTestIDs } from "../helpers/testHelper";
+
+export const testIDs = getTestIDs();
 
 let ShowBlogFormBtn = ({ handleClick }) => (
   <>
@@ -7,6 +10,7 @@ let ShowBlogFormBtn = ({ handleClick }) => (
       type="button"
       className="c-btn c-btn--success"
       onClick={handleClick}
+      data-testid={testIDs.Toggleable_showBlogFormBtn}
     >
       + Blog
     </button>

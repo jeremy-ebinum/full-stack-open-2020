@@ -22,4 +22,10 @@ export const logger = {
   error: function(...params) {
     console.error(...params);
   },
+
+  test: function(...params) {
+    if (process.env.NODE_ENV === "test") {
+      console.log(...params);
+    }
+  },
 };

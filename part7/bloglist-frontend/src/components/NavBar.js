@@ -38,7 +38,7 @@ const NavBar = ({ auth, isLoading, logout }) => {
             {isLoading && (
               <>
                 <FontAwesomeIcon
-                  data-testid={testIDs.spinnerIcon}
+                  data-testid={testIDs.Navbar_spinner}
                   className="c-navbar__spinner"
                   icon={faCircleNotch}
                   spin
@@ -51,6 +51,7 @@ const NavBar = ({ auth, isLoading, logout }) => {
               type="button"
               onClick={logout}
               className="c-btn c-btn--light-outline"
+              data-testid={testIDs.NavBar_logoutBtn}
             >
               Logout
             </button>

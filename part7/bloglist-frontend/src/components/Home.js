@@ -20,7 +20,7 @@ const Home = () => {
     <div className="o-wrapper js-wrapper">
       <NavBar />
       <div className="o-container js-container">
-        <div className="c-blogs" data-testid={testIDs.blogs}>
+        <div className="c-blogs" data-testid={testIDs.Home_blogs}>
           <NotificationList />
           <BlogForm />
           <BlogList />

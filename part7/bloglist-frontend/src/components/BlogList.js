@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { getTestIDs } from "../helpers/testHelper";
 import PropTypes from "prop-types";
+
+export const testIDs = getTestIDs();
 
 const BlogList = ({ hasLoaded, blogsToShow }) => {
   return (
@@ -13,7 +16,12 @@ const BlogList = ({ hasLoaded, blogsToShow }) => {
       )}
 
       {blogsToShow.map((blog) => (
-        <Link key={blog.id} to={`/blogs/${blog.id}`} className="c-blog-link">
+        <Link
+          key={blog.id}
+          to={`/blogs/${blog.id}`}
+          className="c-blog-link"
+          data-testid={testIDs[`BlogList_Blog_${blog.id}`]}
+        >
           {blog.title}
         </Link>
       ))}

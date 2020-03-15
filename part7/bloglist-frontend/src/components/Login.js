@@ -49,7 +49,11 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
       <div className="o-container js-container">
         <NotificationList contextClass="inLogin" />
 
-        <form className="c-login" onSubmit={handleLogin}>
+        <form
+          className="c-login"
+          onSubmit={handleLogin}
+          data-testid={testIDs.Login_form}
+        >
           <div className="c-login__header">Login to Application</div>
           <div className="c-login__body">
             <div className="c-row">
@@ -58,6 +62,7 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
                 className="c-row__input"
                 aria-label="username"
                 placeholder="Enter Username"
+                data-testid={testIDs.Login_username}
               />
             </div>
             <div className="c-row hasAddon">
@@ -67,13 +72,14 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
                 type={passwordInputType}
                 aria-label="password"
                 placeholder="Enter Password"
+                data-testid={testIDs.Login_password}
               />
               <div className="c-input-addon c-input-addon--append">
                 <button
                   type="button"
                   onClick={toggleShowPassword}
                   className="c-btn c-btn--noBg c-btn--fitContent"
-                  data-testid={testIDs.toggleShowPassword}
+                  data-testid={testIDs.Login_toggleShowPassword}
                 >
                   <FontAwesomeIcon
                     className="c-input-addon__icon"
@@ -83,7 +89,11 @@ const Login = ({ login, isLoggingIn, redirectPath }) => {
               </div>
             </div>
             <div className="c-login__button">
-              <button type="submit" className="c-btn c-btn--primary">
+              <button
+                type="submit"
+                className="c-btn c-btn--primary"
+                data-testid={testIDs.Login_submitButton}
+              >
                 Login
               </button>
             </div>

@@ -45,10 +45,12 @@
     "cross-env": "^7.0.0",
     "css-loader": "^3.4.2",
     "cssnano": "^4.1.10",
+    "cypress": "^4.1.0",
     "deep-freeze": "^0.0.1",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "^5.2.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-flowtype": "4.6.0",
     "eslint-plugin-import": "2.20.0",
     "eslint-plugin-jest": "^23.7.0",
@@ -73,9 +75,11 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode=development",
+    "start:test": "webpack-dev-server --env.NODE_ENV=test --mode=development",
     "build": "webpack --mode=production",
     "test": "set CI=true && jest --verbose",
     "test:coverage": "test -- --coverage",
+    "cypress:open": "cypress open",
     "lint": "eslint ."
   },
   "jest": {

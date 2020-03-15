@@ -3,6 +3,7 @@ module.exports = {
     es6: true,
     node: true,
     "jest/globals": true,
+    "cypress/globals": true,
   },
   extends: [
     "react-app",
@@ -16,7 +17,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  plugins: ["jest", "jsx-a11y", "prettier"],
+  plugins: ["jest", "cypress", "jsx-a11y", "prettier"],
   rules: {
     "prettier/prettier": [
       "error",
