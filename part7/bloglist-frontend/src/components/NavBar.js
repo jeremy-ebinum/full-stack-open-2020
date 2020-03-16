@@ -24,10 +24,18 @@ const NavBar = ({ auth, isLoading, logout }) => {
       <div className="c-navbar__content">
         <span className="c-navbar__brand">Blog List</span>
         <div className="c-navbar__routes">
-          <Link to="/" className="c-navbar__link">
+          <Link
+            to="/"
+            className="c-navbar__link"
+            data-testid={testIDs.NavBar_blogsLink}
+          >
             Blogs
           </Link>
-          <Link to="/users" className="c-navbar__link">
+          <Link
+            to="/users"
+            className="c-navbar__link"
+            data-testid={testIDs.NavBar_usersLink}
+          >
             Users
           </Link>
         </div>

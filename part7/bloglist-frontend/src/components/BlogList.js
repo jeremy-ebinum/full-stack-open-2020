@@ -8,7 +8,7 @@ export const testIDs = getTestIDs();
 
 const BlogList = ({ hasLoaded, blogsToShow }) => {
   return (
-    <div className="c-blogs__list">
+    <div className="c-blogs__list" data-testid={testIDs.BlogList_container}>
       <h2 className="c-blogs__heading">Blogs</h2>
 
       {hasLoaded && !blogsToShow.length && (
@@ -20,7 +20,7 @@ const BlogList = ({ hasLoaded, blogsToShow }) => {
           key={blog.id}
           to={`/blogs/${blog.id}`}
           className="c-blog-link"
-          data-testid={testIDs[`BlogList_Blog_${blog.id}`]}
+          data-testid={testIDs[`BlogList_blogLink_${blog.id}`]}
         >
           {blog.title}
         </Link>

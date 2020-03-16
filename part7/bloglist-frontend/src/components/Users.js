@@ -1,11 +1,12 @@
 import React, { useLayoutEffect } from "react";
 import PropTypes from "prop-types";
-
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { getTestIDs } from "../helpers/testHelper";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";
+
+export const testIDs = getTestIDs();
 
 const Users = ({ users, hasLoaded }) => {
   useLayoutEffect(() => {
@@ -40,6 +41,7 @@ const Users = ({ users, hasLoaded }) => {
                         <Link
                           to={`/users/${user.id}`}
                           className="u-stretched-link c-table__data-link"
+                          data-testid={testIDs[`Users_userLink_${user.id}`]}
                         >
                           {user.name}
                         </Link>

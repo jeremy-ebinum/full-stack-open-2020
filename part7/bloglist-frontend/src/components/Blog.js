@@ -4,11 +4,14 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { likeBlog, deleteBlog } from "../reducers/blogReducer";
+import { getTestIDs } from "../helpers/testHelper";
 import { getTrimmedStr } from "../utils";
 import NavBar from "./NavBar";
 import NotificationList from "./NotificationList";
 import NotFound from "./NotFound";
 import Comments from "./Comments";
+
+export const testIDs = getTestIDs();
 
 const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
   useLayoutEffect(() => {
@@ -54,12 +57,16 @@ const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
                 href={blog.url}
                 target="_blank"
                 rel="noreferrer noopener"
+                data-testid={testIDs.Blog_urlAnchor}
               >
                 Visit Blog
               </a>
 
               <div className="c-blog__likes">
-                <span className="c-blog__likes-txt">
+                <span
+                  className="c-blog__likes-txt"
+                  data-testid={testIDs.Blog_likesTxt}
+                >
                   {blog.likes}
                   {blog.likes !== 1 ? " Likes" : " Like"}
                 </span>
@@ -68,6 +75,7 @@ const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
                     type="button"
                     onClick={like}
                     className="c-btn c-btn--info"
+                    data-testid={testIDs.Blog_likeButton}
                   >
                     Like
                   </button>
@@ -87,6 +95,7 @@ const Blog = ({ blog, belongsToUser, hasLoaded, likeBlog, deleteBlog }) => {
                       type="button"
                       onClick={remove}
                       className="c-btn c-btn--danger"
+                      data-testid={testIDs.Blog_deleteButton}
                     >
                       Delete
                     </button>

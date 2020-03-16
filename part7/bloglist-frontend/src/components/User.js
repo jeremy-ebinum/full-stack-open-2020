@@ -36,6 +36,9 @@ const User = ({ user, hasLoaded }) => {
             </h2>
             <div className="c-user__blogs">
               <h3 className="c-user__blogs-heading">Added Blogs</h3>
+              {!user.blogs.length && (
+                <p className="u-lead">This user has not created any blogs</p>
+              )}
               {user.blogs.map((blog) => (
                 <Link
                   key={blog.id}
