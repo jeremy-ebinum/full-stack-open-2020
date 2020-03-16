@@ -1,4 +1,5 @@
 const express = require("express");
+const expressStaticGzip = require("express-static-gzip");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const logger = require("./utils/logger");
@@ -28,9 +29,20 @@ app.use(bodyParser.json());
 app.use(middleware.morganLogger());
 app.use(middleware.tokenExtractor);
 
+app.use(
+  expressStaticGzip("build/", {
+    enableBrotli: true,
+    orderPreference: ["br", "gz"],
+    setHeaders: (res) => {
+      res.setHeader("Cache-Control", "public, max-age=31536000");
+    },
+  })
+);
+
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/blogs", blogsRouter);
+
 app.use(middleware.unknownRouteHandler);
 
 app.use(middleware.errorHandler);

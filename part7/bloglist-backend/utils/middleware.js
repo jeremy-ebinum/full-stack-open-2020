@@ -1,3 +1,5 @@
+const fs = require("fs");
+const nodePath = require("path");
 const morgan = require("morgan");
 const logger = require("./logger");
 const { ErrorHelper, handleError } = require("./error_helper");
@@ -35,9 +37,16 @@ const tokenExtractor = (req, res, next) => {
   next();
 };
 
-const unknownRouteHandler = (req) => {
-  const messages = [`There is no resource at ${req.url}`];
-  throw new ErrorHelper(404, "Not Found", messages);
+const unknownRouteHandler = (req, res) => {
+  const documentPath = nodePath.join(__dirname, "../build", "index.html");
+  const documentExists = fs.existsSync(documentPath);
+
+  if (documentExists) {
+    res.sendFile(documentPath);
+  } else {
+    const messages = [`There is no resource at ${req.url}`];
+    throw new ErrorHelper(404, "Not Found", messages);
+  }
 };
 
 const handleExpressCastErrors = (err, res) => {
