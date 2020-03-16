@@ -1,7 +1,7 @@
 import React from "react";
 
 const WeatherInfo = ({ condition }) => {
-  const getWindCompassDirection = inputDegree => {
+  const getWindCompassDirection = (inputDegree) => {
     const dirs1 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE"];
     const dirs2 = ["S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"];
     // Create 16 sectors of 22.5deg each + one extra for 0deg and 360deg North

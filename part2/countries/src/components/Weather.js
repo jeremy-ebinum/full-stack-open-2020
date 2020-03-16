@@ -10,7 +10,7 @@ const Weather = ({ query }) => {
 
   const params = {
     q: query,
-    APPID: key
+    APPID: key,
   };
 
   const updateCondition = () => {
@@ -21,22 +21,22 @@ const Weather = ({ query }) => {
     axios
       .get("http://api.openweathermap.org/data/2.5/weather", {
         params: params,
-        cancelToken: source.token
+        cancelToken: source.token,
       })
-      .catch(error => {
+      .catch((error) => {
         if (axios.isCancel(error)) {
           console.log("Request canceled", error.message);
         } else {
           throw error;
         }
       })
-      .then(response => {
+      .then((response) => {
         if (response.statusText === "OK") {
           setCondition(response.data);
           setHasCondition(true);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.config);
       });
 

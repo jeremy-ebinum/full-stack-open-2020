@@ -1,6 +1,6 @@
 import React from "react";
 
-const Filter = props => {
+const Filter = (props) => {
   return (
     <div>
       <label>by Name: </label>

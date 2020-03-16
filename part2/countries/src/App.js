@@ -9,50 +9,50 @@ function App() {
   const [hasFilter, setHasFilter] = useState(false);
 
   const fetchCountries = () => {
-    axios.get("https://restcountries.eu/rest/v2/all").then(response => {
+    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
       setCountries(response.data);
     });
   };
 
   useEffect(fetchCountries, []);
 
-  const filteredCountries = countries.filter(country => {
+  const filteredCountries = countries.filter((country) => {
     return country.name.toLowerCase().includes(countryFilter.toLowerCase());
   });
 
-  const hasExactMatch = filteredCountries.some(country => {
+  const hasExactMatch = filteredCountries.some((country) => {
     return country.name.toLowerCase() === countryFilter.toLowerCase();
   });
 
   let exactFilteredCountries;
   if (hasExactMatch) {
-    exactFilteredCountries = filteredCountries.filter(country => {
+    exactFilteredCountries = filteredCountries.filter((country) => {
       return country.name.toLowerCase() === countryFilter.toLowerCase();
     });
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setCountryFilter(event.target.value);
 
     if (event.target.value === "") setHasFilter(false);
     else setHasFilter(true);
   };
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setCountryFilter(event.target.id);
   };
 
   return (
     <div>
       <h1>Data For Countries</h1>
-      <Filter onChange={event => handleChange(event)} value={countryFilter} />
+      <Filter onChange={(event) => handleChange(event)} value={countryFilter} />
       {hasFilter && hasExactMatch && (
         <Countries countries={exactFilteredCountries} />
       )}
       {hasFilter && !hasExactMatch && (
         <Countries
           countries={filteredCountries}
-          handleClick={event => handleClick(event)}
+          handleClick={(event) => handleClick(event)}
         />
       )}
     </div>

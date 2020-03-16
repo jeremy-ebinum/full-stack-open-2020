@@ -2,7 +2,7 @@ import React from "react";
 import Weather from "./Weather";
 
 const Country = ({ country }) => {
-  const languagesList = country.languages.map(lang => {
+  const languagesList = country.languages.map((lang) => {
     return <li key={lang.iso639_2}>{lang.name}</li>;
   });
 
