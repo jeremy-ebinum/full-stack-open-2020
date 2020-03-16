@@ -9,12 +9,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const config = (env, argv) => {
-  const { mode } = argv;
+  const { mode, analyze } = argv;
 
   const isDevMode = mode === "development";
   const isProdMode = mode === "production";
-  const isTestEnv = env.NODE_ENV === "test";
 
+  const isTestEnv = process.env.NODE_ENV === "test";
+
+  let stats = "none";
   let plugins = [
     new MiniCssExtractPlugin({
       filename: isProdMode
@@ -23,13 +25,20 @@ const config = (env, argv) => {
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public/index.html"),
+      favicon: path.resolve(__dirname, "public/favicon.ico"),
     }),
   ];
 
-  if (mode === "production") {
+  if (isProdMode) {
     plugins = plugins.concat(
-      new BundleAnalyzerPlugin(),
       new CleanWebpackPlugin(),
+      new CompressionPlugin({
+        filename: "[path].gz[query]",
+        algorithm: "gzip",
+        test: /\.js$|\.css$|\.html$/,
+        threshold: 10240,
+        minRatio: 0.8,
+      }),
       new CompressionPlugin({
         filename: "[path].br[query]",
         algorithm: "brotliCompress",
@@ -37,9 +46,15 @@ const config = (env, argv) => {
         compressionOptions: { level: 11 },
         threshold: 10240,
         minRatio: 0.8,
-        deleteOriginalAssets: false,
       })
     );
+  } else if (isDevMode) {
+    stats = "minimal";
+  }
+
+  if (analyze) {
+    stats = "normal";
+    plugins = plugins.concat([new BundleAnalyzerPlugin()]);
   }
 
   return {
@@ -49,6 +64,9 @@ const config = (env, argv) => {
       filename: isDevMode ? "[name].js" : "[name].[chunkHash:8].js",
       publicPath: "/",
     },
+    mode,
+    stats,
+    plugins,
     resolve: {
       alias: isDevMode
         ? {
@@ -56,7 +74,6 @@ const config = (env, argv) => {
           }
         : {},
     },
-    stats: isDevMode ? "minimal" : "normal",
     devServer: {
       contentBase: path.resolve(__dirname, "public"),
       contentBasePublicPath: "/",
@@ -89,8 +106,6 @@ const config = (env, argv) => {
           "X-Requested-With, content-type, Authorization",
       },
     },
-    mode,
-    plugins,
     devtool: isProdMode ? false : "eval-source-map",
     optimization: {
       nodeEnv: isTestEnv ? "test" : mode,

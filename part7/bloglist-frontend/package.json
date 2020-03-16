@@ -75,10 +75,11 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode=development",
-    "start:test": "webpack-dev-server --env.NODE_ENV=test --mode=development",
-    "build": "webpack --mode=production",
+    "start:test": "cross-env NODE_ENV=test webpack-dev-server --mode=development",
+    "build": "cross-env NODE_ENV=production webpack --mode=production",
+    "build:analyze": "npm run build -- --analyze",
     "test": "set CI=true && jest --verbose",
-    "test:coverage": "test -- --coverage",
+    "test:coverage": "npm run test -- --coverage",
     "cypress:open": "cypress open",
     "lint": "eslint ."
   },
