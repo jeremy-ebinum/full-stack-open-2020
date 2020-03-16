@@ -1,8 +1,8 @@
-# Full Stack Open 2019 - Exercise Solutions - Bloglist
+# Full Stack Open 2020 - Exercise Solutions - Bloglist
 
 ## Part 5 - [Testing React apps, custom hooks](https://fullstackopen.com/en/part5)
 
-Requires the [backend from Part 4](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part4/bloglist-backend) to be running. However, tests can be run without it.
+Requires the [backend from Part 4](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part4/bloglist-backend) to be running. However, tests can be run without it.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

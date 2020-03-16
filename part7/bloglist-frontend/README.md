@@ -1,8 +1,8 @@
-# Full Stack Open 2019 - Exercise Solutions - Bloglist Frontend
+# Full Stack Open 2020 - Exercise Solutions - Bloglist Frontend
 
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
-Requires [bloglist-backend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/bloglist-backend) to be running. However, tests except the cypress E2E tests can be run without it.
+Requires [bloglist-backend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/bloglist-backend) to be running. However, tests except the cypress E2E tests can be run without it.
 
 ## Available Scripts
 

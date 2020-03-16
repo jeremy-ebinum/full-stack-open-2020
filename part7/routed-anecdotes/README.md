@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Exercise Solutions - Routed Anecdotes
+# Full Stack Open 2020 - Exercise Solutions - Routed Anecdotes
 
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 

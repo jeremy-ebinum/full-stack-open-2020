@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Exercise Solutions - Ultimate Hooks
+# Full Stack Open 2020 - Exercise Solutions - Ultimate Hooks
 
 ## Part 5 - [Testing React apps, custom hooks](https://fullstackopen.com/en/part5)
 

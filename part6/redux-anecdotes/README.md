@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Exercise Solutions - redux-anecdotes
+# Full Stack Open 2020 - Exercise Solutions - redux-anecdotes
 
 ## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
 

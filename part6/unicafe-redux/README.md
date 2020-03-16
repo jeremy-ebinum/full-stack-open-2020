@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Exercise Solutions - unicafe-redux
+# Full Stack Open 2020 - Exercise Solutions - unicafe-redux
 
 ## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
 

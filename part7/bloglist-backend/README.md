@@ -1,11 +1,11 @@
-# Full Stack Open 2019 - Exercise Solutions - Bloglist Backend
+# Full Stack Open 2020 - Exercise Solutions - Bloglist Backend
 
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
 A mongodb uri, secret_key and port need to be defined in the .env file in the project root directory\
 See .env.example
 
-Serves [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/bloglist-frontend) if built with `npm run build:ui`
+Serves [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/bloglist-frontend) if built with `npm run build:ui`
 
 ## Routes
 
@@ -39,7 +39,7 @@ Runs the server in watch mode using nodemon. Changes to code will relaunch the s
 
 ### `npm run build:ui`
 
-Updates the build/ folder with the react ui from [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/bloglist-frontend)
+Updates the build/ folder with the react ui from [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/bloglist-frontend)
 
 ### `npm test`
 

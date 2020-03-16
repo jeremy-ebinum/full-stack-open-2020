@@ -1,4 +1,4 @@
-# Full Stack Open 2019 - Exercise Solutions
+# Full Stack Open 2020 - Exercise Solutions
 
 ## Part 4 - [Testing Express servers, user administration](https://fullstackopen.com/en/part4)
 
