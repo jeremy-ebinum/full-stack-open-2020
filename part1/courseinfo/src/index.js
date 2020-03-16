@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 
-const Header = props => {
+const Header = (props) => {
   return <h1>{props.course.name}</h1>;
 };
 
-const Part = props => {
+const Part = (props) => {
   return (
     <p>
       {props.name} {props.excercises}
@@ -13,8 +14,7 @@ const Part = props => {
   );
 };
 
-const Content = props => {
-  console.log(props);
+const Content = (props) => {
   return (
     <div>
       <Part name={props.parts[0].name} excercises={props.parts[0].exercises} />
@@ -24,7 +24,7 @@ const Content = props => {
   );
 };
 
-const Total = props => {
+const Total = (props) => {
   return (
     <p>
       Number of excercises{" "}
@@ -41,17 +41,17 @@ const App = () => {
     parts: [
       {
         name: "Fundamentals of React",
-        exercises: 10
+        exercises: 10,
       },
       {
         name: "Using props to pass data",
-        exercises: 7
+        exercises: 7,
       },
       {
         name: "State of a component",
-        exercises: 14
-      }
-    ]
+        exercises: 14,
+      },
+    ],
   };
 
   return (
