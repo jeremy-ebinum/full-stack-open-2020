@@ -2,6 +2,14 @@
 
 This repository contains exercise solutions to the 2019 edition of the Full Stack Open course from the University of Helsinki.
 
+## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
+
+- [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/bloglist-frontend) - Extends the functionality and design of the solution from part 5
+- [bloglist-backend](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/bloglist-backend) - Extends the functionality and design of the solution from part 4
+- [routed-anecdotes](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/routed-anecdotes) - Practice routing React app url/location
+
+[View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part7/)
+
 ## Part 6 - [State management with Redux](https://fullstackopen.com/en/part6)
 
 - [unicafe-redux](https://github.com/jeremy-ebinum/full-stack-open-2019/tree/master/part6/unicafe-redux) - rewrites the core of the unicafe exercise from part 1 using Redux state management
