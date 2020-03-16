@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 
-const Heading = props => <h1>{props.text}</h1>;
+const Heading = (props) => <h1>{props.text}</h1>;
 
-const Button = props => <button onClick={props.onClick}>{props.text}</button>;
+const Button = (props) => <button onClick={props.onClick}>{props.text}</button>;
 
-const Statistic = props => {
+const Statistic = (props) => {
   return (
     <tr>
       <td>{props.name}</td>
@@ -14,7 +15,7 @@ const Statistic = props => {
   );
 };
 
-const Statistics = props => {
+const Statistics = (props) => {
   if (!props.hasFeedback) {
     return <p>No feedback has been given</p>;
   }
@@ -79,12 +80,12 @@ const App = () => {
     [
       { number: good, weight: 1 },
       { number: neutral, weight: 0 },
-      { number: bad, weight: -1 }
+      { number: bad, weight: -1 },
     ],
     total
   );
 
-  const handleButtonClick = type => {
+  const handleButtonClick = (type) => {
     setHasFeedback(true);
 
     switch (type) {
@@ -109,7 +110,7 @@ const App = () => {
     bad: bad,
     total: total,
     averageScore: averageScore,
-    percentPositive: percentPositive
+    percentPositive: percentPositive,
   };
 
   return (
