@@ -1,6 +1,6 @@
 import React from "react";
 
-const Person = props => {
+const Person = (props) => {
   return (
     <div className="c-person">
       <span className="c-person__detail">
@@ -25,7 +25,7 @@ const Person = props => {
 };
 
 const Persons = ({ persons, handleClick }) => {
-  const personsList = persons.map(person => {
+  const personsList = persons.map((person) => {
     return (
       <Person
         key={person.id}

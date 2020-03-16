@@ -1,6 +1,6 @@
 import React from "react";
 
-const PersonForm = props => {
+const PersonForm = (props) => {
   return (
     <div>
       <form className="c-person-form" onSubmit={props.handleSubmit}>

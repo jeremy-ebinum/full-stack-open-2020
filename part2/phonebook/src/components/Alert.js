@@ -5,7 +5,7 @@ const Alert = ({ timeoutFunc, id, type, message }) => {
   const alertTypes = {
     error: "c-alert--error",
     success: "c-alert--success",
-    info: "c-alert--info"
+    info: "c-alert--info",
   };
 
   if (!alertTypes[type]) throw new Error("Invalid Alert Type");

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Filter = props => {
+const Filter = (props) => {
   return (
     <div className="c-filter">
       <h3 className="c-filter__heading">Search Contacts</h3>
