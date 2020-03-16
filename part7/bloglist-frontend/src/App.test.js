@@ -94,7 +94,7 @@ describe("<App />", () => {
 
       const { container, queryByTestId } = renderApp();
 
-      expect(queryByTestId(homeTestIDs.blogs)).not.toBeInTheDocument();
+      expect(queryByTestId(homeTestIDs.Home_blogs)).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent(blogs[0].title);
       expect(container).not.toHaveTextContent(blogs[0].author);
     });
@@ -123,7 +123,7 @@ describe("<App />", () => {
       const { findByRole, getByLabelText, getByTestId } = renderApp();
       await findByRole("form");
       const passwordInput = getByLabelText("password");
-      const toggleBtn = getByTestId(loginTestIDs.toggleShowPassword);
+      const toggleBtn = getByTestId(loginTestIDs.Login_toggleShowPassword);
 
       fireEvent.click(toggleBtn);
 
@@ -174,7 +174,7 @@ describe("<App />", () => {
       const notificationRegex = new RegExp(`logged|signed (.*)?${names}`, "i");
 
       await waitForElementToBeRemoved(() => [
-        getByTestId(modalSpinnerTestIDs.modalSpinner),
+        getByTestId(modalSpinnerTestIDs.ModalSpinner_modal),
       ]);
 
       const loginNotification = await findByText(notificationRegex);
@@ -213,7 +213,7 @@ describe("<App />", () => {
 
       const { getByText, findByTestId } = renderApp();
 
-      const navbarSpinner = await findByTestId(navbarTestIDs.spinnerIcon);
+      const navbarSpinner = await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
 
       const blogNodes = await waitForElement(() =>
@@ -238,7 +238,7 @@ describe("<App />", () => {
 
       const { findByText, findByRole, findByTestId } = renderApp();
 
-      const navbarSpinner = await findByTestId(navbarTestIDs.spinnerIcon);
+      const navbarSpinner = await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
 
       const blog = await findByText(blogs[0].title);
@@ -300,7 +300,7 @@ describe("<App />", () => {
         findByTestId,
       } = renderApp();
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
       await findByText(blogs[0].title);
 
@@ -333,7 +333,7 @@ describe("<App />", () => {
 
       fireEvent.click(addBtn);
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
       await findByText(validNewBlog.title);
     });
@@ -356,7 +356,7 @@ describe("<App />", () => {
       const route = `/blogs/${blogs[0].id}`;
       const { getByText, findByText, findByTestId } = renderApp(route);
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
 
       await findByText(blogs[0].title);
@@ -365,7 +365,7 @@ describe("<App />", () => {
 
       fireEvent.click(likeBtn);
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
       await findByText(blogs[0].title);
 
@@ -391,7 +391,7 @@ describe("<App />", () => {
         route
       );
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
 
       await findByText(blogs[0].title);
@@ -402,7 +402,7 @@ describe("<App />", () => {
 
       fireEvent.click(deleteBtn);
 
-      await findByTestId(navbarTestIDs.spinnerIcon);
+      await findByTestId(navbarTestIDs.Navbar_spinner);
       jest.advanceTimersByTime(1000);
       await wait(() => expect(queryByText(blogs[0].title)).toBe(null));
     });
