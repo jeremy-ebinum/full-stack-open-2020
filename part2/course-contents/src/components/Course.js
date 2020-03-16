@@ -1,10 +1,10 @@
 import React from "react";
 
-const Header = props => {
+const Header = (props) => {
   return <h1>{props.name}</h1>;
 };
 
-const Part = props => {
+const Part = (props) => {
   return (
     <p>
       {props.name} {props.exercises}
@@ -13,7 +13,7 @@ const Part = props => {
 };
 
 const Content = ({ parts }) => {
-  const partsList = parts.map(item => {
+  const partsList = parts.map((item) => {
     return <Part key={item.id} name={item.name} exercises={item.exercises} />;
   });
 
