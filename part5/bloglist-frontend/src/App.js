@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { useUIDSeed } from "react-uid";
 import { getTestIDs } from "./helpers/testHelper";
 import { useField } from "./hooks";
@@ -23,7 +29,11 @@ function App() {
   const [username, resetUsername] = useField({ placeholder: "Enter Username" });
   const [password, resetPassword] = useField({ placeholder: "Enter Password" });
 
-  const [fetchError, setFetchError] = useState(null);
+  // const [hasFetchedBlogs, setHasFetchedBlogs] = useState(false);
+  const [fetchState, setFetchState] = useState({
+    error: null,
+    hasRun: false,
+  });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,7 +69,7 @@ function App() {
   );
 
   // Get persisted logged in user from localStorage
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loggedInBloglistUser = localStorage.getItem("loggedInBloglistUser");
     if (loggedInBloglistUser) {
       const storedUser = JSON.parse(loggedInBloglistUser);
@@ -71,17 +81,21 @@ function App() {
   // Fetch blogs from backend on initial app load
   useEffect(() => {
     const setInitialBlogs = async () => {
-      setFetchError(null);
+      // setFetchError(null);
       setIsLoading(true);
 
       try {
         const initialBlogs = await blogsService.getAll();
         setBlogs(initialBlogs);
+        setFetchState({ error: null, hasRun: true });
       } catch (error) {
         if (error.response.status >= 400 && error.response.status < 500) {
-          setFetchError(error.response.data);
+          setFetchState({ error: error.response.data, hasRun: true });
         } else {
-          setFetchError({ message: "Oops! Something went wrong" });
+          setFetchState({
+            error: { message: "Oops! Something went wrong" },
+            hasRun: true,
+          });
         }
       } finally {
         setIsLoading(false);
@@ -93,13 +107,15 @@ function App() {
     }
   }, [user]);
 
-  if (fetchError) {
-    queueAlerts([{ type: "error", message: fetchError.message }]);
-    setFetchError(null);
+  if (fetchState.error) {
+    queueAlerts([{ type: "error", message: fetchState.error.message }]);
+    setFetchState((prevState) => {
+      return { ...prevState, error: null };
+    });
   }
 
   // Handle DOM updates depending on if the login or blogs page is shown
-  useEffect(() => {
+  useLayoutEffect(() => {
     const rootStyle = document.documentElement.style;
 
     const handleScroll = () => {
@@ -339,7 +355,7 @@ function App() {
               {blogForm()}
               <BlogList
                 blogs={blogsSortedByLikesDesc}
-                isLoading={isLoading}
+                fetchHasRun={fetchState.hasRun}
                 handleLike={likeBlog}
                 handleDelete={deleteBlog}
               />

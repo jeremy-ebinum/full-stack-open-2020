@@ -55,7 +55,11 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         </a>
 
         <div className="c-blog__hide">
-          <button className="c-btn" type="button" onClick={toggleShowDetails}>
+          <button
+            className="c-btn c-btn--transparent"
+            type="button"
+            onClick={toggleShowDetails}
+          >
             Hide
           </button>
         </div>
@@ -108,14 +112,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
 };
 
 Blog.propTypes = {
-  blog: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object,
-      PropTypes.array,
-    ])
-  ).isRequired,
+  blog: PropTypes.objectOf(PropTypes.any).isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired,
 };
