@@ -49,7 +49,7 @@ describe("<Blog />", () => {
   });
 
   test("displays full details when clicked", () => {
-    const component = render(
+    const { getByText, container } = render(
       <UserContext.Provider value={user}>
         <Blog
           blog={blog}
@@ -59,15 +59,16 @@ describe("<Blog />", () => {
       </UserContext.Provider>
     );
 
-    const { getByRole } = component;
-    const blogContainer = getByRole("button");
+    const showButton = getByText(/show|view/i, {
+      selector: "button",
+    });
 
-    fireEvent.click(blogContainer);
+    fireEvent.click(showButton);
 
-    expect(component.container).toHaveTextContent(blog.title);
-    expect(component.container).toHaveTextContent(blog.author);
-    expect(component.container).toHaveTextContent("Visit Blog");
-    expect(component.container).toHaveTextContent(`${blog.likes}`);
-    expect(component.container).toHaveTextContent(userRegExp);
+    expect(container).toHaveTextContent(blog.title);
+    expect(container).toHaveTextContent(blog.author);
+    expect(container).toHaveTextContent("Visit Blog");
+    expect(container).toHaveTextContent(`${blog.likes}`);
+    expect(container).toHaveTextContent(userRegExp);
   });
 });

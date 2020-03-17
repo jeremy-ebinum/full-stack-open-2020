@@ -263,8 +263,11 @@ describe("<App />", () => {
       );
 
       const blogToLike = getByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
+      const showButton = within(blogToLike).getByText(/show|view/i, {
+        selector: "button",
+      });
+      fireEvent.click(showButton);
 
-      fireEvent.click(blogToLike);
       const likesRegex = new RegExp(`(\\d+)\\s*like(s)?`, "i");
       const likesTxt = within(blogToLike).getByText(likesRegex);
       const likeBtn = within(blogToLike).getByText(/like/i, {
@@ -298,7 +301,10 @@ describe("<App />", () => {
 
       const blogToDelete = getByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
 
-      fireEvent.click(blogToDelete);
+      const showButton = within(blogToDelete).getByText(/show|view/i, {
+        selector: "button",
+      });
+      fireEvent.click(showButton);
 
       const deleteBtn = within(blogToDelete).getByText(/delete|remove/i, {
         selector: "button",

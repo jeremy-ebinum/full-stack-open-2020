@@ -549,7 +549,6 @@ body {
   padding: 0.25rem;
   border-radius: 2px;
   width: fit-content;
-  cursor: pointer;
 }
 
 .c-blog__title {
@@ -563,6 +562,14 @@ body {
 .c-blog__author {
   margin-right: 0.5rem;
   font-weight: 300;
+}
+
+.c-blog__show,
+.c-blog__hide {
+  font-family: "Roboto";
+  font-size: 0.8rem;
+  width: 50px;
+  height: 20px;
 }
 
 .c-blog__link {

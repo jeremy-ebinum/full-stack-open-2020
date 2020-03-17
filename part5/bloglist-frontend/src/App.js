@@ -119,24 +119,12 @@ function App() {
       }
     };
 
-    const handleBlogToggleConflicts = (event) => {
-      if (!event.target.classList.contains("js-blog")) return;
-
-      if (event.keyCode === 32) {
-        event.preventDefault();
-      }
-    };
-
     if (user) {
       rootStyle.setProperty("--body-bg-color", "var(--light-color)");
       window.addEventListener("scroll", handleScroll);
-      window.addEventListener("keydown", handleBlogToggleConflicts);
     } else {
       rootStyle.setProperty("--body-bg-color", "var(--primary-color-faded)");
     }
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("keydown", handleBlogToggleConflicts);
   }, [user]);
 
   const handleApiErrors = useCallback(

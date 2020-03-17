@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { getTestIDs } from "../helpers/testHelper";
 import UserContext from "../UserContext";
 
@@ -14,18 +14,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
   const belongsToUser = blog.user.username === user.username;
 
   const toggleShowDetails = (event) => {
-    const isBlogLink = event.target.classList.contains("js-blogLink");
-    const isLikeButton = event.target.classList.contains("js-likeButton");
-    const isDeleteButton = event.target.classList.contains("js-deleteButton");
-
-    if (isBlogLink || isLikeButton || isDeleteButton) return;
-    setShowDetails(!showDetails);
-  };
-
-  const focusBlog = (event) => {
-    if (event.keyCode === 13 || event.keyCode === 32) {
-      event.target.click();
-    }
+    setShowDetails((prevState) => !prevState);
   };
 
   const displayBlog = () => {
@@ -37,7 +26,11 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
             {" — "}
             {blog.author}
           </span>
-          <FontAwesomeIcon className="c-blog__expandicon" icon={faAngleDown} />
+          <div className="c-blog__show">
+            <button className="c-btn" type="button" onClick={toggleShowDetails}>
+              View
+            </button>
+          </div>
         </>
       );
     }
@@ -59,6 +52,12 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         >
           Visit Blog
         </a>
+
+        <div className="c-blog__hide">
+          <button className="c-btn" type="button" onClick={toggleShowDetails}>
+            Hide
+          </button>
+        </div>
 
         <div className="c-blog__likes">
           <span className="c-blog__likes-txt">
@@ -98,15 +97,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
   };
 
   return (
-    <div
-      role="button"
-      aria-expanded={showDetails ? "true" : "false"}
-      tabIndex={0}
-      onKeyDown={(event) => focusBlog(event)}
-      onClick={(event) => toggleShowDetails(event)}
-      className="c-blog js-blog"
-      data-testid={testIDs[`blog_${blog.id}`]}
-    >
+    <div className="c-blog js-blog" data-testid={testIDs[`blog_${blog.id}`]}>
       {displayBlog()}
     </div>
   );
@@ -114,7 +105,12 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
 
 Blog.propTypes = {
   blog: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object])
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object,
+      PropTypes.array,
+    ])
   ).isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired,
