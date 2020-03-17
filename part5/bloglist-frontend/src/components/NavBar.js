@@ -32,6 +32,7 @@ const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
               type="button"
               onClick={handleLogout}
               className="c-btn c-btn--light-outline"
+              data-testid={testIDs.NavBar_logoutBtn}
             >
               Logout
             </button>

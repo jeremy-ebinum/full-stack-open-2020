@@ -57,6 +57,12 @@ describe("App ", function() {
       login(user.username, user.password);
     });
 
+    it("user can be logged out", function() {
+      cy.get("[data-testid='NavBar_logoutBtn']").click();
+      cy.contains(/(logged|signed) out/i);
+      cy.get("[data-testid='Login_form']").should("be.visible");
+    });
+
     it("A blog can be created", function() {
       cy.server();
       cy.route("/api/blogs").as("initBlogs");
@@ -105,6 +111,61 @@ describe("App ", function() {
         cy.get("@blogLikesTxt").should("contain.text", blogLikes);
         cy.get(`[data-testid='Blog_${blogId}_likeButton']`).click();
         cy.get("@blogLikesTxt").should("contain.text", blogLikes + 1);
+      });
+
+      it("can be deleted by the user who created it", function() {
+        cy.get(`[data-testid="Blog_${blogId}"]`).should("exist");
+        cy.get(`[data-testid='Blog_${blogId}_viewButton']`).click();
+        cy.get(`[data-testid='Blog_${blogId}_deleteButton']`).click();
+        cy.get(`[data-testid="Blog_${blogId}"]`).should("not.exist");
+      });
+
+      it("can not be deleted by other users", function() {
+        cy.get("[data-testid='NavBar_logoutBtn']").click();
+
+        let otherUser = {
+          name: "Other Test User",
+          username: "other_test_username",
+          password: "other_test_password",
+        };
+
+        cy.request("POST", "http://localhost:3003/api/users/", otherUser);
+
+        cy.request("POST", "http://localhost:3003/api/login/", {
+          username: otherUser.username,
+          password: otherUser.password,
+        }).then((res) => {
+          const { token } = res.body;
+
+          login(otherUser.username, otherUser.password);
+
+          cy.server();
+          cy.route("/api/blogs").as("initBlogs");
+          cy.wait(["@initBlogs"]);
+
+          cy.get(`[data-testid='Blog_${blogId}']`).within(() => {
+            cy.get(`[data-testid='Blog_${blogId}_viewButton']`).click();
+            cy.get(`[data-testid='Blog_${blogId}_deleteButton']`).should(
+              "not.exist"
+            );
+          });
+
+          const options = {
+            url: `http://localhost:3003/api/blogs/${blogId}`,
+            method: "DELETE",
+            headers: {
+              "User-Agent": "request",
+              Authorization: `Bearer ${token}`,
+            },
+            failOnStatusCode: false,
+          };
+
+          cy.request(options).then((res) => {
+            expect(res.status).to.eq(403);
+
+            cy.get(`[data-testid='Blog_${blogId}']`).should("exist");
+          });
+        });
       });
     });
   });
