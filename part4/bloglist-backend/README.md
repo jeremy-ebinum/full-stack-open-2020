@@ -15,18 +15,29 @@ See .env.example
 
 ## Routes
 
-The server supports the following routes
+The server supports the following routes:
 
 - /api/blogs - for blogs resources (GET, POST)
 - /api/blogs/:id - for blogs members (GET, PUT, DELETE)
 - /api/users - for users resources (GET, POST)
 - /api/login - for users login (POST)
 
+Additional routes with NODE_ENV=test:
+
+- /api/testing/reset - to clear the database (POST)
+- /api/testing/blogs - to fetch blogs in database (GET)
+- /api/testing/users - to fetch users in database (GET)
+
 ## Available Scripts
 
 ### `npm start`
 
 Runs the server on the defined port.
+
+### `npm run start:test`
+
+Runs the server with configurations to ease End-to-End testing/
+Sets NODE_ENV to test and enables optional routes and a mocked db
 
 ### `npm run watch`
 

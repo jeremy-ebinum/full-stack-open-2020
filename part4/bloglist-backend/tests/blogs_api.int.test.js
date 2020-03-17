@@ -12,7 +12,7 @@ const api = supertest(app);
 jest.setTimeout(60000);
 const globals = {};
 
-beforeAll(async () => mockDb.connect());
+// beforeAll(async () => mockDb.connect());
 
 beforeEach(async () => {
   await mockDb.clearDatabase();
