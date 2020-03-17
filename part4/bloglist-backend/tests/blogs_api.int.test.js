@@ -17,8 +17,8 @@ beforeAll(async () => mockDb.connect());
 beforeEach(async () => {
   await mockDb.clearDatabase();
 
-  const newUsers = helper.initialUsers.map(user => new User(user));
-  const userPromises = newUsers.map(user => user.save());
+  const newUsers = helper.initialUsers.map((user) => new User(user));
+  const userPromises = newUsers.map((user) => user.save());
   await Promise.all(userPromises);
 
   const savedUsers = await helper.getUsersInDb();
@@ -27,12 +27,12 @@ beforeEach(async () => {
 
   const userForAllBlogs = {
     username: savedUsers[0].username,
-    id: savedUsers[0].id
+    id: savedUsers[0].id,
   };
 
   const userForNoBlogs = {
     username: savedUsers[1].username,
-    id: savedUsers[1].id
+    id: savedUsers[1].id,
   };
 
   const token = jwt.sign(userForAllBlogs, process.env.SECRET_KEY);
@@ -45,9 +45,9 @@ beforeEach(async () => {
   const validUserId = savedUsers[0].id;
 
   const newBlogs = helper.initialBlogs.map(
-    blog => new Blog({ ...blog, user: validUserId })
+    (blog) => new Blog({ ...blog, user: validUserId })
   );
-  const blogsPromises = newBlogs.map(blog => blog.save());
+  const blogsPromises = newBlogs.map((blog) => blog.save());
   await Promise.all(blogsPromises);
 });
 
@@ -139,7 +139,7 @@ describe("Sending a user: POST /api/users", () => {
     const userToSave = {
       username: "admin",
       name: "Admin",
-      password: "admin"
+      password: "admin",
     };
 
     await api
@@ -151,7 +151,7 @@ describe("Sending a user: POST /api/users", () => {
     const usersAtEnd = await helper.getUsersInDb();
     expect(usersAtEnd.length).toBe(helper.initialUsers.length + 1);
 
-    const usernames = usersAtEnd.map(user => user.username);
+    const usernames = usersAtEnd.map((user) => user.username);
     expect(usernames).toContain(userToSave.username);
   });
 });
@@ -162,7 +162,7 @@ describe("Logging in a user: POST /api/login", () => {
     const fakeUsername = "emanresu";
     const fakePassword = "drowssap";
 
-    const isNotValidCreds = helper.initialUsers.every(user => {
+    const isNotValidCreds = helper.initialUsers.every((user) => {
       return user.username !== fakeUsername && user.password !== fakePassword;
     });
 
@@ -252,7 +252,7 @@ describe("Fetching specific blog member: GET /api/blogs/id", () => {
         url: blogToView.url,
         likes: blogToView.likes,
         id: blogToView.id,
-        user: blogToView.user.toString()
+        user: blogToView.user.toString(),
       })
     );
   });
@@ -303,7 +303,7 @@ describe("Sending a blog: POST /api/blogs", () => {
 
       const blogsAtEnd = await helper.getBlogsInDb();
       expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1);
-      const blogIds = blogsAtEnd.map(blog => blog.id);
+      const blogIds = blogsAtEnd.map((blog) => blog.id);
       expect(blogIds).toContain(response.body.id);
     });
 
@@ -380,7 +380,7 @@ describe("Deleting specific blog member: DELETE /api/blogs/id", () => {
       .expect(204);
 
     const blogsAtEnd = await helper.getBlogsInDb();
-    const blogIds = blogsAtEnd.map(blog => blog.id);
+    const blogIds = blogsAtEnd.map((blog) => blog.id);
     expect(blogIds).not.toContain(blogToDelete.id);
   });
 });
@@ -444,12 +444,12 @@ describe("Replacing specific blog member: PUT /api/blogs/id", () => {
       .expect(200);
 
     const blogsAtEnd = await helper.getBlogsInDb();
-    const replacedBlog = blogsAtEnd.filter(b => b.id === blogToReplace.id)[0];
+    const replacedBlog = blogsAtEnd.filter((b) => b.id === blogToReplace.id)[0];
     expect(replacedBlog.likes).toBe(replacement.likes);
   });
 });
 
 afterAll(async () => {
   await mockDb.closeDatabase();
-  await new Promise(resolve => setTimeout(() => resolve(), 0)); // avoid jest open handle error
+  await new Promise((resolve) => setTimeout(() => resolve(), 0)); // avoid jest open handle error
 });

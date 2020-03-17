@@ -3,20 +3,20 @@ const usersRouter = require("express").Router();
 const { ErrorHelper } = require("../utils/error_helper");
 const User = require("../models/user");
 
-const validateRequestBody = body => {
+const validateRequestBody = (body) => {
   if (!body.username || !body.password) {
     throw new ErrorHelper(400, "Bad Request", ["Username or Password missing"]);
   }
 
   if (body.username.length < 3) {
     throw new ErrorHelper(422, "Validation Error", [
-      "Username must be at least (3) characters long"
+      "Username must be at least (3) characters long",
     ]);
   }
 
   if (body.password.length < 3) {
     throw new ErrorHelper(422, "Validation Error", [
-      "Password must be at least (3) characters long"
+      "Password must be at least (3) characters long",
     ]);
   }
 };
@@ -26,7 +26,7 @@ usersRouter.get("/", async (req, res, next) => {
     const users = await User.find({}).populate("blogs", {
       title: 1,
       url: 1,
-      author: 1
+      author: 1,
     });
     res.json(users);
   } catch (err) {
@@ -45,7 +45,7 @@ usersRouter.post("/", async (req, res, next) => {
     const user = new User({
       username: body.username,
       name: body.name,
-      passwordHash
+      passwordHash,
     });
 
     const savedUser = await user.save();

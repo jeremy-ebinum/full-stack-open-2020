@@ -16,13 +16,13 @@ loginRouter.post("/", async (req, res, next) => {
 
     if (!(user && isCorrectPassword)) {
       throw new ErrorHelper(401, "Authentication Error", [
-        "Invalid username or password"
+        "Invalid username or password",
       ]);
     }
 
     const userForToken = {
       username: user.username,
-      id: user._id
+      id: user._id,
     };
 
     const token = jwt.sign(userForToken, process.env.SECRET_KEY);

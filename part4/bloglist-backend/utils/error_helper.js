@@ -17,7 +17,7 @@ const handleError = (err, res) => {
       statusCode,
       kind,
       message,
-      messages
+      messages,
     });
   } catch (exception) {
     logger.error("IN handleError helper\n", exception.message);
@@ -26,5 +26,5 @@ const handleError = (err, res) => {
 
 module.exports = {
   ErrorHelper,
-  handleError
+  handleError,
 };

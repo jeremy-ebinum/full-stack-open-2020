@@ -1,11 +1,11 @@
 const _ = require("lodash");
 
 // eslint-disable-next-line no-unused-vars
-const dummy = blogs => {
+const dummy = (blogs) => {
   return 1;
 };
 
-const totalLikes = blogs => {
+const totalLikes = (blogs) => {
   const reducer = (sum, blog) => {
     return sum + blog.likes;
   };
@@ -13,7 +13,7 @@ const totalLikes = blogs => {
   return blogs.length === 0 ? 0 : blogs.reduce(reducer, 0);
 };
 
-const favoriteBlog = blogs => {
+const favoriteBlog = (blogs) => {
   const reducer = (acc, blog) => {
     if (blog.likes > acc.likes) {
       return { title: blog.title, author: blog.author, likes: blog.likes };
@@ -25,7 +25,7 @@ const favoriteBlog = blogs => {
   return blogs.length === 0 ? null : blogs.reduce(reducer, blogs[0]);
 };
 
-const mostBlogs = blogs => {
+const mostBlogs = (blogs) => {
   if (blogs.length === 0) return null;
 
   const authorBlogsArray = _.chain(_.map(blogs, "author"))
@@ -36,13 +36,13 @@ const mostBlogs = blogs => {
 
   const authorWithMostBlogs = {
     author: authorBlogsArray[0],
-    blogs: authorBlogsArray[1]
+    blogs: authorBlogsArray[1],
   };
 
   return authorWithMostBlogs;
 };
 
-const mostLikes = blogs => {
+const mostLikes = (blogs) => {
   if (blogs.length === 0) return null;
 
   const reducer = (acc, blog) => {
@@ -56,7 +56,7 @@ const mostLikes = blogs => {
   const authorWithMostLikes = _.chain(likesTally)
     .toPairs()
     .maxBy(_.last)
-    .keyBy(value => (typeof value === "number" ? "likes" : "author"))
+    .keyBy((value) => (typeof value === "number" ? "likes" : "author"))
     .value();
 
   return authorWithMostLikes;
@@ -67,5 +67,5 @@ module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
 };

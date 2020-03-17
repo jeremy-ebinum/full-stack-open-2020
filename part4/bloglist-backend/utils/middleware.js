@@ -2,7 +2,7 @@ const morgan = require("morgan");
 const logger = require("./logger");
 const { ErrorHelper, handleError } = require("./error_helper");
 
-morgan.token("data", req => {
+morgan.token("data", (req) => {
   const { body } = req;
 
   if (body.password) {
@@ -35,7 +35,7 @@ const tokenExtractor = (req, res, next) => {
   next();
 };
 
-const unknownRouteHandler = req => {
+const unknownRouteHandler = (req) => {
   const messages = [`There is no resource at ${req.url}`];
   throw new ErrorHelper(404, "Not Found", messages);
 };
@@ -53,7 +53,7 @@ const handleExpressCastErrors = (err, res) => {
 
 const handleValidationErrors = (err, res) => {
   let isBadRequest = true;
-  const messages = Object.keys(err.errors).map(e => {
+  const messages = Object.keys(err.errors).map((e) => {
     const error = err.errors[e];
 
     if (error.kind === "required") {
@@ -100,5 +100,5 @@ module.exports = {
   morganLogger,
   tokenExtractor,
   unknownRouteHandler,
-  errorHandler
+  errorHandler,
 };
