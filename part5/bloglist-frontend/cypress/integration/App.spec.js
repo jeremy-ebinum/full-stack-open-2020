@@ -52,7 +52,7 @@ describe("App ", function() {
     });
   });
 
-  describe.only("When logged in", function() {
+  describe("When logged in", function() {
     beforeEach(function() {
       login(user.username, user.password);
     });
@@ -167,6 +167,65 @@ describe("App ", function() {
           });
         });
       });
+    });
+
+    it("Blogs are ordered desc according to likes", function() {
+      cy.server();
+      cy.route("/api/blogs").as("initBlogs");
+      cy.wait(["@initBlogs"]);
+
+      const firstBlog = { ...validBlog, title: "First Blog" };
+      const secondBlog = { ...validBlog, title: "Second Blog" };
+      const thirdBlog = { ...validBlog, title: "Third Blog" };
+
+      cy.get("[data-testid='App_showBlogFormBtn']").click();
+      createBlog(firstBlog);
+      cy.get("[data-testid='App_showBlogFormBtn']").click();
+      createBlog(secondBlog);
+      cy.get("[data-testid='App_showBlogFormBtn']").click();
+      createBlog(thirdBlog);
+
+      cy.request("GET", "http://localhost:3003/api/testing/blogs").then(
+        (res) => {
+          const blogs = res.body;
+
+          let firstBlogId;
+          let secondBlogId;
+          let thirdBlogId;
+
+          blogs.reduce((acc, blog) => {
+            if (blog.title === firstBlog.title) {
+              firstBlogId = blog.id;
+            } else if (blog.title === secondBlog.title) {
+              secondBlogId = blog.id;
+            } else {
+              thirdBlogId = blog.id;
+            }
+
+            return acc;
+          }, []);
+
+          cy.get(`[data-testid='Blog_${firstBlogId}_viewButton']`).click();
+          cy.get(`[data-testid='Blog_${secondBlogId}_viewButton']`).click();
+          cy.get(`[data-testid='Blog_${thirdBlogId}_viewButton']`).click();
+
+          cy.get(`[data-testid='Blog_${secondBlogId}_likeButton']`).click();
+          cy.get(`[data-testid='Blog_${secondBlogId}_likeButton']`).click();
+          cy.get(`[data-testid='Blog_${thirdBlogId}_likeButton']`).click();
+
+          cy.get(`[data-testid='BlogList_container']`)
+            .children(`[data-testid^='Blog_']`)
+            .as("blogList");
+
+          cy.get("@blogList")
+            .first()
+            .should("contain.text", secondBlog.title);
+
+          cy.get("@blogList")
+            .last()
+            .should("contain.text", firstBlog.title);
+        }
+      );
     });
   });
 });
