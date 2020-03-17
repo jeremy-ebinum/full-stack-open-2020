@@ -20,8 +20,8 @@ describe("<Blog />", () => {
       user: { username: "username", name: "John Doe" },
     };
 
-    handleLike = jest.fn();
-    handleDelete = jest.fn();
+    handleLike = jest.fn().mockName("handleLike");
+    handleDelete = jest.fn().mockName("handleDelete");
   });
 
   afterEach(() => {
@@ -68,5 +68,30 @@ describe("<Blog />", () => {
     getByTestId(testIDs.Blog_url);
     getByTestId(testIDs.Blog_likesTxt);
     getByTestId(testIDs.Blog_user);
+  });
+
+  test("Like button's handler gets called on each click", () => {
+    const { getByText } = render(
+      <UserContext.Provider value={user}>
+        <Blog
+          blog={blog}
+          handleLike={handleLike}
+          handleDelete={handleDelete}
+        ></Blog>
+      </UserContext.Provider>
+    );
+
+    const showButton = getByText(/show|view/i, {
+      selector: "button",
+    });
+
+    fireEvent.click(showButton);
+
+    const likeButton = getByText(/like/i, { selector: "button" });
+
+    likeButton.click();
+    likeButton.click();
+
+    expect(handleLike).toHaveBeenCalledTimes(2);
   });
 });
