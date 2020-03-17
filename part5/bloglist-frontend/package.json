@@ -20,7 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "set CI=true && react-scripts test",
+    "test": "set CI=true && react-scripts test --verbose",
     "test:watch": "react-scripts test",
     "test:coverage": "set CI=true && react-scripts test --coverage",
     "eject": "react-scripts eject",

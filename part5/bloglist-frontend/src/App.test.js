@@ -7,8 +7,6 @@ import {
   waitForElement,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-// eslint-disable-next-line no-unused-vars
-import { prettyDOM } from "@testing-library/dom";
 import testHelper from "./helpers/testHelper";
 import _times from "lodash/times";
 import nock from "nock";
@@ -32,7 +30,7 @@ describe("<App />", () => {
 
     test("blogs are not rendered", async () => {
       const { container, queryByTestId } = render(<App />);
-      expect(queryByTestId(appTestIDs.blogs)).not.toBeInTheDocument();
+      expect(queryByTestId(appTestIDs.App_blogs)).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent(blogs[0].title);
       expect(container).not.toHaveTextContent(blogs[0].author);
     });
@@ -51,7 +49,9 @@ describe("<App />", () => {
       const component = render(<App />);
       await component.findByRole("form");
       const passwordInput = component.getByLabelText("password");
-      const toggleBtn = component.getByTestId(loginTestIDs.toggleShowPassword);
+      const toggleBtn = component.getByTestId(
+        loginTestIDs.Login_toggleShowPassword
+      );
 
       fireEvent.click(toggleBtn);
 
@@ -80,7 +80,7 @@ describe("<App />", () => {
       fireEvent.click(loginBtn);
 
       await waitForElementToBeRemoved(() => [
-        getByTestId(modalSpinnerTestIDs.modalSpinner),
+        getByTestId(modalSpinnerTestIDs.ModalSpinner_modal),
       ]);
 
       await findByText(blogs[0].title);
@@ -111,7 +111,7 @@ describe("<App />", () => {
       const { getByText, getByTestId } = render(<App />);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       const blogNodes = await waitForElement(() =>
@@ -138,7 +138,7 @@ describe("<App />", () => {
       });
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       expect(queryByText(blogs[0].title)).toBeInTheDocument();
@@ -159,7 +159,7 @@ describe("<App />", () => {
       );
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       const showBlogFormBtn = getByText(/blog/i, { selector: "button" });
@@ -203,7 +203,7 @@ describe("<App />", () => {
       const { getByTestId, getByText, getByLabelText } = render(<App />);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       const showBlogFormBtn = getByText(/blog/i, { selector: "button" });
@@ -230,7 +230,7 @@ describe("<App />", () => {
       fireEvent.click(addBtn);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       expect(getByText(testHelper.validNewBlog.title)).toBeInTheDocument();
@@ -259,10 +259,10 @@ describe("<App />", () => {
       const { getByTestId } = render(<App />);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
-      const blogToLike = getByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
+      const blogToLike = getByTestId(blogTestIDs[`Blog_${blogs[0].id}`]);
       const showButton = within(blogToLike).getByText(/show|view/i, {
         selector: "button",
       });
@@ -277,7 +277,7 @@ describe("<App />", () => {
       fireEvent.click(likeBtn);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       const moreLikes = new RegExp(`${blogs[0].likes + 1}\\s*like(s)?`, "i");
@@ -296,10 +296,10 @@ describe("<App />", () => {
       const { getByTestId } = render(<App />);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
-      const blogToDelete = getByTestId(blogTestIDs[`blog_${blogs[0].id}`]);
+      const blogToDelete = getByTestId(blogTestIDs[`Blog_${blogs[0].id}`]);
 
       const showButton = within(blogToDelete).getByText(/show|view/i, {
         selector: "button",
@@ -313,7 +313,7 @@ describe("<App />", () => {
       fireEvent.click(deleteBtn);
 
       await waitForElementToBeRemoved(() =>
-        getByTestId(navbarTestIDs.spinnerIcon)
+        getByTestId(navbarTestIDs.NavBar_spinner)
       );
 
       expect(blogToDelete).not.toBeInTheDocument();

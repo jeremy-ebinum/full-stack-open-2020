@@ -49,6 +49,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           href={blog.url}
           target="_blank"
           rel="noreferrer noopener"
+          data-testid={testIDs.Blog_url}
         >
           Visit Blog
         </a>
@@ -60,7 +61,10 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         </div>
 
         <div className="c-blog__likes">
-          <span className="c-blog__likes-txt">
+          <span
+            className="c-blog__likes-txt"
+            data-testid={testIDs.Blog_likesTxt}
+          >
             {blog.likes}
             {blog.likes !== 1 ? " Likes" : " Like"}
           </span>
@@ -75,7 +79,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           </div>
         </div>
 
-        <span className="c-blog__user">
+        <span className="c-blog__user" data-testid={testIDs.Blog_user}>
           Added by:
           <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
           {belongsToUser ? "You" : blog.user.name}
@@ -97,7 +101,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
   };
 
   return (
-    <div className="c-blog js-blog" data-testid={testIDs[`blog_${blog.id}`]}>
+    <div className="c-blog js-blog" data-testid={testIDs[`Blog_${blog.id}`]}>
       {displayBlog()}
     </div>
   );

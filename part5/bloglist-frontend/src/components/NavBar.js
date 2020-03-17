@@ -20,7 +20,7 @@ const NavBar = ({ brandTitle, isLoading, handleLogout }) => {
             {user.name}
             {isLoading && (
               <FontAwesomeIcon
-                data-testid={testIDs.spinnerIcon}
+                data-testid={testIDs.NavBar_spinner}
                 className="c-navbar__spinner"
                 icon={faCircleNotch}
                 spin

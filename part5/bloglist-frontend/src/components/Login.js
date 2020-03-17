@@ -29,7 +29,7 @@ const Login = ({ username, password, handleSubmit }) => {
               type="button"
               onClick={toggleShowPassword}
               className="c-btn c-btn--noBg c-btn--fitContent"
-              data-testid={testIDs.toggleShowPassword}
+              data-testid={testIDs.Login_toggleShowPassword}
             >
               <FontAwesomeIcon
                 className="c-input-addon__icon"

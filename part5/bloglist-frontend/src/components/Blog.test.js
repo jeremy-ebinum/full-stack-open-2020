@@ -1,11 +1,10 @@
 import React from "react";
 import { render, fireEvent, cleanup } from "@testing-library/react";
 import UserContext from "../UserContext";
-import Blog from "./Blog";
+import Blog, { testIDs } from "./Blog";
 
 describe("<Blog />", () => {
   let user;
-  let userRegExp;
   let blog;
   let handleLike;
   let handleDelete;
@@ -21,7 +20,6 @@ describe("<Blog />", () => {
       user: { username: "username", name: "John Doe" },
     };
 
-    userRegExp = new RegExp(`You|${blog.user.name}|${blog.user.username}`);
     handleLike = jest.fn();
     handleDelete = jest.fn();
   });
@@ -31,7 +29,7 @@ describe("<Blog />", () => {
   });
 
   test("displays only title and author initially", () => {
-    const component = render(
+    const { container, queryByTestId } = render(
       <UserContext.Provider value={user}>
         <Blog
           blog={blog}
@@ -41,15 +39,15 @@ describe("<Blog />", () => {
       </UserContext.Provider>
     );
 
-    expect(component.container).toHaveTextContent(blog.title);
-    expect(component.container).toHaveTextContent(blog.author);
-    expect(component.container).not.toHaveTextContent("Visit Blog");
-    expect(component.container).not.toHaveTextContent(`${blog.likes}`);
-    expect(component.container).not.toHaveTextContent(userRegExp);
+    expect(container).toHaveTextContent(blog.title);
+    expect(container).toHaveTextContent(blog.author);
+    expect(queryByTestId(testIDs.Blog_url)).toBe(null);
+    expect(queryByTestId(testIDs.Blog_likesTxt)).toBe(null);
+    expect(queryByTestId(testIDs.Blog_user)).toBe(null);
   });
 
   test("displays full details when clicked", () => {
-    const { getByText, container } = render(
+    const { getByText, getByTestId, container } = render(
       <UserContext.Provider value={user}>
         <Blog
           blog={blog}
@@ -67,8 +65,8 @@ describe("<Blog />", () => {
 
     expect(container).toHaveTextContent(blog.title);
     expect(container).toHaveTextContent(blog.author);
-    expect(container).toHaveTextContent("Visit Blog");
-    expect(container).toHaveTextContent(`${blog.likes}`);
-    expect(container).toHaveTextContent(userRegExp);
+    getByTestId(testIDs.Blog_url);
+    getByTestId(testIDs.Blog_likesTxt);
+    getByTestId(testIDs.Blog_user);
   });
 });

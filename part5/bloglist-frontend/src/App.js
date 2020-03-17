@@ -329,7 +329,7 @@ function App() {
       cb={resetBlogForm}
       contextClass="inBlogForm"
       buttons={{ show: <ShowBlogFormBtn />, hide: <HideBlogFormBtn /> }}
-      testid={testIDs.toggleableBlogForm}
+      testid={testIDs.App_toggleableBlogForm}
     >
       <BlogForm
         title={title}
@@ -364,7 +364,7 @@ function App() {
               brandTitle="Blog List"
               isLoading={isLoading}
             />
-            <div className="c-blogs" data-testid={testIDs.blogs}>
+            <div className="c-blogs" data-testid={testIDs.App_blogs}>
               <AlertList contextClass="c-alert--inBlog" alerts={alerts} />
               {blogForm()}
               <BlogList

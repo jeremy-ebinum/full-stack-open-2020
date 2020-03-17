@@ -1,16 +1,13 @@
 /* istanbul ignore file */
-import { uid } from "react-uid";
-
 export const getTestIDs = () => {
   if (process.env.NODE_ENV !== "test") return {};
-
   let ids = new Map();
   let proxy = new Proxy(
     {},
     {
       get: function(obj, prop) {
         if (!ids.has(prop)) {
-          ids.set(prop, uid({}));
+          ids.set(prop, prop);
         }
         return ids.get(prop);
       },
