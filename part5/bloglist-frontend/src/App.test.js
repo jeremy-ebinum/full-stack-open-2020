@@ -167,7 +167,7 @@ describe("<App />", () => {
       fireEvent.click(showBlogFormBtn);
       const blogForm = getByRole("form");
       const authorInput = getByLabelText(/Author/i);
-      const hideBlogFormBtn = getByText(/cancel/i, { selector: "button" });
+      const hideBlogFormBtn = getByText(/hide|cancel/i, { selector: "button" });
       expect(blogForm).toContainElement(authorInput);
       expect(blogForm).toBeVisible();
 

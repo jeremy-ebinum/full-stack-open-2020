@@ -22,15 +22,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [username, resetUsername] = useField({ placeholder: "Enter Username" });
   const [password, resetPassword] = useField({ placeholder: "Enter Password" });
-  const blogFieldClass = "c-row__input c-row__input--inBlog";
-  const [title, resetTitle] = useField({ className: blogFieldClass });
-  const [author, resetAuhor] = useField({ className: blogFieldClass });
-  const [url, resetUrl] = useField({ className: blogFieldClass, type: "url" });
+
   const [fetchError, setFetchError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const blogFormRef = useRef();
+  const toggleableBlogFormRef = useRef();
   const toTopScrollerRef = useRef();
   const uidSeed = useUIDSeed();
 
@@ -193,35 +190,21 @@ function App() {
     ]
   );
 
-  const resetBlogForm = useCallback(() => {
-    resetTitle();
-    resetAuhor();
-    resetUrl();
-  }, [resetAuhor, resetTitle, resetUrl]);
-
   const logout = useCallback(() => {
     blogsService.setToken(null);
     localStorage.removeItem("loggedInBloglistUser");
     setUser(null);
-    resetBlogForm();
     queueAlerts([{ type: "info", message: "Logged out" }]);
-  }, [queueAlerts, resetBlogForm]);
+  }, [queueAlerts]);
 
-  const addBlog = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const newBlog = {
-        title: title.value,
-        author: author.value,
-        url: url.value,
-      };
+  const createBlog = useCallback(
+    async (newBlog) => {
       setIsLoading(true);
 
       try {
         const returnedBlog = await blogsService.create(newBlog);
-        blogFormRef.current.toggleVisibility();
         setBlogs((prevBlogs) => prevBlogs.concat(returnedBlog));
-        resetBlogForm();
+        toggleableBlogFormRef.current.toggleVisibility();
         const { title } = returnedBlog;
         const titleToShow =
           title.length > 45 ? `${title.slice(0, 44)}… ` : title;
@@ -238,14 +221,7 @@ function App() {
         setIsLoading(false);
       }
     },
-    [
-      title.value,
-      author.value,
-      url.value,
-      resetBlogForm,
-      queueAlerts,
-      handleApiErrors,
-    ]
+    [queueAlerts, handleApiErrors]
   );
 
   const likeBlog = useCallback(
@@ -304,7 +280,7 @@ function App() {
       <button
         type="button"
         className="c-btn c-btn--success"
-        onClick={() => blogFormRef.current.toggleVisibility()}
+        onClick={() => toggleableBlogFormRef.current.toggleVisibility()}
       >
         + Blog
       </button>
@@ -316,27 +292,21 @@ function App() {
       <button
         type="button"
         className="c-btn"
-        onClick={() => blogFormRef.current.toggleVisibility()}
+        onClick={() => toggleableBlogFormRef.current.toggleVisibility()}
       >
-        Cancel
+        Hide
       </button>
     </>
   );
 
   const blogForm = () => (
     <Toggleable
-      ref={blogFormRef}
-      cb={resetBlogForm}
+      ref={toggleableBlogFormRef}
       contextClass="inBlogForm"
       buttons={{ show: <ShowBlogFormBtn />, hide: <HideBlogFormBtn /> }}
       testid={testIDs.App_toggleableBlogForm}
     >
-      <BlogForm
-        title={title}
-        author={author}
-        url={url}
-        handleSubmit={addBlog}
-      />
+      <BlogForm createBlog={createBlog} />
     </Toggleable>
   );
 

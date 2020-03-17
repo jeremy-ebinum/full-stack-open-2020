@@ -2,14 +2,13 @@ import React, { useState, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 
 const Toggleable = React.forwardRef(
-  ({ cb, contextClass, buttons, testid, children }, ref) => {
+  ({ contextClass, buttons, testid, children }, ref) => {
     const [visible, setVisible] = useState(false);
 
     const hideWhenVisible = { display: visible ? "none" : "" };
     const showWhenVisible = { display: visible ? "" : "none" };
 
     const toggleVisibility = () => {
-      if (visible) cb();
       setVisible(!visible);
     };
 
@@ -45,7 +44,6 @@ const Toggleable = React.forwardRef(
 );
 
 Toggleable.propTypes = {
-  cb: PropTypes.func.isRequired,
   contextClass: PropTypes.string.isRequired,
   buttons: PropTypes.objectOf(PropTypes.element).isRequired,
   children: PropTypes.node.isRequired,

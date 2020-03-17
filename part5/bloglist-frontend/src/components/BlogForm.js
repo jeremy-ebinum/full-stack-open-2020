@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useUIDSeed } from "react-uid";
 
-const BlogForm = ({ title, author, url, handleSubmit }) => {
+const BlogForm = ({ createBlog }) => {
+  const fieldClassName = "c-row__input c-row__input--inBlog";
+
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+
+  const handleTitleChange = ({ target }) => {
+    setTitle(target.value);
+  };
+
+  const handleAuthorChange = ({ target }) => {
+    setAuthor(target.value);
+  };
+
+  const handleUrlChange = ({ target }) => {
+    setUrl(target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    createBlog({ title, author, url });
+
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
+
   const uidSeed = useUIDSeed();
 
   return (
@@ -12,19 +40,35 @@ const BlogForm = ({ title, author, url, handleSubmit }) => {
         <label htmlFor={uidSeed("title")} className="c-row__label">
           Title
         </label>
-        <input {...title} id={uidSeed("title")} />
+        <input
+          id={uidSeed("title")}
+          className={fieldClassName}
+          onChange={handleTitleChange}
+          value={title}
+        />
       </div>
       <div className="c-row c-row--inBlog">
         <label htmlFor={uidSeed("author")} className="c-row__label">
           Author
         </label>
-        <input {...author} id={uidSeed("author")} />
+        <input
+          id={uidSeed("author")}
+          className={fieldClassName}
+          onChange={handleAuthorChange}
+          value={author}
+        />
       </div>
       <div className="c-row c-row--inBlog">
         <label htmlFor={uidSeed("url")} className="c-row__label">
           URL
         </label>
-        <input {...url} id={uidSeed("url")} />
+        <input
+          id={uidSeed("url")}
+          className={fieldClassName}
+          type="url"
+          onChange={handleUrlChange}
+          value={url}
+        />
       </div>
 
       <div className="c-blog-form__submit">
@@ -37,28 +81,7 @@ const BlogForm = ({ title, author, url, handleSubmit }) => {
 };
 
 BlogForm.propTypes = {
-  title: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  author: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  url: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
-  ).isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  createBlog: PropTypes.func.isRequired,
 };
 
-const shouldNotUpdate = (prevProps, nextProps) => {
-  const sameTitle = prevProps.title.value === nextProps.title.value;
-  const sameAuthor = prevProps.author.value === nextProps.author.value;
-  const sameUrl = prevProps.url.value === nextProps.url.value;
-
-  if (sameTitle && sameAuthor && sameUrl) {
-    return true;
-  }
-
-  return false;
-};
-
-export default React.memo(BlogForm, shouldNotUpdate);
+export default React.memo(BlogForm);
