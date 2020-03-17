@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useUIDSeed } from "react-uid";
+import { getTestIDs } from "../helpers/testHelper";
+
+export const testIDs = getTestIDs();
 
 const BlogForm = ({ createBlog }) => {
   const fieldClassName = "c-row__input c-row__input--inBlog";
@@ -34,7 +37,11 @@ const BlogForm = ({ createBlog }) => {
   const uidSeed = useUIDSeed();
 
   return (
-    <form className="c-blog-form" onSubmit={handleSubmit}>
+    <form
+      className="c-blog-form"
+      onSubmit={handleSubmit}
+      data-testid={testIDs.BlogForm_form}
+    >
       <h2 className="c-blog-form__heading">Add New Blog</h2>
       <div className="c-row c-row--inBlog">
         <label htmlFor={uidSeed("title")} className="c-row__label">
@@ -45,6 +52,7 @@ const BlogForm = ({ createBlog }) => {
           className={fieldClassName}
           onChange={handleTitleChange}
           value={title}
+          data-testid={testIDs.BlogForm_title}
         />
       </div>
       <div className="c-row c-row--inBlog">
@@ -56,6 +64,7 @@ const BlogForm = ({ createBlog }) => {
           className={fieldClassName}
           onChange={handleAuthorChange}
           value={author}
+          data-testid={testIDs.BlogForm_author}
         />
       </div>
       <div className="c-row c-row--inBlog">
@@ -68,11 +77,16 @@ const BlogForm = ({ createBlog }) => {
           type="url"
           onChange={handleUrlChange}
           value={url}
+          data-testid={testIDs.BlogForm_url}
         />
       </div>
 
       <div className="c-blog-form__submit">
-        <button type="submit" className="c-btn c-btn--success">
+        <button
+          type="submit"
+          className="c-btn c-btn--success"
+          data-testid={testIDs.BlogForm_submitButton}
+        >
           Create
         </button>
       </div>

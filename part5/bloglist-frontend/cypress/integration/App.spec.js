@@ -1,13 +1,20 @@
-import { login } from "../support/utils";
+import { login, createBlog } from "../support/utils";
 
 describe("App ", function() {
   let user;
+  let validBlog;
 
   before(function() {
     user = {
       name: "Test User",
       username: "test_username",
       password: "test_password",
+    };
+
+    validBlog = {
+      title: "Test Blog Title",
+      author: "Test Blog Author",
+      url: "http://site.com",
     };
   });
 
@@ -42,6 +49,35 @@ describe("App ", function() {
 
       cy.get("[data-testid='Login_form']").should("be.visible");
       cy.get("[data-testid='App_blogs']").should("not.be.visible");
+    });
+  });
+
+  describe.only("When logged in", function() {
+    beforeEach(function() {
+      login(user.username, user.password);
+    });
+
+    it("A blog can be created", function() {
+      cy.server();
+      cy.route("/api/blogs").as("initBlogs");
+      cy.wait(["@initBlogs"]);
+      cy.get("[data-testid='App_showBlogFormBtn']").click();
+      createBlog(validBlog);
+
+      cy.request("GET", "http://localhost:3003/api/testing/blogs").then(
+        (res) => {
+          const blogs = res.body;
+          expect(blogs).to.have.length(1);
+          const blog = blogs[0];
+          expect(blog.title).to.equal(validBlog.title);
+          expect(blog.author).to.equal(validBlog.author);
+          expect(blog.url).to.equal(validBlog.url);
+
+          cy.get("[data-testid='BlogList_container']").within(() => {
+            cy.get(`[data-testid="Blog_${blog.id}"]`).should("exist");
+          });
+        }
+      );
     });
   });
 });

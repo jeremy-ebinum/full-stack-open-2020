@@ -297,6 +297,7 @@ function App() {
         type="button"
         className="c-btn c-btn--success"
         onClick={() => toggleableBlogFormRef.current.toggleVisibility()}
+        data-testid={testIDs.App_showBlogFormBtn}
       >
         + Blog
       </button>
@@ -309,6 +310,7 @@ function App() {
         type="button"
         className="c-btn"
         onClick={() => toggleableBlogFormRef.current.toggleVisibility()}
+        data-testid={testIDs.App_hideBlogFormBtn}
       >
         Hide
       </button>
