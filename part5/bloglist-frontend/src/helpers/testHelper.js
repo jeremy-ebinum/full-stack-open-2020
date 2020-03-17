@@ -1,6 +1,10 @@
 /* istanbul ignore file */
 export const getTestIDs = () => {
-  if (process.env.NODE_ENV !== "test") return {};
+  const isTestEnv = process.env.NODE_ENV === "test";
+  const isE2E = process.env.REACT_APP_E2E;
+
+  if (!isTestEnv && !isE2E) return {};
+
   let ids = new Map();
   let proxy = new Proxy(
     {},

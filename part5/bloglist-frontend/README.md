@@ -2,7 +2,7 @@
 
 ## Part 5 - [Testing React apps, custom hooks](https://fullstackopen.com/en/part5)
 
-Requires the [backend from Part 4](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part4/bloglist-backend) to be running. However, tests can be run without it.
+Requires the [backend from Part 4](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part4/bloglist-backend) to be running. However, non E2E tests can be run without it.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -18,6 +18,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
+### `npm run start:test`
+
+Runs the app with a configuration suitable for End-to-End testing
+
 ### `npm test`
 
 Launches the test runner
@@ -30,6 +34,14 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ### `npm run test:coverage`
 
 Launches the test runner and generates coverage report
+
+### `npm run test:e2e`
+
+Launches Cypress in the command line to run end-to-end tests
+
+### `npm run cypress:open`
+
+Launches Cypress in the browser to run end-to-end tests
 
 ### `npm run build`
 
