@@ -79,5 +79,33 @@ describe("App ", function() {
         }
       );
     });
+
+    describe("A created blog", function() {
+      let blogId;
+      let blogLikes;
+
+      beforeEach(function() {
+        cy.server();
+        cy.route("/api/blogs").as("initBlogs");
+        cy.wait(["@initBlogs"]);
+        cy.get("[data-testid='App_showBlogFormBtn']").click();
+        createBlog(validBlog);
+
+        cy.request("GET", "http://localhost:3003/api/testing/blogs").then(
+          (res) => {
+            blogId = res.body[0].id;
+            blogLikes = res.body[0].likes;
+          }
+        );
+      });
+
+      it("can be liked", function() {
+        cy.get(`[data-testid='Blog_${blogId}_viewButton']`).click();
+        cy.get(`[data-testid='Blog_${blogId}_likesTxt']`).as("blogLikesTxt");
+        cy.get("@blogLikesTxt").should("contain.text", blogLikes);
+        cy.get(`[data-testid='Blog_${blogId}_likeButton']`).click();
+        cy.get("@blogLikesTxt").should("contain.text", blogLikes + 1);
+      });
+    });
   });
 });

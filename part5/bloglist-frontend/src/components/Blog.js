@@ -27,7 +27,12 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
             {blog.author}
           </span>
           <div className="c-blog__show">
-            <button className="c-btn" type="button" onClick={toggleShowDetails}>
+            <button
+              className="c-btn"
+              type="button"
+              onClick={toggleShowDetails}
+              data-testid={testIDs[`Blog_${blog.id}_viewButton`]}
+            >
               View
             </button>
           </div>
@@ -49,7 +54,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           href={blog.url}
           target="_blank"
           rel="noreferrer noopener"
-          data-testid={testIDs.Blog_url}
+          data-testid={testIDs[`Blog_${blog.id}_url`]}
         >
           Visit Blog
         </a>
@@ -59,6 +64,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
             className="c-btn c-btn--transparent"
             type="button"
             onClick={toggleShowDetails}
+            data-testid={testIDs[`Blog_${blog.id}_hideButton`]}
           >
             Hide
           </button>
@@ -67,7 +73,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         <div className="c-blog__likes">
           <span
             className="c-blog__likes-txt"
-            data-testid={testIDs.Blog_likesTxt}
+            data-testid={testIDs[`Blog_${blog.id}_likesTxt`]}
           >
             {blog.likes}
             {blog.likes !== 1 ? " Likes" : " Like"}
@@ -77,13 +83,17 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
               type="button"
               onClick={(event) => handleLike(event, blog.id)}
               className="c-btn c-btn--info js-likeButton"
+              data-testid={testIDs[`Blog_${blog.id}_likeButton`]}
             >
               Like
             </button>
           </div>
         </div>
 
-        <span className="c-blog__user" data-testid={testIDs.Blog_user}>
+        <span
+          className="c-blog__user"
+          data-testid={testIDs[`Blog_${blog.id}_user`]}
+        >
           Added by:
           <FontAwesomeIcon className="c-blog__usericon" icon={faUser} />
           {belongsToUser ? "You" : blog.user.name}
@@ -95,6 +105,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
               type="button"
               onClick={(event) => handleDelete(event, blog.id, blog.title)}
               className="c-btn c-btn--danger js-deleteButton"
+              data-testid={testIDs[`Blog_${blog.id}_deleteButton`]}
             >
               Delete
             </button>

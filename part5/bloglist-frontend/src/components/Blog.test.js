@@ -18,6 +18,7 @@ describe("<Blog />", () => {
       url: "http://testsite.com",
       likes: 99,
       user: { username: "username", name: "John Doe" },
+      id: "9a879e8723091c482b9d9168",
     };
 
     handleLike = jest.fn().mockName("handleLike");
@@ -29,7 +30,7 @@ describe("<Blog />", () => {
   });
 
   test("displays only title and author initially", () => {
-    const { container, queryByTestId } = render(
+    const { container, queryByTestId, debug } = render(
       <UserContext.Provider value={user}>
         <Blog
           blog={blog}
@@ -41,9 +42,10 @@ describe("<Blog />", () => {
 
     expect(container).toHaveTextContent(blog.title);
     expect(container).toHaveTextContent(blog.author);
-    expect(queryByTestId(testIDs.Blog_url)).toBe(null);
-    expect(queryByTestId(testIDs.Blog_likesTxt)).toBe(null);
-    expect(queryByTestId(testIDs.Blog_user)).toBe(null);
+    debug();
+    expect(queryByTestId(testIDs[`Blog_${blog.id}_url`])).toBe(null);
+    expect(queryByTestId(testIDs[`Blog_${blog.id}_likesTxt`])).toBe(null);
+    expect(queryByTestId(testIDs[`Blog_${blog.id}_user`])).toBe(null);
   });
 
   test("displays full details when clicked", () => {
@@ -65,9 +67,9 @@ describe("<Blog />", () => {
 
     expect(container).toHaveTextContent(blog.title);
     expect(container).toHaveTextContent(blog.author);
-    getByTestId(testIDs.Blog_url);
-    getByTestId(testIDs.Blog_likesTxt);
-    getByTestId(testIDs.Blog_user);
+    getByTestId(testIDs[`Blog_${blog.id}_url`]);
+    getByTestId(testIDs[`Blog_${blog.id}_likesTxt`]);
+    getByTestId(testIDs[`Blog_${blog.id}_user`]);
   });
 
   test("Like button's handler gets called on each click", () => {
