@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { getTestIDs } from "../helpers/testHelper";
+
+export const testIDs = getTestIDs();
 
 //  run the timeoutFunc after a given period with useEffect hook
 const Alert = ({ timeoutFunc, id, type, contextClass, message }) => {
@@ -17,7 +20,10 @@ const Alert = ({ timeoutFunc, id, type, contextClass, message }) => {
   }, [id, timeoutFunc]);
 
   return (
-    <div className={`c-alert ${alertTypes[type]} ${contextClass}`}>
+    <div
+      className={`c-alert ${alertTypes[type]} ${contextClass}`}
+      data-testid={testIDs[`Alert_${id}`]}
+    >
       <span className="c-alert__txt">{message}</span>
     </div>
   );

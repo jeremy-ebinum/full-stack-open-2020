@@ -16,14 +16,27 @@ const Login = ({ username, password, handleSubmit }) => {
   }, []);
 
   return (
-    <form className="c-login" onSubmit={handleSubmit}>
+    <form
+      className="c-login"
+      onSubmit={handleSubmit}
+      data-testid={testIDs.Login_form}
+    >
       <div className="c-login__header">Login to Application</div>
       <div className="c-login__body">
         <div className="c-row">
-          <input {...username} aria-label="username" />
+          <input
+            {...username}
+            aria-label="username"
+            data-testid={testIDs.Login_username}
+          />
         </div>
         <div className="c-row c-row--hasAddon">
-          <input {...password} type={passwordInputType} aria-label="password" />
+          <input
+            {...password}
+            type={passwordInputType}
+            aria-label="password"
+            data-testid={testIDs.Login_password}
+          />
           <div className="c-input-addon c-input-addon--append">
             <button
               type="button"
@@ -39,7 +52,11 @@ const Login = ({ username, password, handleSubmit }) => {
           </div>
         </div>
         <div className="c-login__button">
-          <button type="submit" className="c-btn c-btn--primary">
+          <button
+            type="submit"
+            className="c-btn c-btn--primary"
+            data-testid={testIDs.Login_submitButton}
+          >
             Login
           </button>
         </div>
