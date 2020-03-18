@@ -13,6 +13,7 @@ const NotificationList = ({ notificationsToShow, contextClass }) => {
       {notificationsToShow.map((notification) => (
         <Notification
           key={notification.id}
+          id={notification.id}
           type={notification.level}
           message={notification.message}
         />

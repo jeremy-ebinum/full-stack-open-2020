@@ -27,16 +27,36 @@ describe("App ", function() {
     cy.url().should("include", "/login");
   });
 
-  it("user can login", function() {
-    cy.get("@users").then((users) => {
-      const user = users[0];
-      uiLogin(user.username, user.password);
+  describe("Logging in", function() {
+    it("succeeds with correct credentials", function() {
+      cy.get("@users").then((users) => {
+        const user = users[0];
+        uiLogin(user.username, user.password);
 
-      const names = `(${user.username}|${user.name})`;
-      const notificationRegex = new RegExp(`logged|signed (.*)?${names}`, "i");
+        const names = `(${user.username}|${user.name})`;
+        const regex = new RegExp(`logged|signed (.*)?${names}`, "i");
 
-      cy.contains(notificationRegex);
-      cy.get("[data-testid='Home_blogs']");
+        cy.contains(regex);
+        cy.get("[data-testid='Home_blogs']");
+        cy.location().should("have.property", "pathname", "/");
+      });
+    });
+
+    it("fails with wrong credentials", function() {
+      cy.server();
+      cy.route("POST", "/api/login").as("failedLoginReq");
+
+      uiLogin("spam", "eggs");
+
+      cy.get("@failedLoginReq").should("have.property", "status", 401);
+
+      cy.contains(/invalid|missing|wrong/i)
+        .parent("[data-testid^='Notification_']")
+        .should("have.css", "background-color", "rgb(131, 49, 37)");
+
+      cy.location().should("have.property", "pathname", "/login");
+      cy.get("[data-testid='Login_form']");
+      cy.get("[data-testid='Home_blogs']").should("not.exist");
     });
   });
 
