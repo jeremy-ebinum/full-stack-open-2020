@@ -7,6 +7,11 @@ Each of the following folders contain the final solutions to their respective ex
 ### [routed-anecdotes](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/routed-anecdotes)
 
 - Exercises 7.1 - 7.3 — [Description](https://fullstackopen.com/en/part7/react_router#exercises-7-1-7-3)
+- Exercises 7.4 - 7.6 — [Description](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)
+
+### [country-hook](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/country-hook)
+
+- Exercise 7.7 — [Description](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)
 
 ### [ultimate-hooks](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/ultimate-hooks)
 
