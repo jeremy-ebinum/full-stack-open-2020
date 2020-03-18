@@ -89,7 +89,7 @@ const config = (env, argv) => {
       hotOnly: true,
       transportMode: "ws",
       injectHot: true,
-      open: true,
+      open: !isTestEnv,
       proxy: {
         "/api": {
           changeOrigin: true,
