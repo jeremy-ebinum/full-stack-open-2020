@@ -8,6 +8,10 @@ Each of the following folders contain the final solutions to their respective ex
 
 - Exercises 7.1 - 7.3 — [Description](https://fullstackopen.com/en/part7/react_router#exercises-7-1-7-3)
 
+### [ultimate-hooks](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/ultimate-hooks)
+
+- Exercise 7.8 — [Description](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)
+
 ### [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/bloglist-frontend)
 
 - Exercises 7.9 - 7.21 — [Description](https://fullstackopen.com/en/part7/exercises_extending_the_bloglist#exercises-7-9-7-21)
