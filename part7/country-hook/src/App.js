@@ -18,7 +18,26 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null);
 
-  // useEffect()
+  useEffect(() => {
+    const url = `https://restcountries.eu/rest/v2/name/${name}?fullText=true`;
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    const getCountry = async () => {
+      try {
+        const response = await axios.get(url, { cancelToken: source.token });
+        setCountry({ found: true, data: response.data[0] });
+      } catch (e) {
+        setCountry({ found: false, data: {} });
+      }
+    };
+
+    getCountry();
+
+    return () => {
+      source.cancel();
+    };
+  }, [name]);
 
   return country;
 };
@@ -60,7 +79,7 @@ const App = () => {
     <div>
       <form onSubmit={fetch}>
         <input {...nameInput} />
-        <button>find</button>
+        <button type="submit">find</button>
       </form>
 
       <Country country={country} />
