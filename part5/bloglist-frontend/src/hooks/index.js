@@ -1,14 +1,5 @@
 import { useState, useCallback } from "react";
 
-// id: PropTypes.string,
-// type: PropTypes.string,
-// name: PropTypes.string.isRequired,
-// handleChange: PropTypes.func.isRequired,
-// value: PropTypes.string.isRequired,
-// placeholder: PropTypes.string,
-// ariaLabel: PropTypes.string,
-// contextClass: PropTypes.string,
-
 export const useField = ({
   id = null,
   className = "c-row__input",
