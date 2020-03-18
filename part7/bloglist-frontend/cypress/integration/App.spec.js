@@ -62,7 +62,16 @@ describe("App ", function() {
 
   describe("when logged in", function() {
     beforeEach(function() {
+      cy.server();
+      cy.route("POST", "/api/login").as("loginReq");
       uiLogin("test_username", "test_password");
+      cy.wait("@loginReq")
+        .its("response.body")
+        .then((user) => {
+          cy.wrap(user).as("loggedInUser");
+        });
+
+      cy.location().should("have.property", "pathname", "/");
     });
 
     it("user can be logged out", function() {
@@ -80,7 +89,51 @@ describe("App ", function() {
       cy.url().should("eq", `${Cypress.config().baseUrl}/users`);
     });
 
+    it("blogs are rendered in descending order of likes", function() {
+      cy.location().should("have.property", "pathname", "/");
+
+      cy.get("@loggedInUser").then((user) => {
+        const { token } = user;
+
+        cy.get("@blogs").then((blogs) => {
+          const options = {
+            url: `http://localhost:3003/api/blogs/`,
+            method: "POST",
+            headers: {
+              "User-Agent": "request",
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          const blogOne = { ...blogs[0], likes: 10 };
+          const blogTwo = { ...blogs[1], likes: 5 };
+          const blogThree = { ...blogs[2], likes: 1 };
+
+          cy.request({ ...options, body: blogOne });
+          cy.request({ ...options, body: blogTwo });
+          cy.request({ ...options, body: blogThree });
+
+          cy.reload();
+          cy.get(`[data-testid='BlogList_container']`)
+            .children(`[data-testid^='BlogList_blogLink']`)
+            .as("blogList");
+
+          cy.get("@blogList")
+            .first()
+            .should("contain.text", blogOne.title);
+
+          cy.get("@blogList")
+            .last()
+            .should("contain.text", blogThree.title);
+        });
+      });
+    });
+
     describe("within the blogs view at /", function() {
+      beforeEach(function() {
+        cy.location().should("have.property", "pathname", "/");
+      });
+
       it("a valid blog can be created", function() {
         cy.get("[data-testid='Toggleable_showBlogFormBtn']").click();
         cy.get("@blogs").then((blogs) => {
@@ -131,6 +184,7 @@ describe("App ", function() {
               cy.wrap(createdBlog).as("createdBlog");
               const { id } = createdBlog;
               cy.get(`[data-testid="BlogList_blogLink_${id}"]`).click();
+              cy.location().should("have.property", "pathname", `/blogs/${id}`);
             });
         });
       });
@@ -161,7 +215,7 @@ describe("App ", function() {
           });
       });
 
-      it("can not be deleted by other users", function() {
+      it("the Blog cannot not be deleted by other users", function() {
         cy.get("[data-testid='NavBar_logoutBtn']").click();
 
         cy.get("@users").then((users) => {
