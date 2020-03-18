@@ -6,6 +6,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "start:test": "cross-env NODE_ENV=test node index.js",
     "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "watch:test": "cross-env NODE_ENV=test nodemon index.js",
     "build:ui": "rm -rf build && cd ../bloglist-frontend/ && npm run build && cp -r build ../bloglist-backend/",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
@@ -18,7 +19,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -38,7 +39,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
-    "mongodb-memory-server-global": "^6.2.4",
+    "mongodb-memory-server-core": "^6.3.3",
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2"

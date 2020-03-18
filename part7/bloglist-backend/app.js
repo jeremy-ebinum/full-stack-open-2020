@@ -29,7 +29,12 @@ app.use(bodyParser.json());
 app.use(middleware.morganLogger());
 app.use(middleware.tokenExtractor);
 
+app.use("/api/users", usersRouter);
+app.use("/api/login", loginRouter);
+app.use("/api/blogs", blogsRouter);
+
 app.use(
+  "/",
   expressStaticGzip("build/", {
     enableBrotli: true,
     orderPreference: ["br", "gz"],
@@ -39,12 +44,7 @@ app.use(
   })
 );
 
-app.use("/api/users", usersRouter);
-app.use("/api/login", loginRouter);
-app.use("/api/blogs", blogsRouter);
-
 app.use(middleware.unknownRouteHandler);
-
 app.use(middleware.errorHandler);
 
 module.exports = app;
