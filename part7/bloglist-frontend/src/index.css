@@ -297,7 +297,6 @@ body {
 
 /* Button Component */
 .c-btn {
-  text-align: center;
   border: none;
   border-radius: 3px;
   width: 100%;
@@ -326,6 +325,13 @@ body {
 
 .c-btn.c-btn--transparent:hover {
   background: hsla(0, 0%, 0%, 90%);
+}
+
+.c-btn.c-btn--flex {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .c-btn.c-btn--noBg {
@@ -578,7 +584,8 @@ body {
   margin-left: 0.5rem;
 }
 
-.c-navbar__logout {
+.c-navbar__logout,
+.c-navbar__login {
   font-family: "Dosis";
   font-weight: 500;
   font-size: 0.9rem;
@@ -1058,7 +1065,8 @@ body {
     margin-right: 0.5rem;
   }
 
-  .c-navbar__logout {
+  .c-navbar__logout,
+  .c-navbar__login {
     font-weight: 700;
     font-size: 1rem;
     width: 100px;

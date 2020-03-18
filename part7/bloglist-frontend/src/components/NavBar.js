@@ -13,12 +13,6 @@ export const testIDs = getTestIDs();
 const NavBar = ({ auth, isLoading, logout }) => {
   let userGreeting;
 
-  if (auth.isAuth) {
-    userGreeting = auth.user.name || auth.user.username;
-  } else {
-    userGreeting = "";
-  }
-
   return (
     <div className="c-navbar">
       <div className="c-navbar__content">
@@ -41,8 +35,12 @@ const NavBar = ({ auth, isLoading, logout }) => {
         </div>
         <div className="c-navbar__actions">
           <div className="c-navbar__userinfo">
-            <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
-            {userGreeting}
+            {auth.isAuth && (
+              <>
+                <FontAwesomeIcon className="c-navbar__usericon" icon={faUser} />
+                {auth.user.name || auth.user.username}
+              </>
+            )}
             {isLoading && (
               <>
                 <FontAwesomeIcon
@@ -54,16 +52,29 @@ const NavBar = ({ auth, isLoading, logout }) => {
               </>
             )}
           </div>
-          <div className="c-navbar__logout">
-            <button
-              type="button"
-              onClick={logout}
-              className="c-btn c-btn--light-outline"
-              data-testid={testIDs.NavBar_logoutBtn}
-            >
-              Logout
-            </button>
-          </div>
+
+          {auth.isAuth && (
+            <div className="c-navbar__logout">
+              <button
+                type="button"
+                onClick={logout}
+                className="c-btn c-btn--light-outline"
+                data-testid={testIDs.NavBar_logoutBtn}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          {!auth.isAuth && (
+            <div className="c-navbar__login">
+              <Link
+                to="/login"
+                className="c-btn c-btn--flex c-btn--light-outline"
+              >
+                Login
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
