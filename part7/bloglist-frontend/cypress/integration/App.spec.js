@@ -146,21 +146,63 @@ describe("App ", function() {
           });
       });
 
-      it("the Blog can be deleted", function() {
-        cy.get("[data-testid='Blog_deleteButton']").click();
-        cy.location()
-          .its("pathname")
-          .should("eq", "/");
-
+      it("the Blog can be deleted by the user who created it", function() {
         cy.get("@createdBlog")
           .its("id")
           .then((id) => {
+            cy.location().should("have.property", "pathname", `/blogs/${id}`);
+            cy.get("[data-testid='Blog_deleteButton']").click();
+            cy.location().should("have.property", "pathname", "/");
             cy.get("[data-testid='BlogList_container']").within(() => {
               cy.get(`[data-testid="BlogList_blogLink_${id}"]`).should(
                 "not.exist"
               );
             });
           });
+      });
+
+      it("can not be deleted by other users", function() {
+        cy.get("[data-testid='NavBar_logoutBtn']").click();
+
+        cy.get("@users").then((users) => {
+          const otherUser = users[1];
+          cy.request("POST", "http://localhost:3003/api/users/", otherUser);
+
+          cy.request("POST", "http://localhost:3003/api/login/", {
+            username: otherUser.username,
+            password: otherUser.password,
+          }).then((res) => {
+            const { token } = res.body;
+
+            cy.wrap(token).as("otherUserToken");
+          });
+
+          uiLogin(otherUser.username, otherUser.password);
+          cy.location().should("have.property", "pathname", "/");
+        });
+
+        cy.get("@createdBlog").then((blog) => {
+          cy.get(`[data-testid="BlogList_blogLink_${blog.id}"]`).click();
+          cy.get("[data-testid='Blog_deleteButton']").should("not.exist");
+
+          cy.get("@otherUserToken").then((token) => {
+            const options = {
+              url: `http://localhost:3003/api/blogs/${blog.id}`,
+              method: "DELETE",
+              headers: {
+                "User-Agent": "request",
+                Authorization: `Bearer ${token}`,
+              },
+              failOnStatusCode: false,
+            };
+
+            cy.request(options).then((res) => {
+              expect(res.status).to.eq(403);
+              cy.contains(blog.title);
+              cy.url().should("include", `/blogs/${blog.id}`);
+            });
+          });
+        });
       });
 
       it("a comment can be added to the blog", function() {
