@@ -1,17 +1,45 @@
 dependencies:
+  '@apollo/client': 3.0.0-beta.41_graphql@14.6.0+react@16.13.0
+  '@fortawesome/fontawesome-svg-core': 1.2.27
+  '@fortawesome/free-solid-svg-icons': 5.12.1
+  '@fortawesome/react-fontawesome': 0.1.8_e05d73b74d08567b32d0e5d8282c02fd
   '@testing-library/jest-dom': 4.2.4
   '@testing-library/react': 9.5.0_react-dom@16.13.0+react@16.13.0
   '@testing-library/user-event': 7.2.1
   bootstrap: 4.4.1
+  graphql: 14.6.0
+  prop-types: 15.7.2
   react: 16.13.0
   react-bootstrap: 1.0.0-beta.17_react-dom@16.13.0+react@16.13.0
   react-dom: 16.13.0_react@16.13.0
-  react-helmet: 5.2.1_react@16.13.0
+  react-helmet-async: 1.0.4_react-dom@16.13.0+react@16.13.0
   react-router-dom: 5.1.2_react@16.13.0
   react-scripts: 3.4.0
   react-uid: 2.2.0_react@16.13.0
 lockfileVersion: 5.1
 packages:
+  /@apollo/client/3.0.0-beta.41_graphql@14.6.0+react@16.13.0:
+    dependencies:
+      '@types/zen-observable': 0.8.0
+      '@wry/equality': 0.1.9
+      fast-json-stable-stringify: 2.1.0
+      graphql: 14.6.0
+      graphql-tag: 2.10.3_graphql@14.6.0
+      optimism: 0.11.5
+      react: 16.13.0
+      symbol-observable: 1.2.0
+      ts-invariant: 0.4.4
+      tslib: 1.11.1
+      zen-observable: 0.8.15
+    dev: false
+    peerDependencies:
+      graphql: ^14.5.4
+      react: ^16.8.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+    resolution:
+      integrity: sha512-3FtiBP0gKDjmCIbPUn8GkBshA8vXUB9Zi+BOSEOwo5HDIEF0NXg19ov+m8SqaZEG+jU6p7w+dmHyRGkUxj9b4g==
   /@babel/code-frame/7.8.3:
     dependencies:
       '@babel/highlight': 7.8.3
@@ -1086,6 +1114,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-+AATMUFppJDw6aiR5NVPHqIQBlV/Pj8wY/EZH+lmvRdUo9xBaz/rF3alAwFJQavvKfeOlPE7oaaDHVbcySbCsg==
+  /@babel/runtime/7.9.0:
+    dependencies:
+      regenerator-runtime: 0.13.5
+    dev: false
+    resolution:
+      integrity: sha512-cTIudHnzuWLS56ik4DnRnqqNf8MkdUzV4iFFI1h7Jo9xvrpQROYaAnaSd2mHLQAzzZAPfATynX5ord6YlNYNMA==
   /@babel/template/7.8.6:
     dependencies:
       '@babel/code-frame': 7.8.3
@@ -1136,6 +1170,39 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
+  /@fortawesome/fontawesome-common-types/0.2.27:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-97GaByGaXDGMkzcJX7VmR/jRJd8h1mfhtA7RsxDBN61GnWE/PPCZhOdwG/8OZYktiRUF0CvFOr+VgRkJrt6TWg==
+  /@fortawesome/fontawesome-svg-core/1.2.27:
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 0.2.27
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-sOD3DKynocnHYpuw2sLPnTunDj7rLk91LYhi2axUYwuGe9cPCw7Bsu9EWtVdNJP+IYgTCZIbyARKXuy5K/nv+Q==
+  /@fortawesome/free-solid-svg-icons/5.12.1:
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 0.2.27
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-k3MwRFFUhyL4cuCJSaHDA0YNYMELDXX0h8JKtWYxO5XD3Dn+maXOMrVAAiNGooUyM2v/wz/TOaM0jxYVKeXX7g==
+  /@fortawesome/react-fontawesome/0.1.8_e05d73b74d08567b32d0e5d8282c02fd:
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 1.2.27
+      prop-types: 15.7.2
+      react: 16.13.0
+    dev: false
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ^1.2.20
+      react: 16.x
+    resolution:
+      integrity: sha512-I5h9YQg/ePA3Br9ISS18fcwOYmzQYDSM1ftH03/8nHkiqIVHtUyQBw482+60dnzvlr82gHt3mGm+nDUp159FCw==
   /@hapi/address/2.1.4:
     dev: false
     resolution:
@@ -1674,6 +1741,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9T1auFmbPZoxHz0enUFlUuKRy3it01R+hlggyVUMtnCTQRunsQYifnSGb8hET4Xo8yiC0o0r1paW3ud5+rbURg==
+  /@types/zen-observable/0.8.0:
+    dev: false
+    resolution:
+      integrity: sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
   /@typescript-eslint/eslint-plugin/2.21.0_5d52a47f0409d8125a5f3a0453d25801:
     dependencies:
       '@typescript-eslint/experimental-utils': 2.21.0_eslint@6.8.0
@@ -1873,6 +1944,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-w0U0pD4EhlnvRyeJzBqaVSJAo9w/ce7/WPogeXLzGkO6hzhr4GnQIZ4W4uUt5b9ooAaXPtnXlj0gzsXEOUNYMg==
+  /@wry/context/0.5.0:
+    dependencies:
+      tslib: 1.11.1
+    dev: false
+    resolution:
+      integrity: sha512-yW5XFrWbRvv2/f86+g0YAfko7671SQg7Epn8lYjux4MZmIvtPvK2ts+vG1QAPu2w6GuBioEJknRa7K2LFj2kQw==
+  /@wry/equality/0.1.9:
+    dependencies:
+      tslib: 1.11.1
+    dev: false
+    resolution:
+      integrity: sha512-mB6ceGjpMGz1ZTza8HYnrPGos2mC6So4NhS1PtZ8s4Qt0K7fBiIGhpSxUbQmhwcSWE3no+bYxmI2OL6KuXYmoQ==
   /@xtuc/ieee754/1.2.0:
     dev: false
     resolution:
@@ -5086,6 +5169,22 @@ packages:
     dev: false
     resolution:
       integrity: sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
+  /graphql-tag/2.10.3_graphql@14.6.0:
+    dependencies:
+      graphql: 14.6.0
+    dev: false
+    peerDependencies:
+      graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0
+    resolution:
+      integrity: sha512-4FOv3ZKfA4WdOKJeHdz6B3F/vxBLSgmBcGeAFPf4n1F64ltJUvOOerNj0rsJxONQGdhUMynQIvd6LzB+1J5oKA==
+  /graphql/14.6.0:
+    dependencies:
+      iterall: 1.3.0
+    dev: false
+    engines:
+      node: '>= 6.x'
+    resolution:
+      integrity: sha512-VKzfvHEKybTKjQVpTFrA5yUq2S9ihcZvfJAtsDBBCuV6wauPu1xl/f9ehgVf0FcEJJs4vz6ysb/ZMkGigQZseg==
   /growly/1.3.0:
     dev: false
     resolution:
@@ -6019,6 +6118,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-uu1F/L1o5Y6LzPVSVZXNOoD/KXpJue9aeLRd0sM9uMXfZvzomB0WxVamWb5ue8kA2vVWEmW7EG+A5n3f1kqHKg==
+  /iterall/1.3.0:
+    dev: false
+    resolution:
+      integrity: sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
   /jest-changed-files/24.9.0:
     dependencies:
       '@jest/types': 24.9.0
@@ -7583,6 +7686,12 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-PqHpggC9bLV0VeWcdKhkpxY+3JTzetLSqTCWL/z/tFIbI6G8JCjondXklT1JinczLz2Xib62sSp0T/gKT4KksA==
+  /optimism/0.11.5:
+    dependencies:
+      '@wry/context': 0.5.0
+    dev: false
+    resolution:
+      integrity: sha512-twCHmBb64DYzEZ8A3O+TLCuF/RmZPBhXPQYv4agoiALRLlW9SidMzd7lwUP9mL0jOZhzhnBmb8ajqA00ECo/7g==
   /optimize-css-assets-webpack-plugin/5.0.3_webpack@4.41.5:
     dependencies:
       cssnano: 4.1.10
@@ -9105,18 +9214,21 @@ packages:
     dev: false
     resolution:
       integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
-  /react-helmet/5.2.1_react@16.13.0:
+  /react-helmet-async/1.0.4_react-dom@16.13.0+react@16.13.0:
     dependencies:
-      object-assign: 4.1.1
+      '@babel/runtime': 7.9.0
+      invariant: 2.2.4
       prop-types: 15.7.2
       react: 16.13.0
+      react-dom: 16.13.0_react@16.13.0
       react-fast-compare: 2.0.4
-      react-side-effect: 1.2.0_react@16.13.0
+      shallowequal: 1.1.0
     dev: false
     peerDependencies:
-      react: '>=15.0.0'
+      react: ^16.6.0
+      react-dom: ^16.6.0
     resolution:
-      integrity: sha512-CnwD822LU8NDBnjCpZ4ySh8L6HYyngViTZLfBBb3NjtrpN8m49clH8hidHouq20I51Y6TpCTISCBbqiY5GamwA==
+      integrity: sha512-KTGHE9sz8N7+fCkZ2a3vzXH9eIkiTNhL2NhKR7XzzQl3WsGlCHh76arauJUIiGdfhjeMp7DY7PkASAmYFXeJYg==
   /react-is/16.13.0:
     dev: false
     resolution:
@@ -9246,15 +9358,6 @@ packages:
         optional: true
     resolution:
       integrity: sha512-pBqaAroFoHnFAkuX+uSK9Th1uEh2GYdGY2IG1I9/7HmuEf+ls3lLCk1p2GFYRSrLMz6ieQR/SyN6TLIGK3hKRg==
-  /react-side-effect/1.2.0_react@16.13.0:
-    dependencies:
-      react: 16.13.0
-      shallowequal: 1.1.0
-    dev: false
-    peerDependencies:
-      react: ^0.13.0 || ^0.14.0 || ^15.0.0 || ^16.0.0
-    resolution:
-      integrity: sha512-v1ht1aHg5k/thv56DRcjw+WtojuuDHFUgGfc+bFHOWsF4ZK6C2V57DO0Or0GPsg6+LSTE0M6Ry/gfzhzSwbc5w==
   /react-transition-group/4.3.0_react-dom@16.13.0+react@16.13.0:
     dependencies:
       '@babel/runtime': 7.8.7
@@ -10528,6 +10631,12 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-yhy/sQYxR5BkC98CY7o31VGsg014AKLEPxdfhora76l36hD9Rdy5NZA/Ocn6yayNPgSamYdtX2rFJdcv07AYVw==
+  /symbol-observable/1.2.0:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
   /symbol-tree/3.2.4:
     dev: false
     resolution:
@@ -10731,6 +10840,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
+  /ts-invariant/0.4.4:
+    dependencies:
+      tslib: 1.11.1
+    dev: false
+    resolution:
+      integrity: sha512-uEtWkFM/sdZvRNNDL3Ehu4WVpwaulhwQszV8mrtcdeE8nN00BV9mAmQ88RkrBhFgl9gMgvjJLAQcZbnPXI9mlA==
   /ts-pnp/1.1.5:
     dev: false
     engines:
@@ -11561,15 +11676,25 @@ packages:
     dev: false
     resolution:
       integrity: sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+  /zen-observable/0.8.15:
+    dev: false
+    resolution:
+      integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
 specifiers:
+  '@apollo/client': ^3.0.0-beta.41
+  '@fortawesome/fontawesome-svg-core': ^1.2.27
+  '@fortawesome/free-solid-svg-icons': ^5.12.1
+  '@fortawesome/react-fontawesome': ^0.1.8
   '@testing-library/jest-dom': ^4.2.4
   '@testing-library/react': ^9.4.1
   '@testing-library/user-event': ^7.2.1
   bootstrap: ^4.4.1
+  graphql: ^14.6.0
+  prop-types: ^15.7.2
   react: ^16.12.0
   react-bootstrap: ^1.0.0-beta.17
   react-dom: ^16.12.0
-  react-helmet: ^5.2.1
+  react-helmet-async: ^1.0.4
   react-router-dom: ^5.1.2
   react-scripts: 3.4.0
   react-uid: ^2.2.0

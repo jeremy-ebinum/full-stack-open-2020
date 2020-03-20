@@ -1,37 +1,55 @@
-import React from "react";
-import { Helmet } from "react-helmet";
+import React, { useState, useRef, useEffect } from "react";
+import { useQuery } from "@apollo/client";
+import { Helmet } from "react-helmet-async";
+import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
+
+import { GET_ALL_AUTHORS } from "../queries";
+import LinkedNavBar from "./LinkedNavBar";
+import AuthorsTable from "./AuthorsTable";
+import AuthorsJumbotron from "./AuthorsJumbotron";
 
 const Authors = () => {
-  const authors = [];
+  const [authors, setAuthors] = useState([]);
+  const hasRunGetAllAuthors = useRef(false);
+  const getAllAuthors = useQuery(GET_ALL_AUTHORS);
+
+  useEffect(() => {
+    if (getAllAuthors.data) {
+      const authors = getAllAuthors.data.allAuthors;
+      setAuthors(authors);
+      hasRunGetAllAuthors.current = true;
+    }
+  }, [getAllAuthors.data]);
 
   return (
     <>
       <Helmet>
         <title>GraphQL Library | Home</title>
       </Helmet>
-      <Row>
-        <Col>
-          <h2>authors</h2>
-          <table>
-            <tbody>
-              <tr>
-                <th></th>
-                <th>born</th>
-                <th>books</th>
-              </tr>
-              {authors.map((a) => (
-                <tr key={a.name}>
-                  <td>{a.name}</td>
-                  <td>{a.born}</td>
-                  <td>{a.bookCount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Col>
-      </Row>
+      <LinkedNavBar />
+      <Container>
+        <Row className="mt-4">
+          <Col>
+            <div className="d-flex align-items-center">
+              <h2 className="mr-2">Authors</h2>
+              {getAllAuthors.loading && (
+                <Spinner animation="grow" role="status" size="sm">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )}
+            </div>
+
+            {hasRunGetAllAuthors.current && !authors.length && (
+              <AuthorsJumbotron />
+            )}
+
+            {authors.length > 0 && <AuthorsTable authors={authors} />}
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
