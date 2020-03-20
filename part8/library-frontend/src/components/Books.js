@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
 
+import { GET_ALL_BOOKS } from "../queries";
 import LinkedNavBar from "./LinkedNavBar";
+import BooksTable from "./BooksTable";
+import NoResource from "./NoResource";
 
 const Books = () => {
-  const books = [];
+  const [books, setBooks] = useState([]);
+  const getAllBooks = useQuery(GET_ALL_BOOKS);
+  const hasRunGetAllBooks = useRef(false);
+
+  useEffect(() => {
+    if (getAllBooks.data) {
+      const books = getAllBooks.data.allBooks;
+      setBooks(books);
+      hasRunGetAllBooks.current = true;
+    }
+  }, [getAllBooks.data]);
+
+  const hasNoBooks = hasRunGetAllBooks.current && !books.length;
 
   return (
     <>
@@ -16,25 +33,20 @@ const Books = () => {
       </Helmet>
       <LinkedNavBar />
       <Container>
-        <Row>
+        <Row className="mt-4">
           <Col>
-            <h2>books</h2>
-            <table>
-              <tbody>
-                <tr>
-                  <th></th>
-                  <th>author</th>
-                  <th>published</th>
-                </tr>
-                {books.map((a) => (
-                  <tr key={a.title}>
-                    <td>{a.title}</td>
-                    <td>{a.author}</td>
-                    <td>{a.published}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="d-flex align-items-center">
+              <h2 className="mr-2">Books</h2>
+              {getAllBooks.loading && (
+                <Spinner animation="grow" role="status" size="sm">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )}
+            </div>
+
+            {hasNoBooks && <NoResource resource="books" />}
+
+            {books.length > 0 && <BooksTable books={books} />}
           </Col>
         </Row>
       </Container>

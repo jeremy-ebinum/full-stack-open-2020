@@ -6,9 +6,9 @@ const AuthorsTable = ({ authors }) => {
     <Table responsive striped bordered hover variant="dark">
       <thead>
         <tr>
-          <th></th>
-          <th>born</th>
-          <th>books</th>
+          <th>Name</th>
+          <th>Birth Year</th>
+          <th>Books</th>
         </tr>
       </thead>
       <tbody>

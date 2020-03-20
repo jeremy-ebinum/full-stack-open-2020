@@ -9,7 +9,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { GET_ALL_AUTHORS } from "../queries";
 import LinkedNavBar from "./LinkedNavBar";
 import AuthorsTable from "./AuthorsTable";
-import AuthorsJumbotron from "./AuthorsJumbotron";
+import NoResource from "./NoResource";
 
 const Authors = () => {
   const [authors, setAuthors] = useState([]);
@@ -23,6 +23,8 @@ const Authors = () => {
       hasRunGetAllAuthors.current = true;
     }
   }, [getAllAuthors.data]);
+
+  const hasNoAuthors = hasRunGetAllAuthors.current && !authors.length;
 
   return (
     <>
@@ -42,9 +44,7 @@ const Authors = () => {
               )}
             </div>
 
-            {hasRunGetAllAuthors.current && !authors.length && (
-              <AuthorsJumbotron />
-            )}
+            {hasNoAuthors && <NoResource resource="authors" />}
 
             {authors.length > 0 && <AuthorsTable authors={authors} />}
           </Col>
