@@ -13,9 +13,11 @@ dependencies:
   react-bootstrap: 1.0.0-beta.17_react-dom@16.13.0+react@16.13.0
   react-dom: 16.13.0_react@16.13.0
   react-helmet-async: 1.0.4_react-dom@16.13.0+react@16.13.0
+  react-hook-form: 5.1.1_react@16.13.0
   react-router-dom: 5.1.2_react@16.13.0
   react-scripts: 3.4.0
   react-uid: 2.2.0_react@16.13.0
+  yup: 0.28.3
 lockfileVersion: 5.1
 packages:
   /@apollo/client/3.0.0-beta.41_graphql@14.6.0+react@16.13.0:
@@ -4871,6 +4873,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-3Z4XhFZ3992uIq0XOqb9AreonueSYphE6oYbpt5+3u06JWklbsPkNv3ZKkP9Bz/r+1MWCaMoSQ28P85+1Yc77w==
+  /fn-name/3.0.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-eNMNr5exLoavuAMhIUVsOKF79SWd/zG104ef6sxBTSw+cZc6BXdQXDvYcGvp0VbxVVSp1XDUNoz7mg1xMtSznA==
   /follow-redirects/1.10.0:
     dependencies:
       debug: 3.2.6
@@ -8982,6 +8990,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  /property-expr/2.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-bc/5ggaYZxNkFKj374aLbEDqVADdYaLcFo8XBkishUWbaAdjlphaBFns9TvRA2pUseVL/wMFmui9X3IdNDU37g==
   /proxy-addr/2.0.6:
     dependencies:
       forwarded: 0.1.2
@@ -9229,6 +9241,14 @@ packages:
       react-dom: ^16.6.0
     resolution:
       integrity: sha512-KTGHE9sz8N7+fCkZ2a3vzXH9eIkiTNhL2NhKR7XzzQl3WsGlCHh76arauJUIiGdfhjeMp7DY7PkASAmYFXeJYg==
+  /react-hook-form/5.1.1_react@16.13.0:
+    dependencies:
+      react: 16.13.0
+    dev: false
+    peerDependencies:
+      react: ^16.8.0
+    resolution:
+      integrity: sha512-ZG5YYL7ufdBiXbCdYp3uGg6JOTTeSZ2B0RGVM9/22KXuTv0jeu9oFUa7zJVGO+tM7QN+gEbBODTIfmeQLC89EA==
   /react-is/16.13.0:
     dev: false
     resolution:
@@ -10641,6 +10661,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
+  /synchronous-promise/2.0.10:
+    dev: false
+    resolution:
+      integrity: sha512-6PC+JRGmNjiG3kJ56ZMNWDPL8hjyghF5cMXIFOKg+NiwwEZZIvxTWd0pinWKyD227odg9ygF8xVhhz7gb8Uq7A==
   /table/5.4.6:
     dependencies:
       ajv: 6.12.0
@@ -10825,6 +10849,10 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+  /toposort/2.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-riF2gXXRVZ1IvvNUILL0li8JwzA=
   /tough-cookie/2.5.0:
     dependencies:
       psl: 1.7.0
@@ -11676,6 +11704,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+  /yup/0.28.3:
+    dependencies:
+      '@babel/runtime': 7.9.0
+      fn-name: 3.0.0
+      lodash: 4.17.15
+      lodash-es: 4.17.15
+      property-expr: 2.0.2
+      synchronous-promise: 2.0.10
+      toposort: 2.0.2
+    dev: false
+    resolution:
+      integrity: sha512-amVkCgFWe5bGjrrUiODkbIzrSwtB8JpZrQYSrfj2YsbRdrV+tn9LquWdZDlfOx2HXyfEA8FGnlwidE/bFDxO7Q==
   /zen-observable/0.8.15:
     dev: false
     resolution:
@@ -11695,6 +11735,8 @@ specifiers:
   react-bootstrap: ^1.0.0-beta.17
   react-dom: ^16.12.0
   react-helmet-async: ^1.0.4
+  react-hook-form: ^5.1.1
   react-router-dom: ^5.1.2
   react-scripts: 3.4.0
   react-uid: ^2.2.0
+  yup: ^0.28.3
