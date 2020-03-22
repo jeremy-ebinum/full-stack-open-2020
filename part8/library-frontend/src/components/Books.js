@@ -8,6 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { GET_ALL_BOOKS } from "../queries";
 import LinkedNavBar from "./LinkedNavBar";
+import Notifications from "./Notifications";
 import BooksTable from "./BooksTable";
 import NoResource from "./NoResource";
 
@@ -32,6 +33,7 @@ const Books = () => {
         <title>GraphQL Library | Books</title>
       </Helmet>
       <LinkedNavBar />
+      <Notifications />
       <Container>
         <Row className="mt-4">
           <Col>

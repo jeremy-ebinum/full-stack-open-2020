@@ -8,6 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { GET_ALL_AUTHORS } from "../queries";
 import LinkedNavBar from "./LinkedNavBar";
+import Notifications from "./Notifications";
 import AuthorsTable from "./AuthorsTable";
 import NoResource from "./NoResource";
 
@@ -32,6 +33,9 @@ const Authors = () => {
         <title>GraphQL Library | Home</title>
       </Helmet>
       <LinkedNavBar />
+
+      <Notifications />
+
       <Container>
         <Row className="mt-4">
           <Col>

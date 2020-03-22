@@ -12,8 +12,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
 import { CREATE_BOOK, GET_ALL_BOOKS, GET_ALL_AUTHORS } from "../queries";
+import { handleApolloErrors } from "../helpers/errorHelper";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
+import useNotification from "../hooks/useNotification";
 import LinkedNavBar from "./LinkedNavBar";
+import Notifications from "./Notifications";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required(),
@@ -33,6 +36,7 @@ const validationSchema = yup.object().shape({
 const NewBook = () => {
   const uidSeed = useUIDSeed();
   const validationResolver = useYupValidationResolver(validationSchema);
+  const notificationHelper = useNotification();
   const {
     control,
     register,
@@ -63,6 +67,10 @@ const NewBook = () => {
 
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: GET_ALL_BOOKS }, { query: GET_ALL_AUTHORS }],
+    onError: (error) => {
+      handleApolloErrors(error);
+      notificationHelper.add("Oops! Something Went Wrong", "error");
+    },
   });
 
   const addGenre = useCallback(() => {
@@ -87,9 +95,10 @@ const NewBook = () => {
     async (data, event) => {
       const { title, author, published, genres } = data;
       await createBook({ variables: { title, author, published, genres } });
+      notificationHelper.add("Succesfully created Book", "success");
       reset();
     },
-    [createBook, reset]
+    [createBook, reset, notificationHelper]
   );
 
   return (
@@ -98,6 +107,7 @@ const NewBook = () => {
         <title>GraphQL Library | Add New Book</title>
       </Helmet>
       <LinkedNavBar />
+      <Notifications />
       <Container>
         <Form onSubmit={handleSubmit(addBook)} className="mt-4">
           <h2 className="text-success mb-3">Add a new Book</h2>
