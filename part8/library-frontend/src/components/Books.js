@@ -37,14 +37,13 @@ const Books = () => {
       <Container>
         <Row className="mt-4">
           <Col>
-            <div className="d-flex align-items-center">
-              <h1 className="h2 mr-2">Books</h1>
-              {getAllBooks.loading && (
-                <Spinner animation="grow" role="status" size="sm">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )}
-            </div>
+            <h1 className="d-inline h2 mr-2">Books</h1>
+            {getAllBooks.loading && (
+              <Spinner animation="grow" role="status" size="sm">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
+            <hr />
 
             {hasNoBooks && <NoResource resource="books" />}
 

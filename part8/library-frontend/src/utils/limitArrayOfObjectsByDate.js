@@ -1,5 +1,5 @@
 const limitArrayOfObjectsByDate = (array, limit = 3, ascending = false) => {
-  if (limit < array.length) throw new Error("Invalid Limit Range");
+  if (limit < 1) throw new Error("Invalid Limit");
   if (array.some((i) => !i.date)) throw new Error("No Date Property On Items");
 
   if (array.length <= limit) {

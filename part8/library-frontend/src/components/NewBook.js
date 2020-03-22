@@ -93,10 +93,14 @@ const NewBook = () => {
   );
 
   const addBook = useCallback(
-    async (data, event) => {
-      const { title, author, published, genres } = data;
-      await createBook({ variables: { title, author, published, genres } });
-      notificationHelper.add("Succesfully created Book", "success");
+    async (values) => {
+      const { title, author, published, genres } = values;
+      const gqlData = await createBook({
+        variables: { title, author, published, genres },
+      });
+      if (gqlData) {
+        notificationHelper.add("Succesfully created Book", "success");
+      }
       reset();
     },
     [createBook, reset, notificationHelper]
@@ -111,14 +115,13 @@ const NewBook = () => {
       <Notifications />
       <Container>
         <Form onSubmit={handleSubmit(addBook)} className="mt-4">
-          <div className="d-flex align-items-center">
-            <h1 className="h2 mb-3 mr-2">Add a new Book</h1>
-            {createBookResults.loading && (
-              <Spinner variant="info" animation="grow" role="status" size="sm">
-                <span className="sr-only">Creating Book...</span>
-              </Spinner>
-            )}
-          </div>
+          <h1 className="d-inline h2 mb-3 mr-2">Add a new Book</h1>
+          {createBookResults.loading && (
+            <Spinner variant="info" animation="grow" role="status" size="sm">
+              <span className="sr-only">Creating Book...</span>
+            </Spinner>
+          )}
+          <hr />
 
           <Form.Group as={Form.Row} controlId={uidSeed("title")}>
             <Form.Label column sm={2} md={1}>

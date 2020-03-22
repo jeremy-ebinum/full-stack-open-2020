@@ -6,6 +6,7 @@ import Table from "react-bootstrap/Table";
 const AuthorsTable = ({ authors }) => {
   return (
     <Table responsive striped bordered hover variant="dark">
+      <caption>List of Authors</caption>
       <thead>
         <tr>
           <th>Name</th>

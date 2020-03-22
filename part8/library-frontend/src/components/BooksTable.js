@@ -6,6 +6,7 @@ import Table from "react-bootstrap/Table";
 const BooksTable = ({ books }) => {
   return (
     <Table responsive striped bordered hover variant="light">
+      <caption>List of Books</caption>
       <thead className="thead-dark">
         <tr>
           <th>Title</th>

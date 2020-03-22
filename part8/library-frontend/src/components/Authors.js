@@ -10,6 +10,7 @@ import { GET_ALL_AUTHORS } from "../queries";
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
 import AuthorsTable from "./AuthorsTable";
+import AuthorsForm from "./AuthorsForm";
 import NoResource from "./NoResource";
 
 const Authors = () => {
@@ -39,18 +40,22 @@ const Authors = () => {
       <Container>
         <Row className="mt-4">
           <Col>
-            <div className="d-flex align-items-center">
-              <h1 className="h2 mr-2">Authors</h1>
-              {getAllAuthors.loading && (
-                <Spinner animation="grow" role="status" size="sm">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )}
-            </div>
+            <h1 className="d-inline h2 mr-2">Authors</h1>
+            {getAllAuthors.loading && (
+              <Spinner animation="grow" role="status" size="sm">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
+            <hr></hr>
 
             {hasNoAuthors && <NoResource resource="authors" />}
 
-            {authors.length > 0 && <AuthorsTable authors={authors} />}
+            {authors.length > 0 && (
+              <>
+                <AuthorsTable authors={authors} />
+                <AuthorsForm authors={authors} />
+              </>
+            )}
           </Col>
         </Row>
       </Container>

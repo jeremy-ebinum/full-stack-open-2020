@@ -7,6 +7,7 @@ import useNotification from "../hooks/useNotification";
 const toastClassNames = {
   success: { bg: "bg-success", txt: "text-light" },
   error: { bg: "bg-danger", txt: "text-light" },
+  info: { bg: "bg-info", txt: "text-light" },
 };
 
 const classNameKeys = Object.keys(toastClassNames);

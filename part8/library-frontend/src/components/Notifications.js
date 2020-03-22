@@ -17,36 +17,29 @@ const Notifications = () => {
     }
   }, [getAllNotifications.data]);
 
-  const notificationsToShow = limitNotifications(notifications);
+  const notificationsToShow = limitNotifications(notifications, 2);
 
   return (
     <div
       aria-live="polite"
       aria-atomic="true"
+      className="d-flex flex-column"
       style={{
-        position: "sticky",
-        top: 0,
+        position: "fixed",
+        top: "60px",
         right: 0,
         zIndex: 1,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-        }}
-      >
-        {notificationsToShow.map((n) => (
-          <Notification
-            key={n.id}
-            id={n.id}
-            message={n.message}
-            timeout={n.timeout}
-            level={n.level}
-          />
-        ))}
-      </div>
+      {notificationsToShow.map((n) => (
+        <Notification
+          key={n.id}
+          id={n.id}
+          message={n.message}
+          timeout={n.timeout}
+          level={n.level}
+        />
+      ))}
     </div>
   );
 };
