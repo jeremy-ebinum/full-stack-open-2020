@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import Table from "react-bootstrap/Table";
 
 const BooksTable = ({ books }) => {
@@ -22,6 +24,10 @@ const BooksTable = ({ books }) => {
       </tbody>
     </Table>
   );
+};
+
+BooksTable.propTypes = {
+  books: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default BooksTable;

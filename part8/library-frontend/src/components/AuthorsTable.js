@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import Table from "react-bootstrap/Table";
 
 const AuthorsTable = ({ authors }) => {
@@ -22,6 +24,10 @@ const AuthorsTable = ({ authors }) => {
       </tbody>
     </Table>
   );
+};
+
+AuthorsTable.propTypes = {
+  authors: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default AuthorsTable;

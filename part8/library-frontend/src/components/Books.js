@@ -38,7 +38,7 @@ const Books = () => {
         <Row className="mt-4">
           <Col>
             <div className="d-flex align-items-center">
-              <h2 className="mr-2">Books</h2>
+              <h1 className="h2 mr-2">Books</h1>
               {getAllBooks.loading && (
                 <Spinner animation="grow" role="status" size="sm">
                   <span className="sr-only">Loading...</span>

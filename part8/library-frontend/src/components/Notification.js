@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useLayoutEffect } from "react";
+import PropTypes from "prop-types";
 import Toast from "react-bootstrap/Toast";
 
 import useNotification from "../hooks/useNotification";
@@ -36,6 +37,13 @@ const Notification = ({ id, message, timeout, level }) => {
       </Toast.Body>
     </Toast>
   );
+};
+
+Notification.propTypes = {
+  id: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  level: PropTypes.string.isRequired,
+  timeout: PropTypes.number.isRequired,
 };
 
 export default Notification;

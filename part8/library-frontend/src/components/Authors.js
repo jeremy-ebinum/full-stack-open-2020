@@ -40,7 +40,7 @@ const Authors = () => {
         <Row className="mt-4">
           <Col>
             <div className="d-flex align-items-center">
-              <h2 className="mr-2">Authors</h2>
+              <h1 className="h2 mr-2">Authors</h1>
               {getAllAuthors.loading && (
                 <Spinner animation="grow" role="status" size="sm">
                   <span className="sr-only">Loading...</span>

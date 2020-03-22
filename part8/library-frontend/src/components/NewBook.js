@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 import { CREATE_BOOK, GET_ALL_BOOKS, GET_ALL_AUTHORS } from "../queries";
 import { handleApolloErrors } from "../helpers/errorHelper";
@@ -65,7 +66,7 @@ const NewBook = () => {
 
   const { touched, isSubmitting } = formState;
 
-  const [createBook] = useMutation(CREATE_BOOK, {
+  const [createBook, createBookResults] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: GET_ALL_BOOKS }, { query: GET_ALL_AUTHORS }],
     onError: (error) => {
       handleApolloErrors(error);
@@ -110,7 +111,14 @@ const NewBook = () => {
       <Notifications />
       <Container>
         <Form onSubmit={handleSubmit(addBook)} className="mt-4">
-          <h2 className="text-success mb-3">Add a new Book</h2>
+          <div className="d-flex align-items-center">
+            <h1 className="h2 mb-3 mr-2">Add a new Book</h1>
+            {createBookResults.loading && (
+              <Spinner variant="info" animation="grow" role="status" size="sm">
+                <span className="sr-only">Creating Book...</span>
+              </Spinner>
+            )}
+          </div>
 
           <Form.Group as={Form.Row} controlId={uidSeed("title")}>
             <Form.Label column sm={2} md={1}>
