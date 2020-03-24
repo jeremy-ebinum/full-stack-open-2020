@@ -13,7 +13,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import { CREATE_BOOK, GET_ALL_BOOKS, GET_ALL_AUTHORS } from "../queries";
-import { handleApolloErrors } from "../helpers/errorHelper";
+import { resolveApolloErrors } from "../helpers/errorHelper";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
 import useNotification from "../hooks/useNotification";
 import LinkedNavBar from "./LinkedNavBar";
@@ -69,8 +69,8 @@ const NewBook = () => {
   const [createBook, createBookResults] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: GET_ALL_BOOKS }, { query: GET_ALL_AUTHORS }],
     onError: (error) => {
-      handleApolloErrors(error);
-      notificationHelper.add("Oops! Something Went Wrong", "error");
+      const errorsToDisplay = resolveApolloErrors(error);
+      notificationHelper.addMultiple(errorsToDisplay, "error", 5000);
     },
   });
 
@@ -114,7 +114,7 @@ const NewBook = () => {
       <LinkedNavBar />
       <Notifications />
       <Container>
-        <Form onSubmit={handleSubmit(addBook)} className="mt-4">
+        <Form onSubmit={handleSubmit(addBook)} className="my-4">
           <h1 className="d-inline h2 mb-3 mr-2">Add a new Book</h1>
           {createBookResults.loading && (
             <Spinner variant="info" animation="grow" role="status" size="sm">

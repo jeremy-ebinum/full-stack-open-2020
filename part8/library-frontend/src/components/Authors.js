@@ -38,7 +38,7 @@ const Authors = () => {
       <Notifications />
 
       <Container>
-        <Row className="mt-4">
+        <Row className="my-4">
           <Col>
             <h1 className="d-inline h2 mr-2">Authors</h1>
             {getAllAuthors.loading && (
@@ -52,8 +52,8 @@ const Authors = () => {
 
             {authors.length > 0 && (
               <>
-                <AuthorsTable authors={authors} />
                 <AuthorsForm authors={authors} />
+                <AuthorsTable authors={authors} />
               </>
             )}
           </Col>

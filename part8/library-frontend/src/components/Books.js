@@ -35,7 +35,7 @@ const Books = () => {
       <LinkedNavBar />
       <Notifications />
       <Container>
-        <Row className="mt-4">
+        <Row className="my-4">
           <Col>
             <h1 className="d-inline h2 mr-2">Books</h1>
             {getAllBooks.loading && (

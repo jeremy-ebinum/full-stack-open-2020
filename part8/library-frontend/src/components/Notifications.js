@@ -17,7 +17,7 @@ const Notifications = () => {
     }
   }, [getAllNotifications.data]);
 
-  const notificationsToShow = limitNotifications(notifications, 2);
+  const notificationsToShow = limitNotifications(notifications, 3);
 
   return (
     <div

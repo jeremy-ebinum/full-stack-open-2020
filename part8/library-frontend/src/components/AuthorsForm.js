@@ -10,7 +10,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { useUIDSeed } from "react-uid";
 import { GET_ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
-import { handleApolloErrors } from "../helpers/errorHelper";
+import { resolveApolloErrors } from "../helpers/errorHelper";
 import useNotification from "../hooks/useNotification";
 
 const AuthorsForm = ({ authors }) => {
@@ -19,8 +19,8 @@ const AuthorsForm = ({ authors }) => {
   const [editAuthor, editAuthorResults] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: GET_ALL_AUTHORS }],
     onError: (error) => {
-      handleApolloErrors(error);
-      notificationHelper.add("Oops! Something Went Wrong", "error");
+      const errorsToDisplay = resolveApolloErrors(error);
+      notificationHelper.addMultiple(errorsToDisplay, "error", 5000);
     },
   });
 

@@ -13,8 +13,10 @@
   "license": "MIT",
   "dependencies": {
     "apollo-server": "^2.11.0",
+    "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
-    "uuid": "^7.0.2"
+    "mongoose": "^5.8.11",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
