@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import React, { useState, useCallback, useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { useUIDSeed } from "react-uid";
 import { Helmet } from "react-helmet-async";
+import Select from "react-select";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
 import { GET_ALL_BOOKS } from "../queries";
+import useBookGenres from "../hooks/useBookGenres";
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
 import BooksTable from "./BooksTable";
@@ -15,15 +18,43 @@ import NoResource from "./NoResource";
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [hasNoBooks, setHasNoBooks] = useState(false);
-  const getAllBooks = useQuery(GET_ALL_BOOKS);
+  const [genre, setGenre] = useState("");
+  const { genres, hasGenres } = useBookGenres();
+  const [getAllBooks, getAllBooksResults] = useLazyQuery(GET_ALL_BOOKS);
+  const uidSeed = useUIDSeed();
 
   useEffect(() => {
-    if (getAllBooks.networkStatus > 6) {
-      const books = getAllBooks.data ? getAllBooks.data.allBooks : [];
+    getAllBooks({ variables: { genre } });
+  }, [genre, getAllBooks]);
+
+  useEffect(() => {
+    const { called, data, networkStatus } = getAllBooksResults;
+    if (called && networkStatus > 6) {
+      const books = data ? data.allBooks : [];
       setHasNoBooks(books.length === 0);
       setBooks(books);
     }
-  }, [getAllBooks.networkStatus, getAllBooks.data]);
+  }, [getAllBooksResults]);
+
+  const generateOptions = useCallback(() => {
+    const defaultOption = [{ value: 0, label: "all" }];
+
+    let options = defaultOption;
+
+    if (hasGenres) {
+      const genreOptions = genres.map((g, idx) => {
+        return { value: idx + 1, label: g };
+      });
+      options = defaultOption.concat(genreOptions);
+    }
+
+    return options;
+  }, [genres, hasGenres]);
+
+  const filterByGenre = useCallback((option, action) => {
+    const genre = option.label === "all" ? "" : option.label;
+    setGenre(genre);
+  }, []);
 
   return (
     <>
@@ -45,7 +76,27 @@ const Books = () => {
 
             {hasNoBooks && <NoResource resource="books" />}
 
-            {books.length > 0 && <BooksTable books={books} />}
+            {books.length > 0 && (
+              <>
+                <Row className="mb-4 align-items-center">
+                  <Col xs={12} className="mb-2">
+                    <span id={uidSeed("genre-filter")} className="lead">
+                      Filter by Genre:
+                    </span>
+                  </Col>
+                  <Col sm={10} md={5}>
+                    <Select
+                      name="genres"
+                      options={generateOptions()}
+                      onChange={filterByGenre}
+                      defaultValue={generateOptions()[0]}
+                      aria-labelledby={uidSeed("genre-filter")}
+                    />
+                  </Col>
+                </Row>
+                <BooksTable books={books} />
+              </>
+            )}
           </Col>
         </Row>
       </Container>

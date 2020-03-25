@@ -24,7 +24,7 @@ const LinkedNavBar = () => {
   }, [client, history]);
 
   return (
-    <Navbar collapseOnSelect variant="dark" bg="dark" expand="md" sticky="top">
+    <Navbar collapseOnSelect variant="dark" bg="dark" expand="lg" sticky="top">
       <Container fluid>
         <Navbar.Brand>GraphQL Library</Navbar.Brand>
         <Navbar.Toggle aria-controls={uidSeed("navbar-collapse")} />
@@ -47,14 +47,24 @@ const LinkedNavBar = () => {
               <FontAwesomeIcon icon="book" /> Books
             </Nav.Link>
             {user && (
-              <Nav.Link
-                to="/new"
-                as={Link}
-                active={pathname === "/new"}
-                className="mr-2"
-              >
-                <FontAwesomeIcon icon="plus-circle" /> Add Book
-              </Nav.Link>
+              <>
+                <Nav.Link
+                  to="/new"
+                  as={Link}
+                  active={pathname === "/new"}
+                  className="mr-2"
+                >
+                  <FontAwesomeIcon icon="plus-circle" /> Add Book
+                </Nav.Link>
+                <Nav.Link
+                  to="/recommended"
+                  as={Link}
+                  active={pathname === "/recommended"}
+                  className="mr-2"
+                >
+                  <FontAwesomeIcon icon="star" /> Recommended
+                </Nav.Link>
+              </>
             )}
           </Nav>
           <>
