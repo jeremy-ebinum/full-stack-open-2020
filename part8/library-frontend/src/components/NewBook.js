@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { Redirect, useLocation } from "react-router-dom";
-import { useUIDSeed } from "react-uid";
+import { useUIDSeed, uid } from "react-uid";
 import * as yup from "yup";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -30,20 +30,16 @@ const validationSchema = yup.object().shape({
     .integer()
     .required(),
   genre: yup.string(),
-  genres: yup
-    .array()
-    .of(yup.string())
-    .ensure(),
 });
 
 const NewBook = () => {
+  const [genres, setGenres] = useState([]);
   const uidSeed = useUIDSeed();
   const { user, hasSyncAuth } = useAuthUser();
   const { pathname } = useLocation();
   const validationResolver = useYupValidationResolver(validationSchema);
   const notificationHelper = useNotification();
   const {
-    control,
     register,
     handleSubmit,
     getValues,
@@ -58,14 +54,8 @@ const NewBook = () => {
       author: "",
       published: "",
       genre: "",
-      genres: [],
     },
     validationResolver,
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "genres",
   });
 
   const { touched, isSubmitting } = formState;
@@ -81,10 +71,16 @@ const NewBook = () => {
   const addGenre = useCallback(() => {
     const { genre } = getValues();
     if (genre) {
-      append(genre);
+      setGenres((prevGenres) =>
+        prevGenres.concat({ id: uid({}), value: genre })
+      );
       setValue("genre", "");
     }
-  }, [setValue, getValues, append]);
+  }, [setValue, getValues]);
+
+  const removeGenre = useCallback((id) => {
+    setGenres((prevGenres) => prevGenres.filter((g) => g.id !== id));
+  }, []);
 
   const handleGenreKeyPress = useCallback(
     (event) => {
@@ -98,16 +94,19 @@ const NewBook = () => {
 
   const addBook = useCallback(
     async (values) => {
-      const { title, author, published, genres } = values;
+      const { title, author, published } = values;
+      const genreValues = genres.map((g) => g.value);
+
       const gqlData = await createBook({
-        variables: { title, author, published, genres },
+        variables: { title, author, published, genres: genreValues },
       });
       if (gqlData) {
         notificationHelper.add("Succesfully created Book", "success");
       }
+      setGenres([]);
       reset();
     },
-    [createBook, reset, notificationHelper]
+    [genres, createBook, reset, notificationHelper]
   );
 
   if (!hasSyncAuth) return null;
@@ -225,21 +224,16 @@ const NewBook = () => {
               </Form.Text>
 
               <div>
-                {fields.map((genre, index) => (
+                {genres.map((genre, index) => (
                   <div
                     key={genre.id}
                     className="d-inline-block border px-3 py-2 mr-2 mb-2"
                   >
-                    <input
-                      className="d-none"
-                      ref={register}
-                      name={`genres[${index}]`}
-                    ></input>
                     <button
                       type="button"
                       className="close ml-3"
                       aria-label="Remove Genre"
-                      onClick={() => remove(index)}
+                      onClick={() => removeGenre(genre.id)}
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>
