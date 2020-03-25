@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import Select from "react-select";
+import { Link, useLocation } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,12 +10,15 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import { useUIDSeed } from "react-uid";
+import useAuthUser from "../hooks/useAuthUser";
 import { GET_ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
 import useNotification from "../hooks/useNotification";
 
 const AuthorsForm = ({ authors }) => {
   const selectOptions = authors.map((a) => ({ value: a.id, label: a.name }));
+  const { user, hasSyncAuth } = useAuthUser();
+  const { pathname } = useLocation();
 
   const [editAuthor, editAuthorResults] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: GET_ALL_AUTHORS }],
@@ -51,6 +55,23 @@ const AuthorsForm = ({ authors }) => {
     },
     [editAuthor, notificationHelper, reset]
   );
+
+  if (hasSyncAuth && !user) {
+    return (
+      <div className="mb-4">
+        <h2 className="h4 mb-3 mr-2">Update Author</h2>
+        <Button
+          as={Link}
+          to={{
+            pathname: "/login",
+            state: { from: pathname },
+          }}
+        >
+          Login to Update Authors
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <Form onSubmit={handleSubmit(updateAuthor)}>

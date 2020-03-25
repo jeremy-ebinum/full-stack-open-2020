@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import Container from "react-bootstrap/Container";
@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
 import { GET_ALL_AUTHORS } from "../queries";
+
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
 import AuthorsTable from "./AuthorsTable";
@@ -15,18 +16,16 @@ import NoResource from "./NoResource";
 
 const Authors = () => {
   const [authors, setAuthors] = useState([]);
-  const hasRunGetAllAuthors = useRef(false);
+  const [hasNoAuthors, setHasNoAuthors] = useState(false);
   const getAllAuthors = useQuery(GET_ALL_AUTHORS);
 
   useEffect(() => {
-    if (getAllAuthors.data) {
-      const authors = getAllAuthors.data.allAuthors;
+    if (getAllAuthors.networkStatus > 6) {
+      const authors = getAllAuthors.data ? getAllAuthors.data.allAuthors : [];
+      setHasNoAuthors(authors.length === 0);
       setAuthors(authors);
-      hasRunGetAllAuthors.current = true;
     }
-  }, [getAllAuthors.data]);
-
-  const hasNoAuthors = hasRunGetAllAuthors.current && !authors.length;
+  }, [getAllAuthors.networkStatus, getAllAuthors.data]);
 
   return (
     <>

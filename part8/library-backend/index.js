@@ -2,19 +2,21 @@ const {
   ApolloServer,
   gql,
   UserInputError,
+  AuthenticationError,
   ApolloError,
 } = require("apollo-server");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const {
-  getAuthorValidationErrors,
-  getBookValidationErrors,
+  getModelValidationErrors,
   useFallbackErrorHandler,
 } = require("./helpers/errorHelper");
 const Book = require("./models/Book");
 const Author = require("./models/Author");
+const User = require("./models/User");
 
 const uri = config.MONGODB_URI;
 
@@ -48,11 +50,23 @@ const typeDefs = gql`
     id: ID!
   }
 
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    allUsers: [User!]!
+    me: User
   }
 
   type Mutation {
@@ -63,6 +77,8 @@ const typeDefs = gql`
       genres: [String!]!
     ): Book
     editAuthor(name: String!, setBornTo: Int!): Author
+    createUser(username: String!, favoriteGenre: String!): User
+    login(username: String!, password: String!): Token
   }
 `;
 
@@ -104,10 +120,18 @@ const resolvers = {
       }
     },
     allAuthors: () => Author.find({}),
+    allUsers: () => User.find({}),
+    me: (root, args, { authUser }) => {
+      return authUser;
+    },
   },
 
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, { authUser }) => {
+      if (!authUser) {
+        throw new AuthenticationError("You need to be logged in to add a book");
+      }
+
       let author = await Author.findOne({ name: args.author });
 
       if (!author) {
@@ -116,7 +140,7 @@ const resolvers = {
           await author.save();
         } catch (e) {
           if (e.name === "ValidationError") {
-            const validationErrors = getAuthorValidationErrors(e);
+            const validationErrors = getModelValidationErrors(e, "Author");
 
             throw new UserInputError("Couldn't create new author", {
               invalidArgs: { author: args.author },
@@ -140,7 +164,7 @@ const resolvers = {
         return book.populate("author").execPopulate();
       } catch (e) {
         if (e.name === "ValidationError") {
-          const validationErrors = getBookValidationErrors(e);
+          const validationErrors = getModelValidationErrors(e, "Book");
 
           throw new UserInputError("Couldn't create new book", {
             invalidArgs: args,
@@ -151,7 +175,12 @@ const resolvers = {
         useFallbackErrorHandler(e);
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, { authUser }) => {
+      if (!authUser) {
+        throw new AuthenticationError(
+          "You need to be logged in to update an author"
+        );
+      }
       const author = await Author.findOne({ name: args.name });
 
       if (!author) {
@@ -165,7 +194,7 @@ const resolvers = {
         return author;
       } catch (e) {
         if (e.name === "ValidationError") {
-          const validationErrors = getAuthorValidationErrors(e);
+          const validationErrors = getModelValidationErrors(e, "Author");
 
           throw new UserInputError("Couldn't update author", {
             invalidArgs: args,
@@ -176,12 +205,59 @@ const resolvers = {
         useFallbackErrorHandler(e);
       }
     },
+    createUser: async (root, args) => {
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
+
+      try {
+        await user.save();
+        return user;
+      } catch (e) {
+        if (e.name === "ValidationError") {
+          const validationErrors = getModelValidationErrors(e, "User");
+
+          throw new UserInputError("Couldn't create user", {
+            invalidArgs: args,
+            errorMessages: validationErrors,
+          });
+        }
+
+        useFallbackErrorHandler(e);
+      }
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+
+      if (!user || args.password !== "password") {
+        throw new UserInputError("Couldn't login user", {
+          invalidArgs: args,
+          errorMessages: ["Invalid username or password"],
+        });
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      };
+
+      return { value: jwt.sign(userForToken, config.JWT_SECRET) };
+    },
   },
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.toLowerCase().startsWith("bearer ")) {
+      const decodedToken = jwt.verify(auth.substring(7), config.JWT_SECRET);
+      const authUser = await User.findById(decodedToken.id);
+      return { authUser };
+    }
+  },
 });
 
 server.listen().then(({ url }) => {

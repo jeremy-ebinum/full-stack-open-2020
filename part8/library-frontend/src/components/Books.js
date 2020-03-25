@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import Container from "react-bootstrap/Container";
@@ -14,18 +14,16 @@ import NoResource from "./NoResource";
 
 const Books = () => {
   const [books, setBooks] = useState([]);
+  const [hasNoBooks, setHasNoBooks] = useState(false);
   const getAllBooks = useQuery(GET_ALL_BOOKS);
-  const hasRunGetAllBooks = useRef(false);
 
   useEffect(() => {
-    if (getAllBooks.data) {
-      const books = getAllBooks.data.allBooks;
+    if (getAllBooks.networkStatus > 6) {
+      const books = getAllBooks.data ? getAllBooks.data.allBooks : [];
+      setHasNoBooks(books.length === 0);
       setBooks(books);
-      hasRunGetAllBooks.current = true;
     }
-  }, [getAllBooks.data]);
-
-  const hasNoBooks = hasRunGetAllBooks.current && !books.length;
+  }, [getAllBooks.networkStatus, getAllBooks.data]);
 
   return (
     <>

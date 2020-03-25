@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useMutation } from "@apollo/client";
+import { Redirect, useLocation } from "react-router-dom";
 import { useUIDSeed } from "react-uid";
 import * as yup from "yup";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -14,6 +15,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { CREATE_BOOK, GET_ALL_BOOKS, GET_ALL_AUTHORS } from "../queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
+import useAuthUser from "../hooks/useAuthUser";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
 import useNotification from "../hooks/useNotification";
 import LinkedNavBar from "./LinkedNavBar";
@@ -24,7 +26,7 @@ const validationSchema = yup.object().shape({
   author: yup.string().required(),
   published: yup
     .number()
-    .typeError("published must be a number")
+    .typeError("enter a publication year as number")
     .integer()
     .required(),
   genre: yup.string(),
@@ -36,6 +38,8 @@ const validationSchema = yup.object().shape({
 
 const NewBook = () => {
   const uidSeed = useUIDSeed();
+  const { user, hasSyncAuth } = useAuthUser();
+  const { pathname } = useLocation();
   const validationResolver = useYupValidationResolver(validationSchema);
   const notificationHelper = useNotification();
   const {
@@ -105,6 +109,18 @@ const NewBook = () => {
     },
     [createBook, reset, notificationHelper]
   );
+
+  if (!hasSyncAuth) return null;
+
+  if (hasSyncAuth && !user)
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+          state: { from: pathname },
+        }}
+      />
+    );
 
   return (
     <>

@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
+    "apollo-link-context": "^1.0.19",
     "bootstrap": "^4.4.1",
     "graphql": "^14.6.0",
     "prop-types": "^15.7.2",
