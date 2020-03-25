@@ -81,7 +81,7 @@ const Books = () => {
                 <Row className="mb-4 align-items-center">
                   <Col xs={12} className="mb-2">
                     <span id={uidSeed("genre-filter")} className="lead">
-                      Filter by Genre:
+                      Filter Books by Genre:
                     </span>
                   </Col>
                   <Col sm={10} md={5}>
@@ -91,6 +91,7 @@ const Books = () => {
                       onChange={filterByGenre}
                       defaultValue={generateOptions()[0]}
                       aria-labelledby={uidSeed("genre-filter")}
+                      isLoading={getAllBooksResults.loading}
                     />
                   </Col>
                 </Row>

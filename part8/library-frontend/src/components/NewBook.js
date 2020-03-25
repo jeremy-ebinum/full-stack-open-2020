@@ -139,7 +139,7 @@ const NewBook = () => {
           <hr />
 
           <Form.Group as={Form.Row} controlId={uidSeed("title")}>
-            <Form.Label column sm={2} md={1}>
+            <Form.Label column sm={2} md={1} className="font-weight-bold">
               Title
             </Form.Label>
             <Col sm={10} md={6}>
@@ -158,7 +158,7 @@ const NewBook = () => {
           </Form.Group>
 
           <Form.Group as={Form.Row} controlId={uidSeed("author")}>
-            <Form.Label column sm={2} md={1}>
+            <Form.Label column sm={2} md={1} className="font-weight-bold">
               Author
             </Form.Label>
             <Col sm={10} md={6}>
@@ -178,7 +178,7 @@ const NewBook = () => {
           </Form.Group>
 
           <Form.Group as={Form.Row} controlId={uidSeed("published")}>
-            <Form.Label column sm={2} md={1}>
+            <Form.Label column sm={2} md={1} className="font-weight-bold">
               Published
             </Form.Label>
             <Col sm={10} md={6}>
@@ -198,7 +198,7 @@ const NewBook = () => {
           </Form.Group>
 
           <Form.Group as={Form.Row} controlId={uidSeed("genre")}>
-            <Form.Label column sm={2} md={1}>
+            <Form.Label column sm={2} md={1} className="font-weight-bold">
               Genres
             </Form.Label>
             <Col sm={10} md={6}>
