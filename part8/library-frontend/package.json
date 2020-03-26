@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.41",
+    "@apollo/link-ws": "^2.0.0-beta.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
@@ -13,6 +14,7 @@
     "apollo-link-context": "^1.0.19",
     "bootstrap": "^4.4.1",
     "graphql": "^14.6.0",
+    "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.17",
@@ -24,6 +26,7 @@
     "react-select": "^3.1.0",
     "react-uid": "^2.2.0",
     "styled-components": "^5.0.1",
+    "subscriptions-transport-ws": "^0.9.16",
     "yup": "^0.28.3"
   },
   "scripts": {

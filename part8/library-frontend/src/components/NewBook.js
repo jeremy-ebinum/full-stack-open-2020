@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 import { Redirect, useLocation } from "react-router-dom";
 import { useUIDSeed, uid } from "react-uid";
+import _throttle from "lodash.throttle";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
@@ -13,7 +14,12 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
-import { CREATE_BOOK, GET_ALL_BOOKS, GET_ALL_AUTHORS } from "../queries";
+import {
+  CREATE_BOOK,
+  GET_ALL_BOOKS,
+  GET_ALL_AUTHORS,
+  ON_BOOK_ADDED,
+} from "../queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
 import useAuthUser from "../hooks/useAuthUser";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
@@ -65,6 +71,21 @@ const NewBook = () => {
     onError: (error) => {
       const errorsToDisplay = resolveApolloErrors(error);
       notificationHelper.addMultiple(errorsToDisplay, "error", 5000);
+    },
+  });
+
+  const notifyOnBookAdded = useCallback(
+    _throttle(() => {
+      if (!createBookResults.loading) {
+        notificationHelper.add("There are new books", "info");
+      }
+    }, 180000),
+    []
+  );
+
+  useSubscription(ON_BOOK_ADDED, {
+    onSubscriptionData: () => {
+      notifyOnBookAdded();
     },
   });
 

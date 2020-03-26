@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useSubscription } from "@apollo/client";
 import { useUIDSeed } from "react-uid";
 import { Helmet } from "react-helmet-async";
 import Select from "react-select";
@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
-import { GET_ALL_BOOKS } from "../queries";
+import { GET_ALL_BOOKS, ON_BOOK_ADDED } from "../queries";
 import useBookGenres from "../hooks/useBookGenres";
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
@@ -18,10 +18,16 @@ import NoResource from "./NoResource";
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [hasNoBooks, setHasNoBooks] = useState(false);
-  const [genre, setGenre] = useState("");
+  const [genre, setGenre] = useState(null);
   const { genres, hasGenres } = useBookGenres();
   const [getAllBooks, getAllBooksResults] = useLazyQuery(GET_ALL_BOOKS);
   const uidSeed = useUIDSeed();
+
+  useSubscription(ON_BOOK_ADDED, {
+    onSubscriptionData: () => {
+      getAllBooks();
+    },
+  });
 
   useEffect(() => {
     getAllBooks({ variables: { genre } });
@@ -52,7 +58,7 @@ const Books = () => {
   }, [genres, hasGenres]);
 
   const filterByGenre = useCallback((option, action) => {
-    const genre = option.label === "all" ? "" : option.label;
+    const genre = option.label === "all" ? null : option.label;
     setGenre(genre);
   }, []);
 

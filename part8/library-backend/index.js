@@ -1,10 +1,12 @@
 const {
   ApolloServer,
   gql,
+  PubSub,
   UserInputError,
   AuthenticationError,
   ApolloError,
 } = require("apollo-server");
+const pubsub = new PubSub();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
@@ -79,6 +81,10 @@ const typeDefs = gql`
     editAuthor(name: String!, setBornTo: Int!): Author
     createUser(username: String!, favoriteGenre: String!): User
     login(username: String!, password: String!): Token
+  }
+
+  type Subscription {
+    bookAdded: Book!
   }
 `;
 
@@ -161,7 +167,9 @@ const resolvers = {
 
       try {
         await book.save();
-        return book.populate("author").execPopulate();
+        const savedBook = await book.populate("author").execPopulate();
+        pubsub.publish("BOOK_ADDED", { bookAdded: savedBook });
+        return savedBook;
       } catch (e) {
         if (e.name === "ValidationError") {
           const validationErrors = getModelValidationErrors(e, "Book");
@@ -245,6 +253,11 @@ const resolvers = {
       return { value: jwt.sign(userForToken, config.JWT_SECRET) };
     },
   },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"]),
+    },
+  },
 };
 
 const server = new ApolloServer({
@@ -260,6 +273,7 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`);
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`);
 });

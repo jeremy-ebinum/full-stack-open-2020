@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
-import { GET_ALL_AUTHORS } from "../queries";
+import { GET_ALL_AUTHORS, ON_BOOK_ADDED } from "../queries";
 
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
@@ -18,6 +18,12 @@ const Authors = () => {
   const [authors, setAuthors] = useState([]);
   const [hasNoAuthors, setHasNoAuthors] = useState(false);
   const getAllAuthors = useQuery(GET_ALL_AUTHORS);
+
+  useSubscription(ON_BOOK_ADDED, {
+    onSubscriptionData: () => {
+      getAllAuthors.refetch();
+    },
+  });
 
   useEffect(() => {
     if (getAllAuthors.networkStatus > 6) {
