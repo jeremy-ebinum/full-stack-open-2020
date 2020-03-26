@@ -16,6 +16,9 @@ const {
   getModelValidationErrors,
   useFallbackErrorHandler,
 } = require("./helpers/errorHelper");
+
+const loaders = require("./loaders");
+
 const Book = require("./models/Book");
 const Author = require("./models/Author");
 const User = require("./models/User");
@@ -90,11 +93,9 @@ const typeDefs = gql`
 
 const resolvers = {
   Author: {
-    bookCount: async (root) => {
-      const books = await Book.find({});
-      return books.reduce((count, book) => {
-        return book.author.toString() === root.id ? count + 1 : count;
-      }, 0);
+    bookCount: ({ id }, args, { loaders }) => {
+      const authorId = id.toString();
+      return loaders.bookCountLoader.load(id.toString());
     },
   },
 
@@ -125,7 +126,9 @@ const resolvers = {
           .populate("author");
       }
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: () => {
+      return Author.find({});
+    },
     allUsers: () => User.find({}),
     me: (root, args, { authUser }) => {
       return authUser;
@@ -264,12 +267,15 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
+    let context = { loaders };
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith("bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), config.JWT_SECRET);
       const authUser = await User.findById(decodedToken.id);
-      return { authUser };
+      context = { ...context, authUser };
     }
+
+    return context;
   },
 });
 

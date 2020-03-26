@@ -13,9 +13,11 @@
   "license": "MIT",
   "dependencies": {
     "apollo-server": "^2.11.0",
+    "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash.countby": "^4.6.0",
     "mongoose": "^5.8.11",
     "mongoose-unique-validator": "^2.0.3"
   },
