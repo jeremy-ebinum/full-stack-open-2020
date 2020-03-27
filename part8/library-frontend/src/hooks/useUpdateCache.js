@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useApolloClient } from "@apollo/client";
 
-import { GET_ALL_BOOKS } from "../queries";
+import { GET_ALL_BOOKS } from "../graphql/queries";
 import logger from "../utils/logger";
 
 const includedIn = (set, object) => set.map((p) => p.id).includes(object.id);

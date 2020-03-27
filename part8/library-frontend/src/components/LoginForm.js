@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import { useUIDSeed } from "react-uid";
-import { LOGIN, GET_AUTH_USER } from "../queries";
+import { LOGIN, GET_AUTH_USER } from "../graphql/queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
 import useNotification from "../hooks/useNotification";
 

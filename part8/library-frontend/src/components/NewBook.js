@@ -19,7 +19,7 @@ import {
   GET_ALL_BOOKS,
   GET_ALL_AUTHORS,
   ON_BOOK_ADDED,
-} from "../queries";
+} from "../graphql/queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
 import useAuthUser from "../hooks/useAuthUser";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
@@ -167,7 +167,7 @@ const NewBook = () => {
         <Form onSubmit={handleSubmit(addBook)} className="my-4">
           <h1 className="d-inline h2 mb-3 mr-2">Add a new Book</h1>
           {createBookResults.loading && (
-            <Spinner variant="info" animation="grow" role="status" size="sm">
+            <Spinner variant="success" animation="grow" role="status" size="sm">
               <span className="sr-only">Creating Book...</span>
             </Spinner>
           )}

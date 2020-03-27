@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 
-import { GET_ALL_BOOKS } from "../queries";
+import { GET_ALL_BOOKS } from "../graphql/queries";
 
 const toGenres = (genres, book) => {
   const newGenres = book.genres.filter((g) => g && !genres.includes(g));
@@ -9,23 +9,22 @@ const toGenres = (genres, book) => {
 };
 
 const useBookGenres = () => {
+  const [books, setBooks] = useState([]);
   const [genresState, setGenresState] = useState({
     genres: [],
     hasGenres: false,
   });
   const getAllBooks = useQuery(GET_ALL_BOOKS);
 
-  const { networkStatus, data } = getAllBooks;
-
   useEffect(() => {
-    if (networkStatus > 6) {
-      const books = data ? data.allBooks : [];
-      const genres = books.reduce(toGenres, []);
+    const { called, networkStatus, data } = getAllBooks;
+    if (called && networkStatus > 6) {
+      const newBooks = data ? data.allBooks : books;
+      const genres = newBooks.reduce(toGenres, []);
       setGenresState({ genres, hasGenres: true });
-    } else {
-      setGenresState({ genres: null, hasGenres: false });
+      setBooks(newBooks);
     }
-  }, [networkStatus, data]);
+  }, [books, getAllBooks]);
 
   return genresState;
 };

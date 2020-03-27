@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 
-import { ALL_NOTIFICATIONS } from "../queries";
+import { ALL_NOTIFICATIONS } from "../graphql/queries";
 import limitNotifications from "../utils/limitArrayOfObjectsByDate";
 import Notification from "./Notification";
 

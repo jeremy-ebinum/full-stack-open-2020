@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
-import { GET_ALL_AUTHORS, ON_BOOK_ADDED } from "../queries";
+import { GET_ALL_AUTHORS, ON_BOOK_ADDED } from "../graphql/queries";
 
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
@@ -26,12 +26,13 @@ const Authors = () => {
   });
 
   useEffect(() => {
-    if (getAllAuthors.networkStatus > 6) {
-      const authors = getAllAuthors.data ? getAllAuthors.data.allAuthors : [];
-      setHasNoAuthors(authors.length === 0);
-      setAuthors(authors);
+    const { called, networkStatus, data } = getAllAuthors;
+    if (called && networkStatus > 6) {
+      const newAuthors = data ? data.allAuthors : authors;
+      setHasNoAuthors(newAuthors.length === 0);
+      setAuthors(newAuthors);
     }
-  }, [getAllAuthors.networkStatus, getAllAuthors.data]);
+  }, [authors, getAllAuthors]);
 
   return (
     <>
@@ -47,7 +48,7 @@ const Authors = () => {
           <Col>
             <h1 className="d-inline h2 mr-2">Authors</h1>
             {getAllAuthors.loading && (
-              <Spinner animation="grow" role="status" size="sm">
+              <Spinner variant="info" animation="grow" role="status" size="sm">
                 <span className="sr-only">Loading...</span>
               </Spinner>
             )}

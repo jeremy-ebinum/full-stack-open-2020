@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from "../queries";
+import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from "../graphql/queries";
 import logger from "../utils/logger";
 
 const useNotification = () => {

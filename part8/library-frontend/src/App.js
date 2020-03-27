@@ -7,7 +7,7 @@ import useUpdateCache from "./hooks/useUpdateCache";
 import useAuthUser from "./hooks/useAuthUser";
 import useNotification from "./hooks/useNotification";
 
-import { ON_BOOK_ADDED } from "./queries";
+import { ON_BOOK_ADDED } from "./graphql/queries";
 
 import ModalSpinner from "./components/ModalSpinner";
 import Authors from "./components/Authors";

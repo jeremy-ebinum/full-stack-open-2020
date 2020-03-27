@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
-import { GET_ALL_BOOKS } from "../queries";
+import { GET_ALL_BOOKS } from "../graphql/queries";
 import useAuthUser from "../hooks/useAuthUser";
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
@@ -22,12 +22,13 @@ const RecommendedBooks = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (getAllBooks.networkStatus > 6) {
-      const books = getAllBooks.data ? getAllBooks.data.allBooks : [];
+    const { called, networkStatus, data } = getAllBooks;
+    if (called && networkStatus > 6) {
+      const newBooks = data ? data.allBooks : books;
       setHasNoBooks(books.length === 0);
-      setBooks(books);
+      setBooks(newBooks);
     }
-  }, [getAllBooks.networkStatus, getAllBooks.data]);
+  }, [books, getAllBooks]);
 
   if (!hasSyncAuth) return null;
 
@@ -57,7 +58,7 @@ const RecommendedBooks = () => {
           <Col>
             <h1 className="d-inline h2 mr-2">Recommended Books</h1>
             {getAllBooks.loading && (
-              <Spinner animation="grow" role="status" size="sm">
+              <Spinner animation="grow" variant="info" role="status" size="sm">
                 <span className="sr-only">Loading...</span>
               </Spinner>
             )}

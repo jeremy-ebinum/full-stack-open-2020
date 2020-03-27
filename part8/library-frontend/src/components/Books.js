@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 
-import { GET_ALL_BOOKS, ON_BOOK_ADDED } from "../queries";
+import { GET_ALL_BOOKS, ON_BOOK_ADDED } from "../graphql/queries";
 import useBookGenres from "../hooks/useBookGenres";
 import LinkedNavBar from "./LinkedNavBar";
 import Notifications from "./Notifications";
@@ -73,8 +73,8 @@ const Books = () => {
         <Row className="my-4">
           <Col>
             <h1 className="d-inline h2 mr-2">Books</h1>
-            {getAllBooks.loading && (
-              <Spinner animation="grow" role="status" size="sm">
+            {getAllBooksResults.loading && (
+              <Spinner animation="grow" variant="info" role="status" size="sm">
                 <span className="sr-only">Loading...</span>
               </Spinner>
             )}

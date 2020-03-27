@@ -11,7 +11,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { useUIDSeed } from "react-uid";
 import useAuthUser from "../hooks/useAuthUser";
-import { GET_ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
+import { GET_ALL_AUTHORS, EDIT_AUTHOR } from "../graphql/queries";
 import { resolveApolloErrors } from "../helpers/errorHelper";
 import useNotification from "../hooks/useNotification";
 
