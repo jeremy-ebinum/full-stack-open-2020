@@ -2,6 +2,13 @@
 
 This repository contains exercise solutions to the 2020 edition of the Full Stack Open course from the University of Helsinki.
 
+## Part 8 - [GraphQL](https://fullstackopen.com/en/part8)
+
+- [library-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part8/library-frontend) - A library catalogue web app powered by react, apollo-client and styled with bootstrap
+- [library-backend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part8/library-backend) - graphql library backend written with node and apollo-server
+
+[View Solutions](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part8/)
+
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
 
 - [bloglist-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part7/bloglist-frontend) - Extends the functionality and design of the solution from part 5
