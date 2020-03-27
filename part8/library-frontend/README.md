@@ -2,6 +2,8 @@
 
 ## Part 8 - [GraphQL](https://fullstackopen.com/en/part8)
 
+Requires the graphql [library-backend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part8/library-backend) to be running
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
