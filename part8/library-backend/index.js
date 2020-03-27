@@ -7,7 +7,7 @@ const config = require("./utils/config");
 
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
-const loaders = require("./graphql/loaders");
+const { createBookCountLoader } = require("./graphql/loaders");
 
 const User = require("./models/User");
 
@@ -31,16 +31,16 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
-    let context = { loaders };
+    const bookCountLoader = createBookCountLoader();
 
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith("bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), config.JWT_SECRET);
       const authUser = await User.findById(decodedToken.id);
-      context = { ...context, authUser };
+      return { bookCountLoader, authUser };
     }
 
-    return context;
+    return { bookCountLoader };
   },
 });
 

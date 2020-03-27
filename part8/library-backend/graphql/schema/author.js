@@ -32,8 +32,8 @@ const typeDef = gql`
 
 const resolvers = {
   Author: {
-    bookCount: ({ id }, args, { loaders }) => {
-      return loaders.bookCountLoader.load(id.toString());
+    bookCount: ({ id }, args, { bookCountLoader }) => {
+      return bookCountLoader.load(id.toString());
     },
   },
 
