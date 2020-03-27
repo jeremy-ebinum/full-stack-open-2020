@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useMutation, useSubscription } from "@apollo/client";
 import { Redirect, useLocation } from "react-router-dom";
 import { useUIDSeed, uid } from "react-uid";
-import _throttle from "lodash.throttle";
+import _debounce from "lodash.debounce";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
@@ -74,13 +74,20 @@ const NewBook = () => {
     },
   });
 
+  const isAddingBook = useRef(false);
+
   const notifyOnBookAdded = useCallback(
-    _throttle(() => {
-      if (!createBookResults.loading) {
-        notificationHelper.add("There are new books", "info");
-      }
-    }, 180000),
-    []
+    _debounce(
+      () => {
+        console.log(isAddingBook.current);
+        if (!isAddingBook.current) {
+          notificationHelper.add("There are new books", "info");
+        }
+      },
+      10000,
+      { leading: true, trailing: false }
+    ),
+    [isAddingBook.current]
   );
 
   useSubscription(ON_BOOK_ADDED, {
@@ -118,11 +125,18 @@ const NewBook = () => {
       const { title, author, published } = values;
       const genreValues = genres.map((g) => g.value);
 
+      isAddingBook.current = true;
       const gqlData = await createBook({
         variables: { title, author, published, genres: genreValues },
       });
+
       if (gqlData) {
         notificationHelper.add("Succesfully created Book", "success");
+        setTimeout(() => {
+          isAddingBook.current = false;
+        }, 3000);
+      } else {
+        isAddingBook.current = false;
       }
       setGenres([]);
       reset();

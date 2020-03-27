@@ -10,7 +10,7 @@ dependencies:
   apollo-link-context: 1.0.19_graphql@14.6.0
   bootstrap: 4.4.1
   graphql: 14.6.0
-  lodash.throttle: 4.1.1
+  lodash.debounce: 4.0.8
   prop-types: 15.7.2
   react: 16.13.0
   react-bootstrap: 1.0.0-beta.17_react-dom@16.13.0+react@16.13.0
@@ -7157,6 +7157,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
+  /lodash.debounce/4.0.8:
+    dev: false
+    resolution:
+      integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=
   /lodash.memoize/4.1.2:
     dev: false
     resolution:
@@ -7178,10 +7182,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-stgLz+i3Aa9mZgnjr/O+v9ruKZsPsndy7qPZOchbqk2cnTU1ZaldKK+v7m54WoKIyxiuMZTKT2H81F8BeAc3ZQ==
-  /lodash.throttle/4.1.1:
-    dev: false
-    resolution:
-      integrity: sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
   /lodash.uniq/4.5.0:
     dev: false
     resolution:
@@ -12044,7 +12044,7 @@ specifiers:
   apollo-link-context: ^1.0.19
   bootstrap: ^4.4.1
   graphql: ^14.6.0
-  lodash.throttle: ^4.1.1
+  lodash.debounce: ^4.0.8
   prop-types: ^15.7.2
   react: ^16.12.0
   react-bootstrap: ^1.0.0-beta.17

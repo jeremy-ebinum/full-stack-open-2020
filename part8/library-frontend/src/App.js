@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import _throttle from "lodash.throttle";
+import _debounce from "lodash.debounce";
 import { useSubscription } from "@apollo/client";
 import { Switch, Route, useLocation } from "react-router-dom";
 
@@ -23,9 +23,13 @@ const App = () => {
   const { pathname } = useLocation();
 
   const notifyOnBookAdded = useCallback(
-    _throttle(() => {
-      notificationHelper.add("A new book has been added", "info");
-    }, 180000),
+    _debounce(
+      () => {
+        notificationHelper.add("A new book has been added", "info");
+      },
+      180000,
+      { leading: true, trailing: false }
+    ),
     []
   );
 
