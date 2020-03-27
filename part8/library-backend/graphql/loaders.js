@@ -1,6 +1,6 @@
 const DataLoader = require("dataloader");
 const _countBy = require("lodash.countby");
-const Book = require("./models/Book");
+const Book = require("../models/Book");
 
 const bookCountLoader = new DataLoader(async (authorIds) => {
   const books = await Book.find({});

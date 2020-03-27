@@ -1,5 +1,4 @@
 const { ApolloError } = require("apollo-server");
-const logger = require("../utils/logger");
 
 module.exports.getModelValidationErrors = ({ errors }, model) => {
   const validationErrors = Object.values(errors).map((error) => {

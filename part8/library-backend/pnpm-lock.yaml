@@ -5,6 +5,7 @@ dependencies:
   graphql: 14.6.0
   jsonwebtoken: 8.5.1
   lodash.countby: 4.6.0
+  lodash.merge: 4.6.2
   mongoose: 5.8.11_mongoose@5.8.11
   mongoose-unique-validator: 2.0.3_mongoose@5.8.11
 devDependencies:
@@ -1981,6 +1982,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
+  /lodash.merge/4.6.2:
+    dev: false
+    resolution:
+      integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
   /lodash.once/4.1.1:
     dev: false
     resolution:
@@ -3236,6 +3241,7 @@ specifiers:
   graphql: ^14.6.0
   jsonwebtoken: ^8.5.1
   lodash.countby: ^4.6.0
+  lodash.merge: ^4.6.2
   mongoose: ^5.8.11
   mongoose-unique-validator: ^2.0.3
   nodemon: ^2.0.2
