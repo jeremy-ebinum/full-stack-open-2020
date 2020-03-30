@@ -1,3 +1,5 @@
+export {};
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -15,6 +17,7 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
   const average = totalHours / periodLength;
   const success = average >= target;
   const percentageRating = (average / target) * 100;
+
   let rating;
   let ratingDescription;
 
@@ -40,4 +43,38 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+interface ParsedExerciseArgs {
+  target: number;
+  dailyHours: number[];
+}
+
+const parseArguments = (args: Array<string>): ParsedExerciseArgs => {
+  if (args.length < 4) throw new Error("Not enough arguments");
+
+  const target = Number(args[2]);
+  let dailyHours = args.slice(3).map((hours) => Number(hours));
+  const hasNaNInDailyHours = dailyHours.some((hours) => isNaN(hours));
+
+  if (isNaN(target) || hasNaNInDailyHours) {
+    throw new Error("Please provide arguments as numbers");
+  }
+
+  const hasInvalidDailyHours = dailyHours.some((hours) => hours > 24);
+
+  if (target > 24 || hasInvalidDailyHours) {
+    throw new Error("Maximum hours per day is 24");
+  }
+
+  return { target, dailyHours };
+};
+
+try {
+  const { target, dailyHours } = parseArguments(process.argv);
+  console.log(calculateExercises(dailyHours, target));
+} catch (e) {
+  console.log("An error has occured:", e.message);
+  console.log(
+    "USAGE: npm run calculateExercises target(hrs) dailyHours(hrs)[]"
+  );
+  console.log("dailyHours is space separated hours exercised per day");
+}
