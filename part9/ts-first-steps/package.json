@@ -9,6 +9,7 @@
     "@types/node": "^13.9.5"
   },
   "scripts": {
+    "calculateBmi": "ts-node calculateBmi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
