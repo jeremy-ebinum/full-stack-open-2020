@@ -10,6 +10,7 @@
   },
   "scripts": {
     "calculateBmi": "ts-node calculateBmi",
+    "calculateExercises": "ts-node exerciseCalculator",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
