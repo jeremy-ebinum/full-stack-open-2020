@@ -1,5 +1,3 @@
-export {};
-
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -10,7 +8,10 @@ interface Result {
   average: number;
 }
 
-const calculateExercises = (dailyHours: number[], target: number): Result => {
+export const calculateExercises = (
+  dailyHours: number[],
+  target: number
+): Result => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter((hour) => hour > 0).length;
   const totalHours = dailyHours.reduce((total, hours) => total + hours, 0);
@@ -68,13 +69,17 @@ const parseArguments = (args: Array<string>): ParsedExerciseArgs => {
   return { target, dailyHours };
 };
 
-try {
-  const { target, dailyHours } = parseArguments(process.argv);
-  console.log(calculateExercises(dailyHours, target));
-} catch (e) {
-  console.log("An error has occured:", e.message);
-  console.log(
-    "USAGE: npm run calculateExercises target(hrs) dailyHours(hrs)[]"
-  );
-  console.log("dailyHours is space separated hours exercised per day");
+const isCalledDirectly = require.main === module;
+
+if (isCalledDirectly) {
+  try {
+    const { target, dailyHours } = parseArguments(process.argv);
+    console.log(calculateExercises(dailyHours, target));
+  } catch (e) {
+    console.log("An error has occured:", e.message);
+    console.log(
+      "USAGE: npm run calculateExercises target(hrs) dailyHours(hrs)[]"
+    );
+    console.log("dailyHours is space separated hours exercised per day");
+  }
 }

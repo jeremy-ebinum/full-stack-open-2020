@@ -1,6 +1,10 @@
 dependencies:
+  body-parser: 1.19.0
+  cors: 2.8.5
   express: 4.17.1
 devDependencies:
+  '@types/body-parser': 1.19.0
+  '@types/cors': 2.8.6
   '@types/express': 4.17.3
   '@types/node': 13.9.5
   '@typescript-eslint/eslint-plugin': 2.26.0_864948cbab3981ef265e3a522459d240
@@ -46,6 +50,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-2+FrkXY4zllzTNfJth7jOqEHC+enpLeGslEhpnTAkg21GkRrWV4SsAtqchtT4YS9/nODBU2/ZfsBY2X4J/dX7A==
+  /@types/cors/2.8.6:
+    dependencies:
+      '@types/express': 4.17.3
+    dev: true
+    resolution:
+      integrity: sha512-invOmosX0DqbpA+cE2yoHGUlF/blyf7nB0OGYBBiH27crcVm5NmFaZkLP4Ta1hGaesckCi5lVLlydNJCxkTOSg==
   /@types/eslint-visitor-keys/1.0.0:
     dev: true
     resolution:
@@ -415,6 +425,15 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
+  /cors/2.8.5:
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
+    dev: false
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==
   /cross-spawn/6.0.5:
     dependencies:
       nice-try: 1.0.5
@@ -1207,7 +1226,6 @@ packages:
     resolution:
       integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==
   /object-assign/4.1.1:
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
@@ -1913,10 +1931,14 @@ packages:
     resolution:
       integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 specifiers:
+  '@types/body-parser': ^1.19.0
+  '@types/cors': ^2.8.6
   '@types/express': ^4.17.3
   '@types/node': ^13.9.5
   '@typescript-eslint/eslint-plugin': ^2.26.0
   '@typescript-eslint/parser': ^2.26.0
+  body-parser: ^1.19.0
+  cors: ^2.8.5
   eslint: ^6.8.0
   express: ^4.17.1
   ts-node: ^8.8.1

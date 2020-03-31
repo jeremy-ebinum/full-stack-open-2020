@@ -1,4 +1,4 @@
-export const calculateBmi = (height: number, weight: number): string | void => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
 
   if (bmi < 15) return "Very severely underweight";
@@ -9,6 +9,8 @@ export const calculateBmi = (height: number, weight: number): string | void => {
   if (bmi >= 30 && bmi < 35) return "Obese Class I (Moderately obese)";
   if (bmi >= 35 && bmi < 40) return "Obese Class II (Severely obese)";
   if (bmi >= 40) return "Obese Class III (Very severely obese)";
+
+  return "unknown";
 };
 
 interface ParsedBmiArgs {
@@ -30,10 +32,14 @@ const parseArguments = (args: Array<string>): ParsedBmiArgs => {
   }
 };
 
-try {
-  const { height, weight } = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
-} catch (e) {
-  console.log("An error has occured: ", e.message);
-  console.log("USAGE: npm run calculateBmi height(cm) weight(kg)");
+const isCalledDirectly = require.main === module;
+
+if (isCalledDirectly) {
+  try {
+    const { height, weight } = parseArguments(process.argv);
+    console.log(calculateBmi(height, weight));
+  } catch (e) {
+    console.log("An error has occured: ", e.message);
+    console.log("USAGE: npm run calculateBmi height(cm) weight(kg)");
+  }
 }
