@@ -52,7 +52,7 @@ const parseArguments = (args: Array<string>): ParsedExerciseArgs => {
   if (args.length < 4) throw new Error("Not enough arguments");
 
   const target = Number(args[2]);
-  let dailyHours = args.slice(3).map((hours) => Number(hours));
+  const dailyHours = args.slice(3).map((hours) => Number(hours));
   const hasNaNInDailyHours = dailyHours.some((hours) => isNaN(hours));
 
   if (isNaN(target) || hasNaNInDailyHours) {
