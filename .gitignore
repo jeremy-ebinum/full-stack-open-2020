@@ -11,6 +11,7 @@
 # production
 **/build
 # !/part7/bloglist-backend/build
+!/part9/patientor-backend/build
 
 # linters
 # **/.eslintrc.js*
