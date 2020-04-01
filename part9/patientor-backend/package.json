@@ -2,11 +2,13 @@
   "name": "patientor-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "tsc": "tsc",
-    "start": "node build/index.js",
-    "dev": "ts-node-dev index.ts",
+    "tsc:clean": "tsc --build --clean",
+    "tsc:rebuild": "npm run tsc:clean && tsc",
+    "start": "node build/src/index.js",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
