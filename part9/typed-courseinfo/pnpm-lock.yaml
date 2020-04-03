@@ -9,6 +9,7 @@ dependencies:
   react: 16.13.1
   react-dom: 16.13.1_react@16.13.1
   react-scripts: 3.4.1_typescript@3.8.3
+  react-uid: 2.2.0_react@16.13.1
   typescript: 3.8.3
 lockfileVersion: 5.1
 packages:
@@ -9052,6 +9053,16 @@ packages:
         optional: true
     resolution:
       integrity: sha512-JpTdi/0Sfd31mZA6Ukx+lq5j1JoKItX7qqEK4OiACjVQletM1P38g49d9/D0yTxp9FrSF+xpJFStkGgKEIRjlQ==
+  /react-uid/2.2.0_react@16.13.1:
+    dependencies:
+      react: 16.13.1
+    dev: false
+    engines:
+      node: '>=8.5.0'
+    peerDependencies:
+      react: ^16.3.0
+    resolution:
+      integrity: sha512-z+g5+hFOQ08hCfrGcJ1PNs+cmvH8Uq2CVzCmPeWBsUi5A4W4NWXR5jouledzy3oSKGMU9HOzf8zFuGi15TXJoQ==
   /react/16.13.1:
     dependencies:
       loose-envify: 1.4.0
@@ -11342,4 +11353,5 @@ specifiers:
   react: ^16.13.1
   react-dom: ^16.13.1
   react-scripts: 3.4.1
+  react-uid: ^2.2.0
   typescript: ^3.7.5
