@@ -5,7 +5,7 @@ import { Container, Icon } from "semantic-ui-react";
 
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue } from "../state";
+import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
 import { InvalidPatientError } from "../helpers/errorHelper";
 
@@ -39,7 +39,7 @@ const PatientPage: React.FC = () => {
         const { data: patientFromApi } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${id}`
         );
-        dispatch({ type: "UPDATE_PATIENT", payload: patientFromApi });
+        dispatch(updatePatient(patientFromApi));
         fetchStatus.current = { ...fetchStatus.current, hasFetched: true };
       } catch (e) {
         console.error(e);
