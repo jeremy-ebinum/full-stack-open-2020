@@ -11,17 +11,17 @@ const isDate = (date) => {
 const isGender = (param) => {
     return Object.values(types_1.Gender).includes(param);
 };
-const parseName = (name) => {
-    if (!name || !isString(name)) {
-        throw new Error(`Incorrect or missing name: ${name}`);
-    }
-    return name;
+const isArrayOfEntries = (param) => {
+    const hasInvalidEntry = param.some((entry) => {
+        return !Object.values(types_1.EntryType).includes(entry.type);
+    });
+    return !hasInvalidEntry;
 };
-const parseOccupation = (occupation) => {
-    if (!occupation || !isString(occupation)) {
-        throw new Error(`Incorrect or missing occupation: ${occupation}`);
+exports.parseToString = (param, paramName) => {
+    if (!param || !isString(param)) {
+        throw new Error(`Incorrect or missing ${paramName}: ${param}`);
     }
-    return occupation;
+    return param;
 };
 const parseGender = (gender) => {
     if (!gender || !isString(gender) || !isGender(gender.toLowerCase())) {
@@ -29,24 +29,24 @@ const parseGender = (gender) => {
     }
     return gender.toLowerCase();
 };
-const parseSsn = (ssn) => {
-    if (!ssn || !isString(ssn)) {
-        throw new Error(`Incorrect or missing ssn: ${ssn}`);
-    }
-    return ssn;
-};
 const parseDateOfBirth = (dateOfBirth) => {
     if (!dateOfBirth || !isString(dateOfBirth) || !isDate(dateOfBirth)) {
         throw new Error(`Incorrect or missing dateOfBirth: ${dateOfBirth}`);
     }
     return dateOfBirth;
 };
+exports.parseEntries = (entries) => {
+    if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
+        throw new Error(`Incorrect or missing entries: ${JSON.stringify(entries)}`);
+    }
+    return entries;
+};
 exports.toNewPatient = (object) => {
     return {
-        name: parseName(object.name),
-        occupation: parseOccupation(object.occupation),
+        name: exports.parseToString(object.name, "name"),
+        occupation: exports.parseToString(object.occupation, "occupation"),
         gender: parseGender(object.gender),
-        ssn: parseSsn(object.ssn),
+        ssn: exports.parseToString(object.ssn, "ssn"),
         dateOfBirth: parseDateOfBirth(object.dateOfBirth),
     };
 };

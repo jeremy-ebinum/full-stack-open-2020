@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from "./types";
+import { NewPatient, Gender, Entry, EntryType } from "./types";
 
 const isString = (text: any): text is string => {
   return typeof text === "string" || text instanceof String;
@@ -13,18 +13,19 @@ const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-const parseName = (name: any): string => {
-  if (!name || !isString(name)) {
-    throw new Error(`Incorrect or missing name: ${name}`);
-  }
-  return name;
+const isArrayOfEntries = (param: any[]): param is Entry[] => {
+  const hasInvalidEntry = param.some((entry) => {
+    return !Object.values(EntryType).includes(entry.type);
+  });
+
+  return !hasInvalidEntry;
 };
 
-const parseOccupation = (occupation: any): string => {
-  if (!occupation || !isString(occupation)) {
-    throw new Error(`Incorrect or missing occupation: ${occupation}`);
+export const parseToString = (param: any, paramName: string): string => {
+  if (!param || !isString(param)) {
+    throw new Error(`Incorrect or missing ${paramName}: ${param}`);
   }
-  return occupation;
+  return param;
 };
 
 const parseGender = (gender: any): Gender => {
@@ -34,13 +35,6 @@ const parseGender = (gender: any): Gender => {
   return gender.toLowerCase() as Gender;
 };
 
-const parseSsn = (ssn: any): string => {
-  if (!ssn || !isString(ssn)) {
-    throw new Error(`Incorrect or missing ssn: ${ssn}`);
-  }
-  return ssn;
-};
-
 const parseDateOfBirth = (dateOfBirth: any): string => {
   if (!dateOfBirth || !isString(dateOfBirth) || !isDate(dateOfBirth)) {
     throw new Error(`Incorrect or missing dateOfBirth: ${dateOfBirth}`);
@@ -48,12 +42,19 @@ const parseDateOfBirth = (dateOfBirth: any): string => {
   return dateOfBirth;
 };
 
+export const parseEntries = (entries: any): Entry[] => {
+  if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
+    throw new Error(`Incorrect or missing entries: ${JSON.stringify(entries)}`);
+  }
+  return entries;
+};
+
 export const toNewPatient = (object: any): NewPatient => {
   return {
-    name: parseName(object.name),
-    occupation: parseOccupation(object.occupation),
+    name: parseToString(object.name, "name"),
+    occupation: parseToString(object.occupation, "occupation"),
     gender: parseGender(object.gender),
-    ssn: parseSsn(object.ssn),
+    ssn: parseToString(object.ssn, "ssn"),
     dateOfBirth: parseDateOfBirth(object.dateOfBirth),
   };
 };
