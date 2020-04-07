@@ -12,7 +12,7 @@ const OccupationalHealthCareEntry: React.FC<{
     <Card fluid>
       <Card.Content>
         <Card.Header>
-          {entry.date} <Icon name="cog" />
+          {entry.date} <Icon color="purple" name="cog" />
         </Card.Header>
         <Card.Meta>by {entry.specialist}</Card.Meta>
         <Card.Description>{entry.description}</Card.Description>

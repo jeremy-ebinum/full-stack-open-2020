@@ -11,7 +11,7 @@ const HealthCheckEntry: React.FC<{ entry: HealthCheck }> = ({ entry }) => {
     <Card fluid>
       <Card.Content>
         <Card.Header>
-          {entry.date} <Icon name="stethoscope" />
+          {entry.date} <Icon color="orange" name="stethoscope" />
         </Card.Header>
         <Card.Meta>by {entry.specialist}</Card.Meta>
         <Card.Description>{entry.description}</Card.Description>

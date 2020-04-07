@@ -11,10 +11,10 @@ import { InvalidPatientError } from "../helpers/errorHelper";
 
 import EntryDetails from "./EntryDetails";
 
-const genderIcons = {
-  male: "mars" as "mars",
-  female: "venus" as "venus",
-  other: "genderless" as "genderless",
+const genderIconProps = {
+  male: { name: "mars" as "mars", color: "blue" as "blue" },
+  female: { name: "venus" as "venus", color: "pink" as "pink" },
+  other: { name: "genderless" as "genderless", color: "grey" as "grey" },
 };
 
 const PatientPage: React.FC = () => {
@@ -58,7 +58,7 @@ const PatientPage: React.FC = () => {
   return (
     <Container>
       <h1>
-        {patient.name} <Icon name={genderIcons[patient.gender]} />
+        {patient.name} <Icon {...genderIconProps[patient.gender]} />
       </h1>
 
       <p>

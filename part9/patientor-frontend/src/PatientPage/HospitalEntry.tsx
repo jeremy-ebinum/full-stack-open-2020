@@ -10,7 +10,7 @@ const HospitalEntry: React.FC<{ entry: Hospital }> = ({ entry }) => {
     <Card fluid>
       <Card.Content>
         <Card.Header>
-          {entry.date} <Icon name="hospital symbol" />
+          {entry.date} <Icon color="red" name="hospital symbol" />
         </Card.Header>
         <Card.Meta>by {entry.specialist}</Card.Meta>
         <Card.Description>{entry.description}</Card.Description>
