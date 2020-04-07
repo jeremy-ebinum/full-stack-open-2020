@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { uid } from "react-uid";
-import { Container, Icon } from "semantic-ui-react";
+import { Container, Icon, Card } from "semantic-ui-react";
 
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
 import { InvalidPatientError } from "../helpers/errorHelper";
+
+import EntryDetails from "./EntryDetails";
 
 const genderIcons = {
   male: "mars" as "mars",
@@ -18,7 +19,7 @@ const genderIcons = {
 
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patients, diagnoses }, dispatch] = useStateValue();
+  const [{ patients }, dispatch] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
 
   let patient = patients[id];
@@ -70,22 +71,11 @@ const PatientPage: React.FC = () => {
 
       {patient.entries.length > 0 && <h2>Entries</h2>}
 
-      {patient.entries.map((entry) => (
-        <Container key={entry.id}>
-          <p>
-            <strong>{entry.date}: </strong> {entry.description}
-          </p>
-
-          <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={uid({})}>
-                <strong>{code} - </strong>
-                {diagnoses[code] && diagnoses[code].name}
-              </li>
-            ))}
-          </ul>
-        </Container>
-      ))}
+      <Card.Group>
+        {patient.entries.map((entry) => (
+          <EntryDetails key={entry.id} entry={entry} />
+        ))}
+      </Card.Group>
     </Container>
   );
 };
