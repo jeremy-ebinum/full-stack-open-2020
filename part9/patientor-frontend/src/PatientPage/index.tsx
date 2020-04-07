@@ -18,7 +18,7 @@ const genderIcons = {
 
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
 
   let patient = patients[id];
@@ -78,7 +78,10 @@ const PatientPage: React.FC = () => {
 
           <ul>
             {entry.diagnosisCodes?.map((code) => (
-              <li key={uid({})}>{code}</li>
+              <li key={uid({})}>
+                <strong>{code} - </strong>
+                {diagnoses[code] && diagnoses[code].name}
+              </li>
             ))}
           </ul>
         </Container>
