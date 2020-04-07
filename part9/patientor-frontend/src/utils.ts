@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Gender, Entry, Patient } from "./types";
+import { Gender, Entry, EntryType, Patient } from "./types";
 import { InvalidPatientError } from "./helpers/errorHelper";
 
 const isString = (text: any): text is string => {
@@ -14,7 +14,15 @@ const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-const parseString = (param: any, paramName: string): string => {
+const isArrayOfEntries = (param: any[]): param is Entry[] => {
+  const hasInvalidEntry = param.some((entry) => {
+    return !Object.values(EntryType).includes(entry.type);
+  });
+
+  return !hasInvalidEntry;
+};
+
+const parseToString = (param: any, paramName: string): string => {
   if (!param || !isString(param)) {
     throw new InvalidPatientError(
       `Incorrect or missing ${paramName}: ${param}`
@@ -40,20 +48,22 @@ const parseDateOfBirth = (dateOfBirth: any): string => {
 };
 
 const parseEntries = (entries: any): Entry[] => {
-  if (!entries || !Array.isArray(entries)) {
-    throw new InvalidPatientError(`Incorrect or missing entries: ${entries}`);
+  if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
+    throw new InvalidPatientError(
+      `Incorrect or missing entries: ${JSON.stringify(entries)}`
+    );
   }
   return entries;
 };
 
 export const toPatient = (object: any): Patient => {
   return {
-    name: parseString(object.name, "name"),
-    occupation: parseString(object.occupation, "occupation"),
+    name: parseToString(object.name, "name"),
+    occupation: parseToString(object.occupation, "occupation"),
     gender: parseGender(object.gender),
-    ssn: parseString(object.ssn, "ssn"),
+    ssn: parseToString(object.ssn, "ssn"),
     dateOfBirth: parseDateOfBirth(object.dateOfBirth),
-    id: parseString(object.id, "id"),
+    id: parseToString(object.id, "id"),
     entries: parseEntries(object.entries),
   };
 };

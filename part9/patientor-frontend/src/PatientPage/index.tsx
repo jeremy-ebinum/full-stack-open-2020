@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { uid } from "react-uid";
 import { Container, Icon } from "semantic-ui-react";
 
 import { Patient } from "../types";
@@ -20,10 +21,10 @@ const PatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
 
-  let patient = { ...patients[id] };
+  let patient = patients[id];
 
   try {
-    patient = toPatient(patient);
+    patient = toPatient({ ...patient });
   } catch (e) {
     if (e instanceof InvalidPatientError && !fetchStatus.current.hasFetched) {
       fetchStatus.current = { ...fetchStatus.current, shouldFetch: true };
@@ -51,6 +52,8 @@ const PatientPage: React.FC = () => {
     }
   }, [id, dispatch]);
 
+  if (!patient) return null;
+
   return (
     <Container>
       <h1>
@@ -64,6 +67,22 @@ const PatientPage: React.FC = () => {
       <p>
         <strong>Occupation:</strong> {patient.occupation}
       </p>
+
+      {patient.entries.length > 0 && <h2>Entries</h2>}
+
+      {patient.entries.map((entry) => (
+        <Container key={entry.id}>
+          <p>
+            <strong>{entry.date}: </strong> {entry.description}
+          </p>
+
+          <ul>
+            {entry.diagnosisCodes?.map((code) => (
+              <li key={uid({})}>{code}</li>
+            ))}
+          </ul>
+        </Container>
+      ))}
     </Container>
   );
 };
