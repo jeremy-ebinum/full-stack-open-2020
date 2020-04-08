@@ -32,8 +32,15 @@ const PatientListPage: React.FC = () => {
       dispatch(addPatient(newPatient));
       closeModal();
     } catch (e) {
-      console.error(e.response.data);
-      setError(e.response.data.error);
+      console.error(e.response?.data);
+
+      let errorMessage = "Oops! Something went wrong!";
+
+      if (e.response?.status >= 400 && e.response?.status < 500) {
+        errorMessage = e.response.data.error;
+      }
+
+      setError(errorMessage);
     }
   };
 

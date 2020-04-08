@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Icon, Card } from "semantic-ui-react";
+import { Container, Icon, Card, Button } from "semantic-ui-react";
 
-import { Patient } from "../types";
+import { Patient, NewEntry, EntryType } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
 import { InvalidPatientError } from "../helpers/errorHelper";
 
+import AddEntryModal from "../AddEntryModal";
 import EntryDetails from "./EntryDetails";
 
 const genderIconProps = {
@@ -21,6 +22,10 @@ const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patients }, dispatch] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
+
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+  const openModal = (): void => setModalOpen(true);
 
   let patient = patients[id];
 
@@ -53,7 +58,41 @@ const PatientPage: React.FC = () => {
     }
   }, [id, dispatch]);
 
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
   if (!patient) return null;
+
+  const submitNewEntry = async (values: NewEntry) => {
+    const body = { ...values };
+
+    if (body.type === EntryType.OccupationalHealthCare) {
+      if (!body.sickLeave?.endDate && !body.sickLeave?.startDate) {
+        body.sickLeave = undefined;
+      }
+    }
+
+    try {
+      const { data: returnedPatient } = await axios.post<Patient>(
+        `${apiBaseUrl}/patients/${patient.id}/entries`,
+        body
+      );
+      dispatch(updatePatient(returnedPatient));
+      closeModal();
+    } catch (e) {
+      console.error(e.response?.data);
+
+      let errorMessage = "Oops! Something went wrong!";
+
+      if (e.response?.status >= 400 && e.response?.status < 500) {
+        errorMessage = e.response.data.error;
+      }
+
+      setError(errorMessage);
+    }
+  };
 
   return (
     <Container>
@@ -66,8 +105,20 @@ const PatientPage: React.FC = () => {
       </p>
 
       <p>
+        <strong>Date of Birth:</strong> {patient.dateOfBirth}
+      </p>
+
+      <p>
         <strong>Occupation:</strong> {patient.occupation}
       </p>
+
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button onClick={openModal}>Add New Entry</Button>
 
       {patient.entries.length > 0 && <h2>Entries</h2>}
 
