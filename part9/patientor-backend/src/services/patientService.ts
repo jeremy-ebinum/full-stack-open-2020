@@ -8,14 +8,16 @@ import {
 } from "../types";
 import { v4 as uuid } from "uuid";
 
+let savedPatients = [...patients];
+
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const findById = (id: any): Patient | undefined => {
-  const patient = patients.find((p) => p.id === id);
+  const patient = savedPatients.find((p) => p.id === id);
   return patient;
 };
 
 const getPatients = (): NonSensitivePatient[] => {
-  return patients.map(
+  return savedPatients.map(
     ({ id, name, dateOfBirth, gender, occupation, entries }) => {
       return { id, name, dateOfBirth, gender, occupation, entries };
     }
@@ -24,14 +26,16 @@ const getPatients = (): NonSensitivePatient[] => {
 
 const addPatient = (patient: NewPatient): Patient => {
   const newPatient = { ...patient, id: uuid(), entries: [] as Entry[] };
-  patients.push(newPatient);
+  savedPatients = savedPatients.concat(newPatient);
   return newPatient;
 };
 
 const addEntry = (patient: Patient, newEntry: NewEntry): Patient => {
   const entry: Entry = { ...newEntry, id: uuid() };
   const savedPatient = { ...patient, entries: patient.entries.concat(entry) };
-  patients.map((p) => (p.id === savedPatient.id ? savedPatient : p));
+  savedPatients = savedPatients.map((p) =>
+    p.id === savedPatient.id ? savedPatient : p
+  );
 
   return savedPatient;
 };
