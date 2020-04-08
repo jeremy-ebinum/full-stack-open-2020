@@ -24,7 +24,7 @@ router.post("/", (req, res) => {
     const addedPatient = patientService.addPatient(newPatient);
     res.json(addedPatient);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 });
 
@@ -37,10 +37,10 @@ router.post("/:id/entries", (req, res) => {
       const updatedPatient = patientService.addEntry(patient, newEntry);
       res.json(updatedPatient);
     } catch (e) {
-      res.status(400).send(e.message);
+      res.status(400).send({ error: e.message });
     }
   } else {
-    res.status(404).send("Patient Not Found");
+    res.status(404).send({ error: "Sorry, this patient does not exist" });
   }
 });
 

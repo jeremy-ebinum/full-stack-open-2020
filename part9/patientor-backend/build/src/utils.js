@@ -28,31 +28,31 @@ const isArrayOfStrings = (param) => {
 };
 exports.parseToString = (param, paramName) => {
     if (!param || !isString(param)) {
-        throw new Error(`Incorrect or missing ${paramName}: ${param}`);
+        throw new Error(`Incorrect or missing ${paramName}: ${param || ""}`);
     }
     return param;
 };
 const parseGender = (gender) => {
     if (!gender || !isString(gender) || !isGender(gender.toLowerCase())) {
-        throw new Error(`Incorrect or missing gender: ${gender}`);
+        throw new Error(`Incorrect or missing gender: ${gender || ""}`);
     }
     return gender.toLowerCase();
 };
 const parseToDate = (param, paramName) => {
     if (!param || !isString(param) || !isDate(param)) {
-        throw new Error(`Incorrect or missing ${paramName}: ${param}`);
+        throw new Error(`Incorrect or missing ${paramName}: ${param || ""}`);
     }
     return param;
 };
 const parseEntryType = (entryType) => {
     if (!Object.values(types_1.EntryType).includes(entryType)) {
-        throw new Error(`Incorrect or missing type: ${entryType}`);
+        throw new Error(`Incorrect or missing type: ${entryType || ""}`);
     }
     return entryType;
 };
 const parseDiagnosesCodes = (diagnosisCodes) => {
     if (!Array.isArray(diagnosisCodes) || !isArrayOfStrings(diagnosisCodes)) {
-        throw new Error(`Incorrect or missing diagnosisCodes: ${JSON.stringify(diagnosisCodes)}`);
+        throw new Error("Incorrect or missing diagnoses");
     }
     return diagnosisCodes;
 };
@@ -61,8 +61,8 @@ exports.toNewPatient = (object) => {
         name: exports.parseToString(object.name, "name"),
         occupation: exports.parseToString(object.occupation, "occupation"),
         gender: parseGender(object.gender),
-        ssn: exports.parseToString(object.ssn, "ssn"),
-        dateOfBirth: parseToDate(object.dateOfBirth, "dateOfBirth"),
+        ssn: exports.parseToString(object.ssn, "social security number"),
+        dateOfBirth: parseToDate(object.dateOfBirth, "date of birth"),
     };
 };
 const toNewBaseEntry = (object) => {
@@ -81,24 +81,24 @@ const parseHealthCheckRating = (healthCheckRating) => {
     if (healthCheckRating === null ||
         healthCheckRating === undefined ||
         !isHealthCheckRating(healthCheckRating)) {
-        throw new Error(`Incorrect or missing healthCheckRating: ${healthCheckRating}`);
+        throw new Error(`Incorrect or missing health check rating: ${healthCheckRating || ""}`);
     }
     return healthCheckRating;
 };
 const parseSickLeave = (object) => {
     if (!object)
-        throw new Error(`Incorrect or missing sickLeave: ${object}`);
+        throw new Error("Missing sick leave");
     return {
-        startDate: parseToDate(object.startDate, "sickLeave['startDate']"),
-        endDate: parseToDate(object.endDate, "sickLeave['endDate']"),
+        startDate: parseToDate(object.startDate, "sick leave start date"),
+        endDate: parseToDate(object.endDate, "sick leave end date"),
     };
 };
 const parseDischarge = (object) => {
     if (!object)
-        throw new Error(`Incorrect or missing discharge: ${object}`);
+        throw new Error("Missing discharge");
     return {
-        date: parseToDate(object.date, `discharge["date"]`),
-        criteria: exports.parseToString(object.criteria, `discharge["criteria"]`),
+        date: parseToDate(object.date, "discharge date"),
+        criteria: exports.parseToString(object.criteria, "discharge criteria"),
     };
 };
 exports.toNewEntry = (object) => {
@@ -107,7 +107,7 @@ exports.toNewEntry = (object) => {
         case types_1.EntryType.HealthCheck:
             return Object.assign(Object.assign({}, newBaseEntry), { healthCheckRating: parseHealthCheckRating(object.healthCheckRating) });
         case types_1.EntryType.OccupationalHealthCare:
-            const newEntry = Object.assign(Object.assign({}, newBaseEntry), { employerName: exports.parseToString(object.employerName, "employerName") });
+            const newEntry = Object.assign(Object.assign({}, newBaseEntry), { employerName: exports.parseToString(object.employerName, "employer name") });
             if (object.sickLeave) {
                 newEntry.sickLeave = parseSickLeave(object.sickLeave);
             }

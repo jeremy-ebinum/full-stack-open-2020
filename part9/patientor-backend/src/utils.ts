@@ -46,28 +46,28 @@ const isArrayOfStrings = (param: any[]): param is string[] => {
 
 export const parseToString = (param: any, paramName: string): string => {
   if (!param || !isString(param)) {
-    throw new Error(`Incorrect or missing ${paramName}: ${param}`);
+    throw new Error(`Incorrect or missing ${paramName}: ${param || ""}`);
   }
   return param;
 };
 
 const parseGender = (gender: any): Gender => {
   if (!gender || !isString(gender) || !isGender(gender.toLowerCase())) {
-    throw new Error(`Incorrect or missing gender: ${gender}`);
+    throw new Error(`Incorrect or missing gender: ${gender || ""}`);
   }
   return gender.toLowerCase() as Gender;
 };
 
 const parseToDate = (param: any, paramName: string): string => {
   if (!param || !isString(param) || !isDate(param)) {
-    throw new Error(`Incorrect or missing ${paramName}: ${param}`);
+    throw new Error(`Incorrect or missing ${paramName}: ${param || ""}`);
   }
   return param;
 };
 
 const parseEntryType = (entryType: any): EntryType => {
   if (!Object.values(EntryType).includes(entryType)) {
-    throw new Error(`Incorrect or missing type: ${entryType}`);
+    throw new Error(`Incorrect or missing type: ${entryType || ""}`);
   }
 
   return entryType;
@@ -75,9 +75,7 @@ const parseEntryType = (entryType: any): EntryType => {
 
 const parseDiagnosesCodes = (diagnosisCodes: any): Array<Diagnosis["code"]> => {
   if (!Array.isArray(diagnosisCodes) || !isArrayOfStrings(diagnosisCodes)) {
-    throw new Error(
-      `Incorrect or missing diagnosisCodes: ${JSON.stringify(diagnosisCodes)}`
-    );
+    throw new Error("Incorrect or missing diagnoses");
   }
 
   return diagnosisCodes;
@@ -88,8 +86,8 @@ export const toNewPatient = (object: any): NewPatient => {
     name: parseToString(object.name, "name"),
     occupation: parseToString(object.occupation, "occupation"),
     gender: parseGender(object.gender),
-    ssn: parseToString(object.ssn, "ssn"),
-    dateOfBirth: parseToDate(object.dateOfBirth, "dateOfBirth"),
+    ssn: parseToString(object.ssn, "social security number"),
+    dateOfBirth: parseToDate(object.dateOfBirth, "date of birth"),
   };
 };
 
@@ -115,27 +113,27 @@ const parseHealthCheckRating = (healthCheckRating: any): HealthCheckRating => {
     !isHealthCheckRating(healthCheckRating)
   ) {
     throw new Error(
-      `Incorrect or missing healthCheckRating: ${healthCheckRating}`
+      `Incorrect or missing health check rating: ${healthCheckRating || ""}`
     );
   }
   return healthCheckRating;
 };
 
 const parseSickLeave = (object: any): SickLeave => {
-  if (!object) throw new Error(`Incorrect or missing sickLeave: ${object}`);
+  if (!object) throw new Error("Missing sick leave");
 
   return {
-    startDate: parseToDate(object.startDate, "sickLeave['startDate']"),
-    endDate: parseToDate(object.endDate, "sickLeave['endDate']"),
+    startDate: parseToDate(object.startDate, "sick leave start date"),
+    endDate: parseToDate(object.endDate, "sick leave end date"),
   };
 };
 
 const parseDischarge = (object: any): Discharge => {
-  if (!object) throw new Error(`Incorrect or missing discharge: ${object}`);
+  if (!object) throw new Error("Missing discharge");
 
   return {
-    date: parseToDate(object.date, `discharge["date"]`),
-    criteria: parseToString(object.criteria, `discharge["criteria"]`),
+    date: parseToDate(object.date, "discharge date"),
+    criteria: parseToString(object.criteria, "discharge criteria"),
   };
 };
 
@@ -151,7 +149,7 @@ export const toNewEntry = (object: any): NewEntry => {
     case EntryType.OccupationalHealthCare:
       const newEntry = {
         ...newBaseEntry,
-        employerName: parseToString(object.employerName, "employerName"),
+        employerName: parseToString(object.employerName, "employer name"),
       };
 
       if (object.sickLeave) {

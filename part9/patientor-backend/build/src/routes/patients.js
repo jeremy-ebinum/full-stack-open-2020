@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
         res.json(addedPatient);
     }
     catch (e) {
-        res.status(400).send(e.message);
+        res.status(400).send({ error: e.message });
     }
 });
 router.post("/:id/entries", (req, res) => {
@@ -38,11 +38,11 @@ router.post("/:id/entries", (req, res) => {
             res.json(updatedPatient);
         }
         catch (e) {
-            res.status(400).send(e.message);
+            res.status(400).send({ error: e.message });
         }
     }
     else {
-        res.status(404).send("Patient Not Found");
+        res.status(404).send({ error: "Sorry, this patient does not exist" });
     }
 });
 exports.default = router;
