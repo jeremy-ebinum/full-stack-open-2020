@@ -37,7 +37,7 @@ interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string;
   endDate: string;
 }
@@ -48,7 +48,7 @@ interface OccupationalHealthCareEntry extends BaseEntry {
   sickLeave?: SickLeave;
 }
 
-interface Discharge {
+export interface Discharge {
   date: string;
   criteria: string;
 }
@@ -63,6 +63,14 @@ export type Entry =
   | OccupationalHealthCareEntry
   | HospitalEntry;
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never;
+
+export type NewBaseEntry = Omit<BaseEntry, "id">;
+
+export type NewEntry = DistributiveOmit<Entry, "id">;
 export interface Patient {
   id: string;
   name: string;

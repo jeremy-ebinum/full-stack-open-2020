@@ -5,6 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const patients_1 = __importDefault(require("../../data/patients"));
 const uuid_1 = require("uuid");
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const findById = (id) => {
+    const patient = patients_1.default.find((p) => p.id === id);
+    return patient;
+};
 const getPatients = () => {
     return patients_1.default.map(({ id, name, dateOfBirth, gender, occupation, entries }) => {
         return { id, name, dateOfBirth, gender, occupation, entries };
@@ -15,9 +20,10 @@ const addPatient = (patient) => {
     patients_1.default.push(newPatient);
     return newPatient;
 };
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const findById = (id) => {
-    const patient = patients_1.default.find((p) => p.id === id);
-    return patient;
+const addEntry = (patient, newEntry) => {
+    const entry = Object.assign(Object.assign({}, newEntry), { id: uuid_1.v4() });
+    const savedPatient = Object.assign(Object.assign({}, patient), { entries: patient.entries.concat(entry) });
+    patients_1.default.map((p) => (p.id === savedPatient.id ? savedPatient : p));
+    return savedPatient;
 };
-exports.default = { getPatients, addPatient, findById };
+exports.default = { getPatients, addPatient, findById, addEntry };

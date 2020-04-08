@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const types_1 = require("./types");
+/**
+ * Helper function for exhaustive type checking
+ */
+exports.assertNever = (value) => {
+    throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
+};
 const isString = (text) => {
     return typeof text === "string" || text instanceof String;
 };
@@ -11,11 +17,14 @@ const isDate = (date) => {
 const isGender = (param) => {
     return Object.values(types_1.Gender).includes(param);
 };
-const isArrayOfEntries = (param) => {
-    const hasInvalidEntry = param.some((entry) => {
-        return !Object.values(types_1.EntryType).includes(entry.type);
+const isHealthCheckRating = (param) => {
+    return Object.values(types_1.HealthCheckRating).includes(param);
+};
+const isArrayOfStrings = (param) => {
+    const hasNonString = param.some((item) => {
+        return !isString(item);
     });
-    return !hasInvalidEntry;
+    return !hasNonString;
 };
 exports.parseToString = (param, paramName) => {
     if (!param || !isString(param)) {
@@ -29,17 +38,23 @@ const parseGender = (gender) => {
     }
     return gender.toLowerCase();
 };
-const parseDateOfBirth = (dateOfBirth) => {
-    if (!dateOfBirth || !isString(dateOfBirth) || !isDate(dateOfBirth)) {
-        throw new Error(`Incorrect or missing dateOfBirth: ${dateOfBirth}`);
+const parseToDate = (param, paramName) => {
+    if (!param || !isString(param) || !isDate(param)) {
+        throw new Error(`Incorrect or missing ${paramName}: ${param}`);
     }
-    return dateOfBirth;
+    return param;
 };
-exports.parseEntries = (entries) => {
-    if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
-        throw new Error(`Incorrect or missing entries: ${JSON.stringify(entries)}`);
+const parseEntryType = (entryType) => {
+    if (!Object.values(types_1.EntryType).includes(entryType)) {
+        throw new Error(`Incorrect or missing type: ${entryType}`);
     }
-    return entries;
+    return entryType;
+};
+const parseDiagnosesCodes = (diagnosisCodes) => {
+    if (!Array.isArray(diagnosisCodes) || !isArrayOfStrings(diagnosisCodes)) {
+        throw new Error(`Incorrect or missing diagnosisCodes: ${JSON.stringify(diagnosisCodes)}`);
+    }
+    return diagnosisCodes;
 };
 exports.toNewPatient = (object) => {
     return {
@@ -47,6 +62,59 @@ exports.toNewPatient = (object) => {
         occupation: exports.parseToString(object.occupation, "occupation"),
         gender: parseGender(object.gender),
         ssn: exports.parseToString(object.ssn, "ssn"),
-        dateOfBirth: parseDateOfBirth(object.dateOfBirth),
+        dateOfBirth: parseToDate(object.dateOfBirth, "dateOfBirth"),
     };
+};
+const toNewBaseEntry = (object) => {
+    const newBaseEntry = {
+        type: parseEntryType(object.type),
+        description: exports.parseToString(object.description, "description"),
+        date: parseToDate(object.date, "date"),
+        specialist: exports.parseToString(object.specialist, "specialist"),
+    };
+    if (object.diagnosisCodes) {
+        newBaseEntry.diagnosisCodes = parseDiagnosesCodes(object.diagnosisCodes);
+    }
+    return newBaseEntry;
+};
+const parseHealthCheckRating = (healthCheckRating) => {
+    if (healthCheckRating === null ||
+        healthCheckRating === undefined ||
+        !isHealthCheckRating(healthCheckRating)) {
+        throw new Error(`Incorrect or missing healthCheckRating: ${healthCheckRating}`);
+    }
+    return healthCheckRating;
+};
+const parseSickLeave = (object) => {
+    if (!object)
+        throw new Error(`Incorrect or missing sickLeave: ${object}`);
+    return {
+        startDate: parseToDate(object.startDate, "sickLeave['startDate']"),
+        endDate: parseToDate(object.endDate, "sickLeave['endDate']"),
+    };
+};
+const parseDischarge = (object) => {
+    if (!object)
+        throw new Error(`Incorrect or missing discharge: ${object}`);
+    return {
+        date: parseToDate(object.date, `discharge["date"]`),
+        criteria: exports.parseToString(object.criteria, `discharge["criteria"]`),
+    };
+};
+exports.toNewEntry = (object) => {
+    const newBaseEntry = toNewBaseEntry(object);
+    switch (newBaseEntry.type) {
+        case types_1.EntryType.HealthCheck:
+            return Object.assign(Object.assign({}, newBaseEntry), { healthCheckRating: parseHealthCheckRating(object.healthCheckRating) });
+        case types_1.EntryType.OccupationalHealthCare:
+            const newEntry = Object.assign(Object.assign({}, newBaseEntry), { employerName: exports.parseToString(object.employerName, "employerName") });
+            if (object.sickLeave) {
+                newEntry.sickLeave = parseSickLeave(object.sickLeave);
+            }
+            return newEntry;
+        case types_1.EntryType.Hospital:
+            return Object.assign(Object.assign({}, newBaseEntry), { discharge: parseDischarge(object.discharge) });
+        default:
+            return exports.assertNever(newBaseEntry);
+    }
 };
