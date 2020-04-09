@@ -1,4 +1,6 @@
-# Patientor - frontend
+# Full Stack Open 2020 - Exercise Solutions - Patientor Frontend
+
+## Part 9 - [Typescript](https://fullstackopen.com/en/part9)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
