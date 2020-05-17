@@ -2,6 +2,8 @@
 
 This repository contains exercise solutions to the 2020 edition of the Full Stack Open course from the University of Helsinki.
 
+[View Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/394625786f536fedd518462e6539fd48)
+
 ## Part 9 - [Typescript](https://fullstackopen.com/en/part9)
 
 - [patientor-frontend](https://github.com/jeremy-ebinum/full-stack-open-2020/tree/master/part9/patientor-frontend) - A react frontend for a medical record app written with Typescript.
