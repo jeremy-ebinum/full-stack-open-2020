@@ -2,6 +2,8 @@
 
 This repository contains exercise solutions to the 2020 edition of the Full Stack Open course from the University of Helsinki.
 
+[Course Contribution](https://github.com/fullstack-hy2020/fullstack-hy2020.github.io/pull/221)
+
 [View Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/394625786f536fedd518462e6539fd48)
 
 ## Part 9 - [Typescript](https://fullstackopen.com/en/part9)
